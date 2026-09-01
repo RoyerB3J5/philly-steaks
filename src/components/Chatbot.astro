@@ -1,0 +1,207 @@
+<!-- Chatbot lazy-load widget: carga bajo demanda para mejorar UX -->
+<div class="chatbot-wrapper" aria-hidden="false">
+  <!-- El botón inicial comienza oculto (opacity:0) para ser animado por CSS -->
+  <button
+    id="chatbot-toggle"
+    aria-label="Abrir chat"
+    class="chatbot-button"
+    style="opacity: 0; pointer-events: none;">💬</button
+  >
+</div>
+
+<noscript>
+  <a href="/connect/" class="chatbot-noscript">Contacta con nosotros</a>
+</noscript>
+
+<style>
+  /* Mantenemos el z-index original para evitar solapamientos */
+  .chatbot-wrapper,
+  #chat-widget-container,
+  .lc_chat-widget,
+  div[id*="chat-widget"] {
+    z-index: 40 !important;
+  }
+
+  /* 1. Definimos la animación pura de abajo hacia arriba */
+  @keyframes slideInUp {
+    from {
+      transform: translateY(80px); /* Empieza 80px abajo */
+      opacity: 0; /* Invisible */
+    }
+    to {
+      transform: translateY(0); /* Su posición final */
+      opacity: 1; /* Visible */
+    }
+  }
+
+  /* Configuración base del contenedor */
+  .chatbot-wrapper {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 20;
+  }
+
+  /* 2. Estilos base del botón */
+  .chatbot-button {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #b59353;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Transición suave para scale si se añade en JS onload */
+    transition:
+      opacity 0.4s ease,
+      transform 0.4s ease;
+  }
+
+  /* 3. Definimos la clase para activar la animación en el botón */
+  .chatbot-wrapper.animate-button .chatbot-button {
+    animation: slideInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    pointer-events: auto !important; /* Habilitar clicks */
+  }
+
+  /* Configuración de visibilidad para móvil (manteniendo la lógica original) */
+  .chatbot-wrapper.hidden-mobile {
+    display: none;
+  }
+
+  /* Asegurar que se muestra cuando es visible */
+  @media (max-width: 640px) {
+    .chatbot-wrapper {
+      display: none;
+    }
+
+    .chatbot-wrapper.visible-mobile {
+      display: block; /* Muestra el contenedor */
+    }
+  }
+
+  .chatbot-noscript {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: #b59353;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+  }
+</style>
+
+<script>
+  (() => {
+    const WIDGET_ID = "6a8ddf570f35f20299e41bdd";
+    const RES_URL = "https://widgets.leadconnectorhq.com/chat-widget/loader.js";
+    const SRC = "https://widgets.leadconnectorhq.com/loader.js";
+    let loaded = false;
+    const btn = document.getElementById("chatbot-toggle");
+    const wrapper = document.querySelector(".chatbot-wrapper");
+    let idleTimer: any;
+    let scrollDetected = false;
+    let lastScrollPosition = 0;
+    const isMobile = window.innerWidth <= 640;
+
+    function insertScript() {
+      if (loaded) return;
+      loaded = true;
+      const s = document.createElement("script");
+      s.src = SRC;
+      s.setAttribute("data-resources-url", RES_URL);
+      s.setAttribute("data-widget-id", WIDGET_ID);
+      s.async = true;
+      document.body.appendChild(s);
+    }
+
+    // --- NUEVO: Función para activar la animación ---
+    function triggerAnimation() {
+      if (wrapper && !wrapper.classList.contains("animate-button")) {
+        // Añadimos la clase CSS que ejecuta la animación Keyframe en el BOTÓN
+        wrapper.classList.add("animate-button");
+      }
+    }
+
+    function onFirstInteraction() {
+      clearTimeout(idleTimer);
+      triggerAnimation(); // Gatillo de animación en escritorio
+      insertScript();
+      removeInteractionListeners();
+    }
+
+    function removeInteractionListeners() {
+      window.removeEventListener("pointerdown", onFirstInteraction);
+      window.removeEventListener("keydown", onFirstInteraction);
+    }
+
+    function onScroll() {
+      const currentScroll =
+        window.pageYOffset || document.documentElement.scrollTop;
+
+      if (isMobile && !scrollDetected && currentScroll > 200) {
+        scrollDetected = true;
+        if (wrapper) {
+          wrapper.classList.remove("hidden-mobile");
+          wrapper.classList.add("visible-mobile");
+          // Gatillo de animación en móvil al mostrar el contenedor
+          triggerAnimation();
+        }
+        insertScript();
+        window.removeEventListener("scroll", onScroll);
+      }
+      lastScrollPosition = currentScroll;
+    }
+
+    if (isMobile && wrapper) {
+      wrapper.classList.add("hidden-mobile");
+      window.addEventListener("scroll", onScroll, { passive: true });
+    } else {
+      // Escritorio: Mismo comportamiento lazy pero activando la animación
+
+      // Gatillo por idle (3s)
+      idleTimer = setTimeout(() => {
+        triggerAnimation();
+        insertScript();
+      }, 3000);
+
+      // Gatillo por interacción
+      window.addEventListener("pointerdown", onFirstInteraction, {
+        once: true,
+      });
+      window.addEventListener("keydown", onFirstInteraction, { once: true });
+    }
+
+    if (btn) {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (!loaded) {
+          clearTimeout(idleTimer);
+          triggerAnimation(); // Asegurar animación si se clickea antes del idle
+          insertScript();
+          return;
+        }
+        try {
+          if (window.LC_API && typeof window.LC_API.open_chat === "function") {
+            window.LC_API.open_chat();
+          } else if (
+            window.LC_API &&
+            typeof window.LC_API.toggle === "function"
+          ) {
+            window.LC_API.toggle();
+          } else if (
+            window.leadconnector &&
+            typeof window.leadconnector.open === "function"
+          ) {
+            window.leadconnector.open();
+          }
+        } catch (err) {
+          /* no-op */
+        }
+      });
+    }
+  })();
+</script>

@@ -1,0 +1,46 @@
+---
+import "../styles/global.css";
+import SEOHead from "../components/SEOHead.astro";
+
+export interface Props {
+  lang?: string;
+  title?: string;
+  description?: string;
+  keywords?: string;
+  image?: string;
+  canonicalPath?: string;
+  noindex?: boolean;
+}
+
+const {
+  lang = "en",
+  title,
+  description,
+  keywords,
+  image,
+  canonicalPath,
+  noindex,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang} class="overflow-x-hidden">
+  <head>
+    <SEOHead
+      lang={lang}
+      title={title}
+      description={description}
+      keywords={keywords}
+      image={image}
+      canonicalPath={canonicalPath}
+      noindex={noindex}
+    />
+  </head>
+  <body
+    class="font-family antialiased overflow-x-hidden bg-[#000800] bg-gradient-to-b from-[#002D15] to-[#000800]/0 flex flex-col justify-center items-center w-screen"
+  >
+    <main class="flex flex-col w-full items-center h-full">
+      <slot />
+    </main>
+  </body>
+</html>

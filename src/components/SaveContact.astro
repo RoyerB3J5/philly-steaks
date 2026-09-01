@@ -1,0 +1,85 @@
+---
+// SaveContact.astro (Astro component)
+const contact = {
+  firstName: "Prestige Growth Partners",
+  lastName: "",
+  org: "Prestige Growth Partners",
+  title: "Prestige Growth Partners",
+  phone: "+17863386177",
+  email: "admin@prestigegrowthpartners.com",
+  url: "https://www.advancerockgroup.com/",
+  street: "",
+  city: "",
+  region: "FL",
+  postal: "",
+  country: "United States",
+  note: "",
+};
+---
+
+<div class="w-full">
+  <button
+    id="test-dataurl"
+    class="px-6 py-2.5 rounded-[10px] w-full text-[14px] font-bold leading-4.5 cursor-pointer bg-primary text-white"
+    data-contact={JSON.stringify(contact)}>Save to contacts</button
+  >
+</div>
+
+<script type="module">
+  // contact JSON is embedded on the button's data-contact attribute
+  function buildVCard(c) {
+    const lines = [
+      "BEGIN:VCARD",
+      "VERSION:3.0",
+      `FN:${c.firstName} ${c.lastName}`,
+      `N:${c.lastName};${c.firstName};;;`,
+      c.org ? `ORG:${c.org}` : "",
+      c.title ? `TITLE:${c.title}` : "",
+      c.phone ? `TEL;TYPE=CELL,VOICE:${c.phone}` : "",
+      c.email ? `EMAIL;TYPE=INTERNET:${c.email}` : "",
+      c.url ? `URL:${c.url}` : "",
+      c.street || c.city
+        ? `ADR;TYPE=WORK:;;${c.street || ""};${c.city || ""};${c.region || ""};${c.postal || ""};${c.country || ""}`
+        : "",
+      c.note ? `NOTE:${c.note}` : "",
+      "END:VCARD",
+    ];
+    return lines.filter(Boolean).join("\r\n"); // usar CRLF para compatibilidad
+  }
+
+  function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  }
+
+  function isAndroid() {
+    return /Android/.test(navigator.userAgent);
+  }
+
+  // Simplified save flow: open a data: URL in the same tab (DataURL) to show vCard preview / Contacts UI
+  function openDataUrlForContact(c) {
+    const vcard = buildVCard(c || {});
+    const dataUrl =
+      "data:text/vcard;charset=utf-8," + encodeURIComponent(vcard);
+    // Navigate in the same tab to open preview
+    window.location.href = dataUrl;
+  }
+
+  // Install click handler for the single button
+  try {
+    const btn = document.getElementById("test-dataurl");
+    if (btn) {
+      btn.addEventListener("click", () => {
+        let c = null;
+        try {
+          c = btn.dataset.contact ? JSON.parse(btn.dataset.contact) : null;
+        } catch (err) {
+          console.error("Failed to parse contact dataset", err);
+        }
+        if (!c) return alert("No contact data");
+        openDataUrlForContact(c);
+      });
+    }
+  } catch (err) {
+    console.error("Failed to install dataurl click handler:", err);
+  }
+</script>

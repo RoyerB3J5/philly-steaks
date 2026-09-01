@@ -1,0 +1,139 @@
+---
+import Starts from "../../components/Starts";
+import LayoutSec from "../../layouts/LayoutSec.astro";
+import { emailAddress, facebookLink, instagramLink } from "../../constants/info";
+---
+
+<LayoutSec
+  title="Leave a Review | Prestige Growth Partners"
+  description="Share your feedback and experience with Prestige Growth Partners."
+  canonicalPath="/review"
+>
+  <img
+    src="/images/share-dark.svg"
+    alt="Compartir"
+    class="absolute top-6 right-6 w-6 h-6 cursor-pointer share-btn"
+  />
+  <section
+    class="w-full flex flex-col justify-center items-center h-full min-h-screen"
+  >
+    <div
+      class="w-full flex flex-col justify-center items-center gap-4 min-h-[70vh] px-6 py-5"
+    >
+      <div class="w-full flex flex-col justify-center items-center gap-5">
+        <a href="/">
+          <img
+            src="/images/logo.svg"
+            alt="Logo de Prestige Growth Partners"
+            width="180"
+            height="36"
+            class="cursor-pointer w-60 md:w-45 h-auto"
+          />
+        </a>
+        <div class="flex flex-col justify-center items-center">
+          <p
+            class="text-[12px] leading-[150%] max-w-[320px] text-center text-white font-normal"
+          >
+            We hope you loved the experience with <br /> Prestige Growth Partners
+            <br /> Your feedback means the world to us.
+          </p>
+        </div>
+      </div>
+      <hr class="w-[24.5px] h-0.75 bg-white" />
+      <div
+        class="w-full flex flex-col justify-center items-center gap-4 relative min-h-[120px] overflow-hidden"
+      >
+        <div
+          class="w-[350px] h-full overflow-hidden absolute bg-secondary rounded-[20px]"
+        >
+        </div>
+        <div
+          class="flex flex-col justify-center items-center z-10 py-4 rounded-[15px] overflow-hidden"
+        >
+          <p
+            class="text-[12px] font-normal text-center text-paragraph leading-[15px] w-[256px] mb-2"
+          >
+            Please tap the option that best reflects the quality of our service.
+          </p>
+          <Starts client:idle />
+        </div>
+      </div>
+    </div>
+
+    <section
+      class="flex flex-col justify-center items-center gap-3 w-full pt-8 sm:pt-20 bottom-3 relative"
+    >
+      <div class="flex justify-center items-center gap-3">
+        <a
+          href={`mailto:${emailAddress}`}
+          class="p-2 rounded-full flex items-center justify-center bg-primary shrink-0"
+        >
+          <img src="/images/mail-white.svg" alt="Mail" class="w-4 h-4" />
+        </a>
+        <a
+          href={facebookLink}
+          class="p-2 rounded-full flex items-center justify-center bg-primary shrink-0"
+        >
+          <img src="/images/facebook.svg" alt="Facebook" class="w-4 h-4" />
+        </a>
+        <a
+          href={instagramLink}
+          class="p-2 rounded-full flex items-center justify-center bg-primary shrink-0"
+        >
+          <img src="/images/instagram.svg" alt="Instagram" class="w-4 h-4" />
+        </a>
+      </div>
+      <div class="flex flex-col justify-center items-center gap-2.25">
+        <p class="text-[12px] font-normal leading-[140%] text-white">
+          Powered by
+        </p>
+        <a href="https://inkshapegroup.com/en/">
+          <img
+            src="/images/icons/inkshape.svg"
+            alt="Imagen del Footer"
+            width="3745"
+            height="996"
+            class="w-27.5 h-7.25 cursor-pointer"
+          />
+        </a>
+      </div>
+    </section>
+  </section>
+</LayoutSec>
+<script is:inline>
+  const shareButtons = document.querySelectorAll(".share-btn");
+  if (shareButtons && shareButtons.length) {
+    shareButtons.forEach((btn) => {
+      btn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        const shareData = {
+          title: "Prestige Growth Partners",
+          text: "Prestige Growth Partners - Discover how Prestige Growth Partners transforms your business with innovative marketing solutions and systems designed to accelerate your growth and maximize your impact.",
+          url: window.location.href,
+        };
+
+        if (navigator.share) {
+          try {
+            await navigator.share(shareData);
+            return;
+          } catch (err) {
+            // user cancelled or error; fall through to clipboard fallback
+            console.warn("share failed or cancelled", err);
+          }
+        }
+
+        // Fallback: copy URL to clipboard and notify user
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+          // small user feedback; prefer a non-blocking toast in the future
+          alert(
+            "Enlace copiado al portapapeles. Pega y comparte donde quieras.",
+          );
+        } catch (err) {
+          // last resort: open native share via mailto as a helper
+          console.warn("clipboard write failed", err);
+        }
+      });
+    });
+  }
+</script>

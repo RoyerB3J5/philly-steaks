@@ -1,0 +1,64 @@
+---
+import en from "../../i18n/en";
+import es from "../../i18n/es";
+import Layout from "../../layouts/Layout.astro";
+import BannerLoop from "../../sections/Main/BannerLoop.astro";
+import Craving from "../../sections/Main/Craving.astro";
+import Good from "../../sections/Main/Good.astro";
+import Halal from "../../sections/Main/Halal.astro";
+import Hero from "../../sections/Main/Hero.astro";
+import Steaks from "../../sections/Main/Steaks.astro";
+import type { Language } from "../../types/language.type";
+
+export function getStaticPaths() {
+  return [{ params: { lang: "es" } }, { params: { lang: "en" } }];
+}
+
+export const defaultRedirect = "/en";
+
+const lang = Astro.params.lang as Language;
+const translations = { es, en };
+const t = translations[lang];
+const seo = t.seo.main;
+---
+
+<Layout
+  lang={lang}
+  t={t}
+  title={seo.title}
+  description={seo.description}
+  keywords={seo.keywords}
+  canonicalPath="/"
+>
+  <Hero content={t.main.hero} />
+  <Steaks content={t.main.steaks} position="first" />
+  <Halal content={t.main.Halal} />
+  <Good content={t.main.Good} position="first" />
+  <section
+    class="w-full h-auto grid grid-cols-2 max-h-[720px]"
+    style="aspect-ratio: 1440/720;"
+  >
+    <div class="w-full h-full relative overflow-hidden">
+      <img
+        src="/images/main/gall-1.webp"
+        alt="Gallery Image 1"
+        width="880"
+        height="303"
+        class="h-full w-auto object-cover"
+      />
+    </div>
+    <div class="w-full h-full relative overflow-hidden">
+      <img
+        src="/images/main/gall-2.webp"
+        alt="Gallery Image 2"
+        width="880"
+        height="303"
+        class="h-full w-auto object-cover"
+      />
+    </div>
+  </section>
+  <Steaks content={t.main.difference} position="second" />
+  <BannerLoop content={t.main.banner} />
+  <Good content={t.main.options} position="second" />
+  <Craving content={t.main.craving} />
+</Layout>

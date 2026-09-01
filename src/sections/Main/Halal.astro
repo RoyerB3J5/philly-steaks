@@ -1,0 +1,21 @@
+---
+type Translations = typeof import("../../i18n/en").default;
+type HalalContent = Translations["main"]["Halal"];
+interface Props {
+  content: HalalContent;
+}
+const { content } = Astro.props as Props;
+---
+
+<section
+  class="w-full flex justify-center items-center bg-[#FDFAF6] border-y-2 border-secondary"
+>
+  <div
+    class="container-full flex flex-col justify-center items-center gap-10 py-20"
+  >
+    <h2 class="subtitle text-primary uppercase" set:html={content.title} />
+    <p class="paragraph text-primary max-w-[896px] text-center">
+      {content.description}
+    </p>
+  </div>
+</section>

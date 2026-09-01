@@ -1,0 +1,48 @@
+---
+import Button from "../../components/Button.astro";
+type Translations = typeof import("../../i18n/en").default;
+type HeroContent = Translations["main"]["hero"];
+interface Props {
+  content: HeroContent;
+}
+const { content } = Astro.props as Props;
+
+// Comprueba si la URL coincide con la raíz o los prefijos de idioma (/ , /es, /es/, /en, /en/)
+const pathname = Astro.url.pathname;
+---
+
+<section
+  class="w-full h-[calc(100vh-var(--header-height))] flex justify-center items-end overflow-hidden relative"
+>
+  <img
+    src={`/images${content.image}.webp`}
+    alt="Hero image"
+    class="w-full h-full object-cover absolute inset-0 z-0"
+    width="2100"
+    height="1164"
+    decoding="async"
+    loading="eager"
+  />
+  <div
+    class="container-full h-full flex flex-col justify-end items-center gap-4 relative z-5 pb-10"
+  >
+    <h1
+      class="title text-white uppercase text-center"
+      set:html={content.title}
+    />
+    <div class="flex justify-center items-center gap-4">
+      <Button
+        text={content.buttons[0].label}
+        href={content.buttons[0].href}
+        textClass="uppercase"
+        extraBtnClass="bg-secondary"
+      />
+      <Button
+        text={content?.buttons[1].label}
+        href={content?.buttons[1].href}
+        textClass=" uppercase"
+        extraBtnClass="bg-primary"
+      />
+    </div>
+  </div>
+</section>

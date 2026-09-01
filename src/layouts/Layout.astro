@@ -1,0 +1,101 @@
+---
+import "../styles/global.css";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import Chatbot from "../components/Chatbot.astro";
+import SEOHead from "../components/SEOHead.astro";
+
+type Translations = typeof import("../i18n/en").default;
+
+export interface Props {
+  lang: string;
+  t?: Translations;
+  showLoader?: boolean;
+  title?: string;
+  description?: string;
+  keywords?: string;
+  image?: string;
+  canonicalPath?: string;
+  noindex?: boolean;
+  type?: string;
+  structuredData?: object | object[];
+}
+
+const {
+  lang,
+  t,
+  showLoader = true,
+  title,
+  description,
+  keywords,
+  image,
+  canonicalPath,
+  noindex,
+  type,
+  structuredData,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang} class="overflow-x-clip">
+  <head>
+    <SEOHead
+      lang={lang}
+      title={title}
+      description={description}
+      keywords={keywords}
+      image={image}
+      canonicalPath={canonicalPath}
+      noindex={noindex}
+      type={type}
+      structuredData={structuredData}
+    />
+  </head>
+
+  <body
+    class="font-family antialiased overflow-x-clip bg-white flex flex-col justify-center items-center w-full"
+    data-show-loader={showLoader ? "true" : "false"}
+  >
+    <Header content={t?.header} />
+    <main class="flex flex-col w-full items-center pt-(--header-height)">
+      <slot />
+    </main>
+    <Footer content={t?.footer} />
+    {
+      /*
+    <Chatbot /> */
+    }
+  </body>
+</html>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const animationElements = document.querySelectorAll(
+      ".fade-up-a, .fade-down-a, .fade-left-a, .fade-right-a, .progress-reveal, .bars-icon",
+    );
+
+    const animationObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            // Fuerza un reflow para que el navegador "vea" el estado inicial
+            // antes de aplicar .active; si no, salta directo al estado final.
+            el.getBoundingClientRect();
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                el.classList.add("active");
+              });
+            });
+            animationObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3 },
+    );
+
+    animationElements.forEach((element) => {
+      animationObserver.observe(element);
+    });
+  });
+</script>

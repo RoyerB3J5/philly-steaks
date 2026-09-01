@@ -1,0 +1,14 @@
+{
+  "files.associations": {
+    "*.svg": "xml"
+  },
+  "workbench.editorAssociations": {
+    "*.svg": "default"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "prettier.documentSelectors": ["**/*.astro"],
+  "[astro]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  }
+}

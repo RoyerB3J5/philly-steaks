@@ -1,0 +1,69 @@
+---
+interface Props {
+  /** Texto del botón. Si no se pasa, se renderiza el slot */
+  text?: string;
+  /** Si se pasa, el componente renderiza un enlace `<a>` en lugar de `<button>` */
+  href?: string;
+  /** target para el enlace (ej. `_blank`) */
+  target?: string;
+  /** rel para el enlace; por defecto se aplica `noopener noreferrer` cuando target === '_blank' */
+  rel?: string;
+  /** Clase base para el botón (layout, paddings, rounded, etc) */
+  baseBtnClass?: string;
+  colorText?: string;
+  /** Clases adicionales que el usuario quiera aplicar (border, bg color, etc) */
+  extraBtnClass?: string;
+  /** Clase base para el texto */
+  baseTextClass?: string;
+
+  textClass?: string;
+  width?: string;
+  /** Nombre del icono (se busca en /images/{icon}.svg) */
+  icon?: string;
+}
+
+const {
+  text = "",
+  baseBtnClass = "flex justify-center items-center cursor-pointer hover:-translate-y-[2px] transition-all duration-300 ease-in-out z-[10] hover:scale-[1.02] py-3.5 rounded-full  border-[2px] border-black",
+  extraBtnClass = "",
+  baseTextClass = "text-[16px] font-paragraph font-bold  leading-[100%] text-center",
+  textClass = "",
+  colorText = "text-white",
+  href,
+  target,
+  width='w-[144px]',
+  rel,
+  icon,
+} = Astro.props as Props;
+
+// Normalizar hrefs comunes: si por error tiene una barra inicial antes
+// de un esquema `tel:` o `mailto:` la removemos para evitar rutas internas
+const normalizedHref =
+  typeof href === "string" && /^\/(tel:|mailto:)/.test(href)
+    ? href.replace(/^\/+/, "")
+    : href;
+
+// No id necesario: usamos atributos data- para el script cliente
+
+// Construir clases finales
+const buttonClasses =
+  `${baseBtnClass} ${icon ? "gap-[10px]" : ""} ${extraBtnClass} ${colorText} ${width}`.trim();
+const paragraphClasses = `${baseTextClass} ${textClass}`.trim();
+---
+
+{
+  href ? (
+    <a
+      href={normalizedHref}
+      class={buttonClasses}
+      target={target}
+      rel={rel ?? (target === "_blank" ? "noopener noreferrer" : undefined)}
+    >
+      {text ? <p class={paragraphClasses}>{text}</p> : <slot />}
+    </a>
+  ) : (
+    <button type="button" class={buttonClasses}>
+      {text ? <p class={paragraphClasses}>{text}</p> : <slot />}
+    </button>
+  )
+}

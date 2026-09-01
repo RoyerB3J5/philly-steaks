@@ -1,0 +1,67 @@
+---
+import Button from "../../components/Button.astro";
+
+type Translations = typeof import("../../i18n/en").default;
+type BannerContent = Translations["main"]["banner"];
+interface Props {
+  content: BannerContent;
+}
+const { content } = Astro.props as Props;
+
+const groupItems = Array.from({ length: 5 });
+---
+
+<section class="group relative w-full overflow-hidden bg-secondary py-4">
+  <div
+    class="flex w-max animate-marquee-left group-hover:[animation-play-state:paused]"
+  >
+    <!-- Bloque Original -->
+    <div class="flex items-center gap-8 px-4 shrink-0">
+      {
+        groupItems.map(() => (
+          <div class="flex items-center gap-8">
+            <h2 class="title text-white uppercase">{content.title}</h2>
+            <Button
+              text={content.button.label}
+              href={content.button.href}
+              textClass=" uppercase"
+              extraBtnClass="bg-primary"
+            />
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Bloque Copia Idéntica -->
+    <div class="flex items-center gap-8 px-4 shrink-0">
+      {
+        groupItems.map(() => (
+          <div class="flex items-center gap-8">
+            <h2 class="title text-white uppercase">{content.title}</h2>
+            <Button
+              text={content.button.label}
+              href={content.button.href}
+              textClass=" uppercase"
+              extraBtnClass="bg-primary"
+            />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .animate-marquee-left {
+    animation: marquee-left 45s linear infinite;
+  }
+
+  @keyframes marquee-left {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+</style>

@@ -1,0 +1,11 @@
+---
+const { url, label } = Astro.props;
+// Generación en server/build: toDataURL devuelve un data:image/png;base64,...
+
+---
+<div class="flex flex-col justify-center items-center gap-4">
+  <p class="text-[16px] font-bold leading-[140%] text-white">{label}</p>
+  <div class="w-[168px] h-[168px] rounded-[5px] border-[3px] border-accent flex items-center justify-center overflow-hidden bg-white">
+    <img src={url} alt={`QR - ${label}`} width="150" height="150" class="block"/>
+  </div>
+</div>

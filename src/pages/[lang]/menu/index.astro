@@ -1,0 +1,35 @@
+---
+import en from "../../../i18n/en";
+import es from "../../../i18n/es";
+import Layout from "../../../layouts/Layout.astro";
+import BannerLoop from "../../../sections/Main/BannerLoop.astro";
+import Craving from "../../../sections/Main/Craving.astro";
+import Hero from "../../../sections/Main/Hero.astro";
+import Steaks from "../../../sections/Main/Steaks.astro";
+import type { Language } from "../../../types/language.type";
+
+export function getStaticPaths() {
+  return [{ params: { lang: "es" } }, { params: { lang: "en" } }];
+}
+
+export const defaultRedirect = "/en";
+
+const lang = Astro.params.lang as Language;
+const translations = { es, en };
+const t = translations[lang];
+const seo = t.seo.menu;
+---
+
+<Layout
+  lang={lang}
+  t={t}
+  title={seo.title}
+  description={seo.description}
+  keywords={seo.keywords}
+  canonicalPath="/menu"
+>
+  <Hero content={t.menu.hero} />
+  <Steaks content={t.menu.difference} position="third" />
+  <BannerLoop content={t.main.banner} />
+  <Craving content={t.main.craving} />
+</Layout>

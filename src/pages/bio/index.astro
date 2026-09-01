@@ -1,0 +1,294 @@
+---
+import QRCard from "../../components/QRCard.astro";
+import SocialMedia from "../../components/SocialMedia.astro";
+import LayoutSec from "../../layouts/LayoutSec.astro";
+import SaveContact from "../../components/SaveContact.astro";
+const content = [
+  {
+    title: "Instagram",
+    link: "https://www.instagram.com/prestigegrowthpartnerscorp/?hl=es",
+  },
+  {
+    title: "Facebook",
+    link: "https://www.facebook.com/profile.php?id=61593408904345&sk=reviews",
+  },
+  {
+    title: "Website",
+    link: "/",
+  },
+  {
+    title: "About Us",
+    link: "/en/about-us",
+  },
+  {
+    title: "Success Stories",
+    link: "/en/success-stories",
+  },
+];
+---
+
+<LayoutSec
+  title="Link in Bio | Prestige Growth Partners"
+  description="Connect with Prestige Growth Partners. Access $150K to $1M in business funding, schedule a consultation, or follow our social channels."
+  canonicalPath="/bio"
+>
+  <img
+    src="/images/share-dark.svg"
+    alt="Compartir"
+    class="absolute top-6 right-6 w-6 h-6 cursor-pointer share-btn"
+  />
+  <section
+    class="w-full flex flex-col justify-center items-center gap-8 py-18 px-6 max-w-125 z-10 min-h-screen"
+  >
+    <div class="w-full flex flex-col justify-center items-center gap-5.25">
+      <a href="/">
+        <img
+          src="/images/logo.svg"
+          alt="Logo de Prestige Growth Partners"
+          width="180"
+          height="36"
+          class="cursor-pointer w-60 md:w-45 h-auto"
+        />
+      </a>
+      <div class="flex flex-col justify-center items-center gap-3">
+        <h1 class="text-[16px] leading-[175%] font-bold text-white">
+          @PrestigeGrowthPartners
+        </h1>
+        <div
+          class="flex justify-center items-center gap-0.75 mt-0.5 mb-2.75 font-paragraph"
+        >
+          <img src="/images/pin-map.svg" alt="Ubicación" class="w-3 h-3" />
+          <p
+            class="text-[10.5px] leading-5.5 font-medium text-white font-paragraph"
+          >
+            Florida, USA
+          </p>
+        </div>
+        <p
+          class="text-[12px] leading-[150%] text-center font-medium text-white font-paragraph"
+        >
+          Discover how Prestige Growth Partners transforms your business with
+          innovative marketing solutions and systems designed to accelerate your
+          growth and maximize your impact.
+        </p>
+      </div>
+      <SocialMedia />
+    </div>
+    <div class="w-full flex flex-col justify-center items-center gap-3">
+      {
+        content.map((item) => (
+          <a class="w-full" href={item.link}>
+            <div
+              class={`w-full  py-2.5 h-11.75 rounded-xl text-paragraph flex justify-center items-center transition-all duration-300 ease-in-out  bg-secondary hover:bg-accent/90 cursor-pointer`}
+            >
+              <p class="text-[14px] font-bold leading-[140%]">{item.title}</p>
+            </div>
+          </a>
+        ))
+      }
+      <button
+        class="w-full bg-secondary hover:bg-accent/90 transition-all duration-300 ease-in-out py-2.5 h-11.75 rounded-xl text-paragraph flex justify-center items-center text-[14px] font-bold leading-[140%] cursor-pointer animate-shake"
+        id="open-contact-panel"
+      >
+        Save Contact
+      </button>
+    </div>
+    <div class="flex flex-col justify-center items-center gap-2.25 mt-10">
+      <p class="text-[14px] font-normal leading-[140%] text-white">
+        Powered by
+      </p>
+      <a href="
+        https://inkshapegroup.com
+        ">
+        <img
+          src="/images/icons/inkshape.svg"
+          alt="Imagen del Footer"
+          width="3745"
+          height="996"
+          class="w-27.5 h-7.25 cursor-pointer"
+        />
+      </a>
+    </div>
+  </section>
+  <div
+    class="fixed bg-black/30 w-screen h-screen top-0 left-0 flex items-end"
+    style="z-index:9999; pointer-events: none;"
+    id="contact-panel"
+  >
+    <div
+      id="contact-panel-inner"
+      class="w-full h-[80%] rounded-t-[20px] bg-white relative flex flex-col justify-start items-center gap-8 py-6 transform translate-y-full transition-transform duration-300 ease-in-out"
+      style="z-index:10000; pointer-events: auto;"
+    >
+      <img
+        src="/images/share.svg"
+        alt="Compartir"
+        class="absolute top-5 left-5 w-6 h-6 cursor-pointer share-btn"
+      />
+      <img
+        src="/images/equis-black.svg"
+        alt="Cerrar panel"
+        class="absolute top-5 right-5 w-5 h-5 cursor-pointer"
+        id="close-panel"
+      />
+      <p class="text-[16px]">Prestige Growth Partners</p>
+      <div class="flex flex-col justify-center items-start gap-8 mt-3">
+        <p class="text-[18px] font-bold mb-5 w-full text-center">
+          Prestige Growth Partners - The Ultimate Solution
+        </p>
+        <div
+          class="flex justify-center items-center gap-5 text-[16px] font-medium"
+        >
+          <p class="font-bold text-[22px]">@</p>
+          <a
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=admin@prestigegrowthpartners.com"
+            >admin@prestigegrowthpartners.com</a
+          >
+        </div>
+        <div
+          class="flex justify-center items-center gap-5 text-[16px] font-medium"
+        >
+          <img src="/images/phone-3.svg" alt="Telefono" class="w-6 h-6" />
+          <a href="tel:+17863386177">786-338-6177</a>
+        </div>
+        <div
+          class="flex justify-center items-center gap-5 text-[16px] font-medium"
+        >
+          <img src="/images/map-1.svg" alt="Ubicación" class="w-6 h-6" />
+          <a>Florida, USA</a>
+        </div>
+        <div
+          class="flex justify-center items-center gap-5 text-[16px] font-medium"
+        >
+          <img src="/images/web.svg" alt="Website" class="w-6 h-6" />
+          <a href="https://www.prestigegrowthpartners.com/"
+            >prestigegrowthpartners.com</a
+          >
+        </div>
+        <SaveContact />
+      </div>
+    </div>
+  </div>
+</LayoutSec>
+<script is:inline>
+  const openContactPanelButton = document.getElementById("open-contact-panel");
+  const contactPanel = document.getElementById("contact-panel");
+  const contactPanelInner = document.getElementById("contact-panel-inner");
+  const closePanelButton = document.getElementById("close-panel");
+
+  // guard: si no existen elementos, no hacemos nada
+  if (!openContactPanelButton || !contactPanel || !contactPanelInner) {
+    // nothing to do
+  } else {
+    const TRANSITION_MS = 350; // slightly larger than duration-300
+
+    let scrollY = 0;
+    let previousBodyStyles = {};
+    function showPanel() {
+      contactPanel.style.display = "flex";
+      contactPanel.style.pointerEvents = "auto";
+      // lock scroll by fixing body in place (works better on mobile)
+      scrollY = window.scrollY || window.pageYOffset || 0;
+      previousBodyStyles = {
+        position: document.body.style.position || "",
+        top: document.body.style.top || "",
+        left: document.body.style.left || "",
+        right: document.body.style.right || "",
+        width: document.body.style.width || "",
+        overflow: document.body.style.overflow || "",
+      };
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.width = "100%";
+      // force a reflow so the transition runs
+      void contactPanelInner.offsetWidth;
+      contactPanelInner.classList.remove("translate-y-full");
+      contactPanelInner.classList.add("translate-y-0");
+    }
+
+    function completeHide() {
+      contactPanel.style.display = "none";
+      contactPanel.style.pointerEvents = "none";
+      // restore previous body styles and scroll position
+      document.body.style.position = previousBodyStyles.position || "";
+      document.body.style.top = previousBodyStyles.top || "";
+      document.body.style.left = previousBodyStyles.left || "";
+      document.body.style.right = previousBodyStyles.right || "";
+      document.body.style.width = previousBodyStyles.width || "";
+      document.body.style.overflow = previousBodyStyles.overflow || "";
+      window.scrollTo(0, scrollY);
+    }
+
+    function hidePanel() {
+      // slide down
+      contactPanelInner.classList.remove("translate-y-0");
+      contactPanelInner.classList.add("translate-y-full");
+
+      // Wait for transitionend, but also use a timeout fallback
+      let done = false;
+      function onTransition() {
+        if (done) return;
+        done = true;
+        completeHide();
+        contactPanelInner.removeEventListener("transitionend", onTransition);
+      }
+
+      contactPanelInner.addEventListener("transitionend", onTransition);
+      // fallback in case transitionend doesn't fire
+      setTimeout(() => onTransition(), TRANSITION_MS + 100);
+    }
+
+    openContactPanelButton.addEventListener("click", showPanel);
+
+    // Share buttons: open native share sheet when supported
+    const shareButtons = document.querySelectorAll(".share-btn");
+    if (shareButtons && shareButtons.length) {
+      shareButtons.forEach((btn) => {
+        btn.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          const shareData = {
+            title: "Prestige Growth Partners",
+            text: "Prestige Growth Partners - Discover how Prestige Growth Partners transforms your business with innovative marketing solutions and systems designed to accelerate your growth and maximize your impact.",
+            url: window.location.href,
+          };
+
+          if (navigator.share) {
+            try {
+              await navigator.share(shareData);
+              return;
+            } catch (err) {
+              // user cancelled or error; fall through to clipboard fallback
+              console.warn("share failed or cancelled", err);
+            }
+          }
+
+          // Fallback: copy URL to clipboard and notify user
+          try {
+            await navigator.clipboard.writeText(window.location.href);
+            // small user feedback; prefer a non-blocking toast in the future
+            alert(
+              "Enlace copiado al portapapeles. Pega y comparte donde quieras.",
+            );
+          } catch (err) {
+            // last resort: open native share via mailto as a helper
+            console.warn("clipboard write failed", err);
+          }
+        });
+      });
+    }
+
+    // close button (may be null if removed inside component)
+    if (closePanelButton) closePanelButton.addEventListener("click", hidePanel);
+
+    // allow clicking the backdrop (outside inner panel) to close
+    contactPanel.addEventListener("click", (e) => {
+      if (e.target === contactPanel) hidePanel();
+    });
+
+    // Inicialmente ocultar el panel
+    contactPanel.style.display = "none";
+    contactPanel.style.pointerEvents = "none";
+  }
+</script>

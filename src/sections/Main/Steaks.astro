@@ -1,0 +1,125 @@
+---
+import Button from "../../components/Button.astro";
+type Translations = typeof import("../../i18n/en").default;
+type SteaksContent = Translations["main"]["steaks"];
+interface Props {
+  content: SteaksContent;
+  position: string;
+}
+interface ImageItem {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  class: string;
+}
+const { content, position } = Astro.props as Props;
+const IMAGES_MAP: Record<string, ImageItem[]> = {
+  first: [
+    {
+      src: "/images/tomate.webp",
+      alt: "Tomate",
+      width: 700,
+      height: 709,
+      class: "w-[156px] h-auto absolute top-[3%] left-[5%] rotate-[90deg]",
+    },
+    {
+      src: "/images/lechuga.webp",
+      alt: "Lechuga",
+      width: 227,
+      height: 492,
+      class: "w-[181px] h-auto absolute bottom-0 translate-y-1/2 right-0",
+    },
+  ],
+  second: [
+    {
+      src: "/images/papa.webp",
+      alt: "Papa",
+      width: 700,
+      height: 837,
+      class: "w-[140px] h-auto absolute top-[3%] left-[3%] rotate-[20deg]",
+    },
+    {
+      src: "/images/tomate-2.webp",
+      alt: "Tomate 2",
+      width: 700,
+      height: 683,
+      class: "w-[146px] h-auto absolute bottom-[3%] right-[2%]",
+    },
+  ],
+  third: [
+    {
+      src: "/images/papa.webp",
+      alt: "Papa",
+      width: 700,
+      height: 837,
+      class: "w-[140px] h-auto absolute top-[3%] left-[3%] rotate-[20deg]",
+    },
+    {
+      src: "/images/tomate-2.webp",
+      alt: "Tomate 2",
+      width: 700,
+      height: 683,
+      class: "w-[146px] h-auto absolute bottom-[3%] right-[2%]",
+    },
+  ],
+};
+const currentImages = IMAGES_MAP[position];
+---
+
+<section class="w-full flex bg-white justify-center items-center relative z-5">
+  {currentImages.map((img) => <img {...img} />)}
+
+  <div
+    class="container-full flex flex-col justify-center items-center gap-12 py-30"
+  >
+    <div class="flex flex-col justify-center items-center gap-4">
+      <h2 class="subtitle text-primary uppercase">{content.title}</h2>
+      <p class="subtitle-sm uppercase text-secondary">{content.tag}</p>
+    </div>
+    <ul class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-20">
+      {
+        content.plates.map((plate) => (
+          <li class="flex flex-col justify-start items-center text-center">
+            <div
+              class="w-full h-auto relative overflow-hidden"
+              style="aspect-ratio: 326/226"
+            >
+              <img
+                src={`/images/main/${plate.image}.webp`}
+                alt={plate.title}
+                width="700"
+                height="700"
+                decoding="async"
+                loading="lazy"
+                class="w-full h-full object-cover absolute inset-0 object-[50%_70%]"
+              />
+            </div>
+            <div class="flex flex-col justify-center items-center gap-2 text-primary">
+              <h3 class="subtitle-sm uppercase">{plate.title}</h3>
+              <p class="paragraph text-center">{plate.despcription}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="flex justify-center items-center gap-4">
+      <Button
+        text={content.buttons[0].label}
+        href={content.buttons[0].href}
+        textClass="uppercase"
+        extraBtnClass={`bg-secondary ${position === "third" ? "w-[215px]" : ""}`}
+      />
+      {
+        content.buttons[1] && (
+          <Button
+            text={content?.buttons[1].label}
+            href={content?.buttons[1].href}
+            textClass=" uppercase"
+            extraBtnClass="bg-primary"
+          />
+        )
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,166 @@
+---
+import {
+  facebookLink,
+  instagramLink,
+  emailAddress,
+  phoneNumber,
+} from "../constants/info";
+
+export interface Props {
+  lang?: string;
+  title?: string;
+  description?: string;
+  keywords?: string;
+  image?: string;
+  canonicalPath?: string;
+  noindex?: boolean;
+  type?: string;
+  structuredData?: object | object[];
+}
+
+const SITE_URL = "https://www.prestigegrowthpartners.com";
+const SITE_NAME = "Orlando Philly Steak";
+
+const {
+  lang = "en",
+  title = "Orlando's Philly Steak | Gyro & Wings",
+  description = "Access $150K to $1M+ in business funding. Prestige Growth Partners optimizes your business profile and connects you with top lenders for sustainable growth.",
+  keywords = "business funding, business credit, capital acquisition, commercial loans, line of credit, lender ready system, business consulting, prestige growth partners",
+  image = "/images/home/hero.webp",
+  canonicalPath = "",
+  noindex = false,
+  type = "website",
+  structuredData,
+} = Astro.props;
+
+// Normalize path format
+const cleanPath = canonicalPath.startsWith("/")
+  ? canonicalPath
+  : `/${canonicalPath}`;
+const formattedPath = cleanPath === "/" ? "" : cleanPath;
+
+// Formatted URLs for SEO & Hreflang
+const currentCanonical = `${SITE_URL}/${lang}${formattedPath}`;
+const enUrl = `${SITE_URL}/en${formattedPath}`;
+const esUrl = `${SITE_URL}/es${formattedPath}`;
+const defaultUrl = enUrl;
+
+// Absolute image URL
+const absoluteImage = image.startsWith("http")
+  ? image
+  : `${SITE_URL}${image.startsWith("/") ? "" : "/"}${image}`;
+
+// Base FinancialService / Organization Schema
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "FinancialService",
+  "@id": `${SITE_URL}/#organization`,
+  name: SITE_NAME,
+  legalName: SITE_NAME,
+  url: SITE_URL,
+  logo: `${SITE_URL}/favicon.svg`,
+  image: absoluteImage,
+  description: description,
+  telephone: phoneNumber,
+  email: emailAddress,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Orlando",
+    addressRegion: "FL",
+    addressCountry: "US",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 28.5383,
+    longitude: -81.3792,
+  },
+  sameAs: [instagramLink, facebookLink].filter(Boolean),
+  priceRange: "$$$",
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${SITE_URL}/#website`,
+  url: SITE_URL,
+  name: SITE_NAME,
+  publisher: {
+    "@id": `${SITE_URL}/#organization`,
+  },
+  inLanguage: [
+    { "@type": "Language", name: "English", alternateName: "en" },
+    { "@type": "Language", name: "Spanish", alternateName: "es" },
+  ],
+};
+
+// Custom schemas passed via props
+const customSchemas = structuredData
+  ? Array.isArray(structuredData)
+    ? structuredData
+    : [structuredData]
+  : [];
+
+const allSchemas = [organizationSchema, websiteSchema, ...customSchemas];
+---
+
+<!-- Basic Meta Tags -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="keywords" content={keywords} />
+<meta name="author" content={SITE_NAME} />
+<meta
+  name="robots"
+  content={noindex
+    ? "noindex, nofollow"
+    : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}
+/>
+
+<!-- Location Meta Tags -->
+<meta name="geo.region" content="US-FL" />
+<meta name="geo.placename" content="Orlando" />
+<meta name="geo.position" content="28.5383;-81.3792" />
+<meta name="ICBM" content="28.5383, -81.3792" />
+
+<!-- Links & Preconnect -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://widgets.leadconnectorhq.com" />
+<link rel="dns-prefetch" href="https://widgets.leadconnectorhq.com" />
+<link rel="preconnect" href="https://link.inkshapecrm.com" />
+<link rel="dns-prefetch" href="https://link.inkshapecrm.com" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+<!-- Canonical & Hreflang -->
+<link rel="canonical" href={currentCanonical} />
+<link rel="alternate" hreflang="en" href={enUrl} />
+<link rel="alternate" hreflang="es" href={esUrl} />
+<link rel="alternate" hreflang="x-default" href={defaultUrl} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={currentCanonical} />
+<meta property="og:image" content={absoluteImage} />
+<meta property="og:locale" content={lang === "es" ? "es_US" : "en_US"} />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@PrestigeGP" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={absoluteImage} />
+
+<meta name="generator" content={Astro.generator} />
+
+<!-- Structured Data / JSON-LD -->
+{
+  allSchemas.map((schema) => (
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  ))
+}
