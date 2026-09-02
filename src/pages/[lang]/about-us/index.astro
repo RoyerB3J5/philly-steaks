@@ -2,6 +2,7 @@
 import en from "../../../i18n/en";
 import es from "../../../i18n/es";
 import Layout from "../../../layouts/Layout.astro";
+import HeroAbout from "../../../sections/HeroAbout.astro";
 import BannerLoop from "../../../sections/Main/BannerLoop.astro";
 import Craving from "../../../sections/Main/Craving.astro";
 import Good from "../../../sections/Main/Good.astro";
@@ -27,8 +28,9 @@ const seo = t.seo.aboutUs;
   keywords={seo.keywords}
   canonicalPath="/about-us"
 >
+  <HeroAbout content={t.aboutUs.hero} />
   <Good content={t.main.Good} position="third" />
   <BannerLoop content={t.main.banner} />
-  <Good content={t.main.options} position="second" />
+  <Good content={t.main.options} position="four" />
   <Craving content={t.main.craving} />
 </Layout>

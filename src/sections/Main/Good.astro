@@ -41,6 +41,22 @@ const IMAGES_MAP: Record<string, ImageItem[]> = {
   ],
   third: [
     {
+      src: "/images/papa.webp",
+      alt: "Papa",
+      width: 700,
+      height: 837,
+      class: "w-[140px] h-auto absolute top-[3%] left-[2%] rotate-[20deg]",
+    },
+    {
+      src: "/images/lechuga.webp",
+      alt: "Lechuga",
+      width: 227,
+      height: 492,
+      class: "w-[181px] h-auto absolute top-0 -translate-y-1/2 right-0",
+    },
+  ],
+  four: [
+    {
       src: "/images/hoja.webp",
       alt: "Hoja",
       width: 151,
@@ -52,14 +68,14 @@ const IMAGES_MAP: Record<string, ImageItem[]> = {
       alt: "Hoja 2",
       width: 306,
       height: 390,
-      class: "w-[180px] h-auto absolute bottom-[0%] left-[0] scale-x-[-1]",
+      class: "w-[180px] h-auto absolute -bottom-[20%] left-[0] scale-x-[-1]",
     },
   ],
 };
 const currentImages = IMAGES_MAP[position];
 ---
 
-<section class="w-full flex justify-center items-center bg-white relative">
+<section class="w-full flex justify-center items-center bg-white relative z-5">
   {currentImages.map((img) => <img {...img} />)}
 
   <div
@@ -80,7 +96,7 @@ const currentImages = IMAGES_MAP[position];
               class="w-[147px] h-auto "
             />
             <div class="flex flex-col justify-center items-center gap-2 text-center text-primary">
-              <h3 class="subtitle-sm ">{pro.title}</h3>
+              <h3 class="subtitle-sm uppercase">{pro.title}</h3>
               <p class="paragraph text-center">{pro.description}</p>
             </div>
           </li>

@@ -2,6 +2,7 @@
 import en from "../../../i18n/en";
 import es from "../../../i18n/es";
 import Layout from "../../../layouts/Layout.astro";
+import BlogGrid from "../../../sections/BlogGrid.astro";
 import BannerLoop from "../../../sections/Main/BannerLoop.astro";
 import Craving from "../../../sections/Main/Craving.astro";
 import Good from "../../../sections/Main/Good.astro";
@@ -17,6 +18,32 @@ const lang = Astro.params.lang as Language;
 const translations = { es, en };
 const t = translations[lang];
 const seo = t.seo.blog;
+const posts = [
+  {
+    image: "/images/blog/food1.webp",
+    date: "13 August 2023",
+    title: "Exploring the Delicious Fusion: Gyro & Fries -...",
+    description:
+      "When it comes to culinary delights, Orlando, Florida, is undoubtedly a melting pot of flavors and cultures. With its vibrant food scene, the city constantly surprises and delights food enthusiasts with...",
+    id: "1",
+  },
+  {
+    image: "/images/blog/food2.webp",
+    date: "13 August 2023",
+    title: "A Culinary Oasis Near Disney: Unveiling the...",
+    description:
+      "In the heart of the enchanting city of Orlando, where dreams and magic intertwine, lies a halal food oasis that beckons to food enthusiasts and adventurers alike. A stone's throw away...",
+    id: "2",
+  },
+  {
+    image: "/images/blog/food3.webp",
+    date: "02 November 2022",
+    title: "Start your day with Orlando's Philly steak...",
+    description:
+      "The best halal breakfast is available in Orlando, Florida, close to the Disney World Resort. Here, at a casual breakfast place close to Disney Theme Parks, there are simply too many deserving selections to choose from. Breakfast from ...",
+    id: "3",
+  },
+];
 ---
 
 <Layout
@@ -27,7 +54,8 @@ const seo = t.seo.blog;
   keywords={seo.keywords}
   canonicalPath="/blog"
 >
+  <BlogGrid content={t.blog.orlando} items={posts} />
   <BannerLoop content={t.main.banner} />
-  <Good content={t.main.options} position="second" />
+  <Good content={t.main.options} position="four" />
   <Craving content={t.main.craving} />
 </Layout>

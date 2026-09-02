@@ -1,0 +1,58 @@
+---
+type Translations = typeof import("../i18n/en").default;
+type HeroContent = Translations["blog"]["orlando"];
+interface Props {
+  content: HeroContent;
+  items: {
+    image: string;
+    title: string;
+    description: string;
+    id: string;
+    date: string;
+  }[];
+}
+const { content, items } = Astro.props as Props;
+---
+
+<section class="w-full flex flex-col justify-center items-center bg-white">
+  <div
+    class="container-full flex flex-col justify-center items-center py-30 gap-12"
+  >
+    <div class="flex flex-col justify-center items-center gap-12">
+      <h1 set:html={content.title} class="title text-center" />
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7.5">
+      {
+        items.map((item) => (
+          <div class="flex flex-col justify-start items-start gap-4">
+            <div
+              class="w-full h-auto relative overflow-hidden rounded-2xl"
+              style="aspect-ratio: 438.6/251;"
+            >
+              <img
+                src={item.image}
+                alt={item.title}
+                width="950"
+                height="650"
+                decoding="async"
+                loading="lazy"
+                class="w-full h-full object-center object-cover absolute inset-0"
+              />
+            </div>
+            <p class="text-[13px] font-medium leading-[150%] text-[#717171]">
+              {item.date}
+            </p>
+            <h2 class="subtitle-sm text-black">{item.title}</h2>
+            <p class="paragraph">{item.description}</p>
+            <a
+              class="w-[144px] py-3 border-[1.5px] rounded-full border-[#E6E6E6] hover:bg-accent transition-all duration-300 ease-in-out paragraph-bold flex justify-center items-center uppercase "
+              href="#"
+            >
+              Read More
+            </a>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

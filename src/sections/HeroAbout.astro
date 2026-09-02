@@ -1,0 +1,45 @@
+---
+type Translations = typeof import("../i18n/en").default;
+type HeroContent = Translations["aboutUs"]["hero"];
+interface Props {
+  content: HeroContent;
+}
+const { content } = Astro.props as Props;
+---
+
+<section
+  class="w-full h-[calc(100vh-var(--header-height))] flex flex-col justify-center items-center overflow-hidden relative"
+>
+  <div class="flex justify-center items-center h-full overflow-hidden">
+    <img
+      src="/images/hero-about.webp"
+      class="w-full h-full object-cover absolute inset-0 z-0"
+      alt="Hero de About"
+      width="1440"
+      height="496"
+      decoding="async"
+      loading="lazy"
+    />
+    <h1 class="title relative z-5 text-white uppercase">{content.title}</h1>
+  </div>
+  <div
+    class="border-y-2 border-secondary flex flex-col justify-center items-center text-black relative bg-[#FDFAF6] w-full"
+  >
+    <img
+      src="/images/tomate.webp"
+      alt=""
+      "Tomate"
+      width="700"
+      height="709"
+      class="w-[156px] h-auto absolute top-[3%] left-[2%] rotate-[90deg]"
+    />
+    <div
+      class="container-full flex flex-col justify-center items-center gap-10 py-15 3xl:py-20"
+    >
+      <h2 set:html={content.Halal.title} class="subtitle uppercase" />
+      <p class="paragraph text-center max-w-[896px]">
+        {content.Halal.description}
+      </p>
+    </div>
+  </div>
+</section>

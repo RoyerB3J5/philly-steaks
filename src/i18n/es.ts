@@ -275,7 +275,7 @@ export default {
     hero: {
       title: "about us",
       Halal: {
-        title: 'Halal food near <span class="text-accent"> Disney!</span>',
+        title: 'Halal food near <span class="text-secondary"> Disney!</span>',
         description:
           "Enjoy delicious and healthy Halal food after your Disney adventure. Orlando’s Philly Steak & Gyro is open daily from 11:00 AM to 10:30 PM, offering fresh, affordable meals every day of the week. Relax and enjoy the parks knowing quality food is nearby. Save time by calling ahead and ordering your favorite dishes from our menu.",
       },
@@ -284,48 +284,13 @@ export default {
   blog: {
     orlando: {
       title:
-        'Blog of <br/> <span class="text-secondary"> Orlando’s Philly Steak</span>',
-      posts: [
-        {
-          image: "food1",
-          date: "13 August 2023",
-          title: "Exploring the Delicious Fusion: Gyro & Fries -...",
-          description:
-            "When it comes to culinary delights, Orlando, Florida, is undoubtedly a melting pot of flavors and cultures. With its vibrant food scene, the city constantly surprises and delights food enthusiasts with...",
-          button: {
-            label: "read more",
-            href: "#",
-          },
-        },
-        {
-          image: "food2",
-          date: "13 August 2023",
-          title: "A Culinary Oasis Near Disney: Unveiling the...",
-          description:
-            "In the heart of the enchanting city of Orlando, where dreams and magic intertwine, lies a halal food oasis that beckons to food enthusiasts and adventurers alike. A stone's throw away...",
-          button: {
-            label: "read more",
-            href: "#",
-          },
-        },
-        {
-          image: "food3",
-          date: "02 November 2022",
-          title: "Start your day with Orlando's Philly steak...",
-          description:
-            "The best halal breakfast is available in Orlando, Florida, close to the Disney World Resort. Here, at a casual breakfast place close to Disney Theme Parks, there are simply too many deserving selections to choose from. Breakfast from ...",
-          button: {
-            label: "read more",
-            href: "#",
-          },
-        },
-      ],
+        'BLOG OF <br/> <span class="text-accent"> Orlando’s Philly Steak</span>',
     },
   },
   contact: {
     form: {
       tag: "contact orlando’s philly steak",
-      tittle: "still curious?",
+      title: "still curious?",
       description:
         "We hope you found everything you needed about Orlando’s Philly Stake. But if you’ve got more questions, hit us up.",
     },
@@ -384,7 +349,7 @@ export default {
           {
             icon: "phone",
             label: "+1 407 239 4976",
-            tel: "+14072394976",
+            tel: "tel:+14072394976",
           },
           {
             icon: "map",
