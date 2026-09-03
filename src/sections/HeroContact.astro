@@ -9,11 +9,13 @@ const { content } = Astro.props as Props;
 ---
 
 <section
-  class="w-full h-[calc(100vh-var(--header-height))] flex flex-col justify-end items-center overflow-hidden relative bg-accent"
+  class="w-full h-auto md:h-[60vh] xl:h-[calc(100vh-var(--header-height))] flex flex-col justify-start xl:justify-end items-center overflow-hidden relative bg-accent"
 >
-  <div class="container-full flex justify-between items-start pb-13 relative">
+  <div
+    class="container-full flex flex-col md:flex-row justify-center md:justify-between items-center md:items-start py-16 xl:pb-13 relative gap-8 md:gap-4 lg:gap-0 h-full xl:h-auto"
+  >
     <div
-      class="flex flex-col justify-start items-start gap-8 w-[48%] max-w-[535px] relative h-full"
+      class="flex flex-col justify-start items-start gap-8 w-full md:w-[48%] max-w-[535px] relative h-auto md:h-full"
     >
       <img
         src="/images/tomate.webp"
@@ -21,14 +23,14 @@ const { content } = Astro.props as Props;
         "Tomate"
         width="700"
         height="709"
-        class="w-[156px] h-auto absolute bottom-[20%] left-[10%] rotate-[90deg]"
+        class="w-[130px] lg:w-[156px] h-auto absolute bottom-[20%] lg:bottom-[30%] xl:bottom-[20%] left-[5%] xl:left-[10%] rotate-[90deg] hidden md:block"
       />
       <img
         src="/images/papa.webp"
         alt="Papa"
         width="700"
         height="837"
-        class="w-[140px] h-auto absolute -bottom-[10%] right-[0%] rotate-[20deg]"
+        class="w-[140px] h-auto absolute bottom-0 xl:-bottom-[10%] right-[5%] xl:right-[0%] rotate-[20deg] hidden md:block"
       />
       <div class="flex flex-col justify-center items-start gap-4">
         <p class="uppercase subtitle-sm">{content.tag}</p>
@@ -37,7 +39,7 @@ const { content } = Astro.props as Props;
       <p class="paragraph">{content.description}</p>
     </div>
     <div
-      class="w-[52%] p-8 border-[1.5px] rounded-2xl border-black bg-white h-[65vh]"
+      class="w-full md:w-[52%] p-8 border-[1.5px] rounded-2xl border-black bg-white h-full xl:h-[65vh]"
     >
     </div>
   </div>

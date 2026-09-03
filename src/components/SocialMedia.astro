@@ -2,15 +2,15 @@
 const icons = [
   {
     name: "mail-white",
-    href: "https://mail.google.com/mail/?view=cm&fs=1&to=admin@prestigegrowthpartners.com",
+    href: "https://mail.google.com/mail/?view=cm&fs=1&to=info@orlandophillysteak.com",
   },
   {
     name: "instagram",
-    href: "https://www.instagram.com/prestigegrowthpartnerscorp/?hl=es",
+    href: "#",
   },
   {
     name: "facebook",
-    href: "https://web.facebook.com/people/Prestige-Growth-Partners/61593408904345/?sk=reviews",
+    href: "#",
   },
 ];
 ---
@@ -20,7 +20,7 @@ const icons = [
     icons.map((i) => (
       <a
         href={i.href}
-        class="p-2 rounded-full flex items-center justify-center bg-accent shrink-0"
+        class="p-2 rounded-full flex items-center justify-center bg-secondary shrink-0"
       >
         <img src={`/images/${i.name}.svg`} alt={i.name} class="w-4 h-4" />
       </a>

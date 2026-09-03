@@ -8,22 +8,39 @@ const { content } = Astro.props as Props;
 ---
 
 <section
-  class="w-full h-[calc(100vh-var(--header-height))] flex flex-col justify-center items-center overflow-hidden relative"
+  class="w-full h-[calc(100vh-var(--header-height))] md:h-[60vh] lg:h-[calc(100vh-var(--header-height))] flex flex-col justify-center items-center overflow-hidden relative"
 >
-  <div class="flex justify-center items-center h-full overflow-hidden">
+  <div
+    class="flex justify-center items-end md:items-center h-full overflow-hidden pb-8 md:pb-0 relative w-full"
+  >
     <img
       src="/images/hero-about.webp"
-      class="w-full h-full object-cover absolute inset-0 z-0"
+      class="w-full h-full object-cover absolute inset-0 z-0 hidden md:block"
       alt="Hero de About"
       width="1440"
       height="496"
       decoding="async"
       loading="lazy"
     />
+    <img
+      src={`/images/hero-about-mobile.webp`}
+      alt="Hero Aout image"
+      class="w-full h-full object-cover absolute inset-0 z-0 md:hidden"
+      width="750"
+      height="1488"
+      decoding="async"
+      loading="eager"
+    />
     <h1 class="title relative z-5 text-white uppercase">{content.title}</h1>
   </div>
+  <a
+    href="#"
+    class="w-full py-4.5 bg-secondary flex justify-center items-center md:hidden text-white border-t-2 border-black paragraph-bold uppercase"
+  >
+    {content.button}
+  </a>
   <div
-    class="border-y-2 border-secondary flex flex-col justify-center items-center text-black relative bg-[#FDFAF6] w-full"
+    class="border-y-2 border-secondary md:flex flex-col justify-center items-center text-black relative bg-[#FDFAF6] w-full hidden"
   >
     <img
       src="/images/tomate.webp"
@@ -31,13 +48,13 @@ const { content } = Astro.props as Props;
       "Tomate"
       width="700"
       height="709"
-      class="w-[156px] h-auto absolute top-[3%] left-[2%] rotate-[90deg]"
+      class="w-[100px] lg:w-[156px] h-auto absolute top-[3%] left-[2%] rotate-[90deg] hidden md:block"
     />
     <div
       class="container-full flex flex-col justify-center items-center gap-10 py-15 3xl:py-20"
     >
       <h2 set:html={content.Halal.title} class="subtitle uppercase" />
-      <p class="paragraph text-center max-w-[896px]">
+      <p class="paragraph text-center max-w-[80%] lg:max-w-[896px]">
         {content.Halal.description}
       </p>
     </div>

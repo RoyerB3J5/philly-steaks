@@ -7,6 +7,7 @@ import Craving from "../../sections/Main/Craving.astro";
 import Good from "../../sections/Main/Good.astro";
 import Halal from "../../sections/Main/Halal.astro";
 import Hero from "../../sections/Main/Hero.astro";
+import Reviews from "../../sections/Main/Reviews.astro";
 import Steaks from "../../sections/Main/Steaks.astro";
 import type { Language } from "../../types/language.type";
 
@@ -35,8 +36,7 @@ const seo = t.seo.main;
   <Halal content={t.main.Halal} />
   <Good content={t.main.Good} position="first" />
   <section
-    class="w-full h-auto grid grid-cols-2 max-h-[720px]"
-    style="aspect-ratio: 1440/720;"
+    class="w-full h-auto grid grid-cols-1 md:grid-cols-2 max-h-[720px] aspect-square md:aspect-1440/720"
   >
     <div class="w-full h-full relative overflow-hidden">
       <img
@@ -47,7 +47,7 @@ const seo = t.seo.main;
         class="h-full w-auto object-cover"
       />
     </div>
-    <div class="w-full h-full relative overflow-hidden">
+    <div class="hidden md:block w-full h-full relative overflow-hidden">
       <img
         src="/images/main/gall-2.webp"
         alt="Gallery Image 2"
@@ -61,4 +61,5 @@ const seo = t.seo.main;
   <BannerLoop content={t.main.banner} />
   <Good content={t.main.options} position="second" />
   <Craving content={t.main.craving} />
+  <Reviews content={t.main.reviews} />
 </Layout>

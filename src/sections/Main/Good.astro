@@ -20,7 +20,8 @@ const IMAGES_MAP: Record<string, ImageItem[]> = {
       alt: "Papa",
       width: 700,
       height: 837,
-      class: "w-[140px] h-auto absolute -top-[12%] left-[3%] rotate-[20deg]",
+      class:
+        "hidden md:block w-[140px] h-auto absolute -top-[12%] left-[3%] rotate-[20deg]",
     },
   ],
   second: [
@@ -29,14 +30,16 @@ const IMAGES_MAP: Record<string, ImageItem[]> = {
       alt: "Hoja",
       width: 151,
       height: 127,
-      class: "w-[151px] h-auto absolute top-[3%] right-[1%]",
+      class:
+        "hidden md:block w-[100px] lg:w-[151px] h-auto absolute top-[0%] lg:top-[3%] right-[1%]",
     },
     {
       src: "/images/hoja2.webp",
       alt: "Hoja 2",
       width: 306,
       height: 390,
-      class: "w-[180px] h-auto absolute bottom-[0%] left-[0] scale-x-[-1]",
+      class:
+        "hidden md:block w-[180px] h-auto absolute -bottom-[20%] xl:bottom-[0%] left-[0] scale-x-[-1]",
     },
   ],
   third: [
@@ -45,14 +48,16 @@ const IMAGES_MAP: Record<string, ImageItem[]> = {
       alt: "Papa",
       width: 700,
       height: 837,
-      class: "w-[140px] h-auto absolute top-[3%] left-[2%] rotate-[20deg]",
+      class:
+        "hidden md:block w-[100px] lg:w-[140px] h-auto absolute top-[3%] left-[2%] rotate-[20deg]",
     },
     {
       src: "/images/lechuga.webp",
       alt: "Lechuga",
       width: 227,
       height: 492,
-      class: "w-[181px] h-auto absolute top-0 -translate-y-1/2 right-0",
+      class:
+        "hidden md:block w-[100px] lg:w-[181px] h-auto absolute top-0 -translate-y-1/2 right-0",
     },
   ],
   four: [
@@ -61,14 +66,16 @@ const IMAGES_MAP: Record<string, ImageItem[]> = {
       alt: "Hoja",
       width: 151,
       height: 127,
-      class: "w-[151px] h-auto absolute top-[3%] right-[1%]",
+      class:
+        "hidden md:block w-[110px] lg:w-[151px] h-auto absolute top-[0%] lg:top-[3%] right-[1%]",
     },
     {
       src: "/images/hoja2.webp",
       alt: "Hoja 2",
       width: 306,
       height: 390,
-      class: "w-[180px] h-auto absolute -bottom-[20%] left-[0] scale-x-[-1]",
+      class:
+        "hidden md:block w-[150px] lg:w-[180px] h-auto absolute -bottom-[20%] left-[0] scale-x-[-1]",
     },
   ],
 };
@@ -79,15 +86,15 @@ const currentImages = IMAGES_MAP[position];
   {currentImages.map((img) => <img {...img} />)}
 
   <div
-    class="container-full flex flex-col justify-center items-center gap-12 py-30"
+    class="container-full flex flex-col justify-center items-center gap-8 md:gap-12 py-16 md:py-20 lg:py-30"
   >
-    <h2 class="subtitle text-primary uppercase">{content.title}</h2>
+    <h2 class="subtitle text-primary uppercase text-center">{content.title}</h2>
     <ul
-      class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-20 justify-center items-start"
+      class="w-full grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-20 justify-center items-start"
     >
       {
         content.Pros.map((pro) => (
-          <li class="flex flex-col justify-center items-center gap-8">
+          <li class="flex flex-col justify-center items-center gap-6 md:gap-8">
             <img
               src={`/icons/${pro.image}.svg`}
               alt={pro.title}

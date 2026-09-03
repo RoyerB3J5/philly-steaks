@@ -3,6 +3,7 @@ import en from "../../../i18n/en";
 import es from "../../../i18n/es";
 import Layout from "../../../layouts/Layout.astro";
 import HeroContact from "../../../sections/HeroContact.astro";
+import Reviews from "../../../sections/Main/Reviews.astro";
 import type { Language } from "../../../types/language.type";
 
 export function getStaticPaths() {
@@ -26,4 +27,5 @@ const seo = t.seo.contact;
   canonicalPath="/contact"
 >
   <HeroContact content={t.contact.form} />
+  <Reviews content={t.main.reviews} />
 </Layout>

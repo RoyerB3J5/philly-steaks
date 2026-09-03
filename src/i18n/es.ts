@@ -38,6 +38,7 @@ export default {
       title:
         'ORLANDO’S PHILLY STEAK <br/> <span class="text-accent"> Halal foods</span>',
       image: "/main/hero",
+      imageMobile: "/main/hero-mobile",
       buttons: [
         {
           label: "Call Now",
@@ -191,7 +192,7 @@ export default {
     },
     reviews: {
       tag: "Words from our wonderful people",
-      title: "what people are<br>saying.",
+      title: "what people are <br class='hidden md:block'> saying.",
       opinion: [
         {
           description:
@@ -205,7 +206,7 @@ export default {
             "The food is fresh and delicious.  The service is excellent and the prices are very reasonable.  Kids menu is available.",
           name: "Rabih J",
           icon: "smile",
-          color: "bg-secondary",
+          color: "bg-accent",
         },
         {
           description:
@@ -219,7 +220,7 @@ export default {
             "I’ve been coming here for the last 11 years and the food is always fresh and has great flavor! The My go to meal is the Gyro.",
           name: "John Restrepo",
           icon: "star",
-          color: "bg-secondary",
+          color: "bg-accent",
         },
       ],
     },
@@ -229,6 +230,7 @@ export default {
     hero: {
       title: 'All menus & <br/> <span class="text-accent"> prices</span>',
       image: "/hero-menu",
+      imageMobile: "/hero-menu-mobile",
       buttons: [
         {
           label: "Call Now",
@@ -274,6 +276,7 @@ export default {
   aboutUs: {
     hero: {
       title: "about us",
+      button: "order now",
       Halal: {
         title: 'Halal food near <span class="text-secondary"> Disney!</span>',
         description:

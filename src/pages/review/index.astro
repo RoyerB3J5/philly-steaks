@@ -1,12 +1,16 @@
 ---
 import Starts from "../../components/Starts";
 import LayoutSec from "../../layouts/LayoutSec.astro";
-import { emailAddress, facebookLink, instagramLink } from "../../constants/info";
+import {
+  emailAddress,
+  facebookLink,
+  instagramLink,
+} from "../../constants/info";
 ---
 
 <LayoutSec
-  title="Leave a Review | Prestige Growth Partners"
-  description="Share your feedback and experience with Prestige Growth Partners."
+  title="Leave a Review | Orlando's Philly Steak"
+  description="Share your feedback and experience with Orlando's Philly Steak."
   canonicalPath="/review"
 >
   <img
@@ -24,7 +28,7 @@ import { emailAddress, facebookLink, instagramLink } from "../../constants/info"
         <a href="/">
           <img
             src="/images/logo.svg"
-            alt="Logo de Prestige Growth Partners"
+            alt="Logo de Orlando's Philly Steak"
             width="180"
             height="36"
             class="cursor-pointer w-60 md:w-45 h-auto"
@@ -32,14 +36,14 @@ import { emailAddress, facebookLink, instagramLink } from "../../constants/info"
         </a>
         <div class="flex flex-col justify-center items-center">
           <p
-            class="text-[12px] leading-[150%] max-w-[320px] text-center text-white font-normal"
+            class="text-[12px] leading-[150%] max-w-[320px] text-center text-black font-normal"
           >
-            We hope you loved the experience with <br /> Prestige Growth Partners
-            <br /> Your feedback means the world to us.
+            We hope you loved the experience with <br /> Orlando's Philly Steak. Your
+            feedback is invaluable to us and helps us improve our services.
           </p>
         </div>
       </div>
-      <hr class="w-[24.5px] h-0.75 bg-white" />
+      <hr class="w-[24.5px] h-0.75 bg-black" />
       <div
         class="w-full flex flex-col justify-center items-center gap-4 relative min-h-[120px] overflow-hidden"
       >
@@ -51,7 +55,7 @@ import { emailAddress, facebookLink, instagramLink } from "../../constants/info"
           class="flex flex-col justify-center items-center z-10 py-4 rounded-[15px] overflow-hidden"
         >
           <p
-            class="text-[12px] font-normal text-center text-paragraph leading-[15px] w-[256px] mb-2"
+            class="text-[12px] font-normal text-center text-paragraph leading-[15px] w-[256px] mb-2 text-white"
           >
             Please tap the option that best reflects the quality of our service.
           </p>
@@ -84,12 +88,12 @@ import { emailAddress, facebookLink, instagramLink } from "../../constants/info"
         </a>
       </div>
       <div class="flex flex-col justify-center items-center gap-2.25">
-        <p class="text-[12px] font-normal leading-[140%] text-white">
+        <p class="text-[12px] font-normal leading-[140%] text-black">
           Powered by
         </p>
         <a href="https://inkshapegroup.com/en/">
           <img
-            src="/images/icons/inkshape.svg"
+            src="/icons/inkshape.svg"
             alt="Imagen del Footer"
             width="3745"
             height="996"
@@ -107,8 +111,8 @@ import { emailAddress, facebookLink, instagramLink } from "../../constants/info"
       btn.addEventListener("click", async (e) => {
         e.stopPropagation();
         const shareData = {
-          title: "Prestige Growth Partners",
-          text: "Prestige Growth Partners - Discover how Prestige Growth Partners transforms your business with innovative marketing solutions and systems designed to accelerate your growth and maximize your impact.",
+          title: "Orlando's Philly Steak",
+          text: "Orlando's Philly Steak - The best Philly steak in Orlando.",
           url: window.location.href,
         };
 

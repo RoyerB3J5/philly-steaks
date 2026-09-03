@@ -12,37 +12,56 @@ const pathname = Astro.url.pathname;
 ---
 
 <section
-  class="w-full h-[calc(100vh-var(--header-height))] flex justify-center items-end overflow-hidden relative"
+  class="w-full h-[calc(100vh-var(--header-height))] md:h-[60vh] lg:h-[calc(100vh-var(--header-height))] flex flex-col justify-center items-end overflow-hidden relative"
 >
-  <img
-    src={`/images${content.image}.webp`}
-    alt="Hero image"
-    class="w-full h-full object-cover absolute inset-0 z-0"
-    width="2100"
-    height="1164"
-    decoding="async"
-    loading="eager"
-  />
   <div
-    class="container-full h-full flex flex-col justify-end items-center gap-4 relative z-5 pb-10"
+    class="w-full h-full relative flex flex flex-col justify-center items-end overflow-hidden"
   >
-    <h1
-      class="title text-white uppercase text-center"
-      set:html={content.title}
+    <img
+      src={`/images${content.image}.webp`}
+      alt="Hero image"
+      class="w-full h-full object-cover absolute inset-0 z-0 hidden md:block"
+      width="2100"
+      height="1164"
+      decoding="async"
+      loading="eager"
     />
-    <div class="flex justify-center items-center gap-4">
-      <Button
-        text={content.buttons[0].label}
-        href={content.buttons[0].href}
-        textClass="uppercase"
-        extraBtnClass="bg-secondary"
+    <img
+      src={`/images${content.imageMobile}.webp`}
+      alt="Hero image"
+      class="w-full h-full object-cover absolute inset-0 z-0 md:hidden"
+      width="750"
+      height="1488"
+      decoding="async"
+      loading="eager"
+    />
+    <div
+      class="container-full h-full flex flex-col justify-end items-center gap-4 relative z-5 pb-10"
+    >
+      <h1
+        class="title text-white uppercase text-center"
+        set:html={content.title}
       />
-      <Button
-        text={content?.buttons[1].label}
-        href={content?.buttons[1].href}
-        textClass=" uppercase"
-        extraBtnClass="bg-primary"
-      />
+      <div class="md:flex justify-center items-center gap-4 hidden">
+        <Button
+          text={content.buttons[0].label}
+          href={content.buttons[0].href}
+          textClass="uppercase"
+          extraBtnClass="bg-secondary"
+        />
+        <Button
+          text={content?.buttons[1].label}
+          href={content?.buttons[1].href}
+          textClass=" uppercase"
+          extraBtnClass="bg-primary"
+        />
+      </div>
     </div>
   </div>
+  <a
+    href={content?.buttons[1].href}
+    class="w-full py-4.5 bg-secondary flex justify-center items-center md:hidden text-white border-t-2 border-black paragraph-bold uppercase"
+  >
+    {content?.buttons[1].label}
+  </a>
 </section>

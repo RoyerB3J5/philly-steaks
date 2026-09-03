@@ -12,9 +12,7 @@ const groupItems = Array.from({ length: 5 });
 ---
 
 <section class="group relative w-full overflow-hidden bg-secondary py-4">
-  <div
-    class="flex w-max animate-marquee-left group-hover:[animation-play-state:paused]"
-  >
+  <div class="flex w-max animate-marquee-left">
     <!-- Bloque Original -->
     <div class="flex items-center gap-8 px-4 shrink-0">
       {
@@ -53,7 +51,13 @@ const groupItems = Array.from({ length: 5 });
 
 <style>
   .animate-marquee-left {
-    animation: marquee-left 45s linear infinite;
+    /* Aumenta el tiempo para reducir la velocidad (ej. 90s) */
+    animation: marquee-left 90s linear infinite;
+  }
+
+  /* Pausa la animación al pasar el cursor sobre la sección 'group' */
+  .group:hover .animate-marquee-left {
+    animation-play-state: paused;
   }
 
   @keyframes marquee-left {

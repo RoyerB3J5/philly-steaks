@@ -9,25 +9,45 @@ interface Props {
 const { content } = Astro.props as Props;
 ---
 
-<section class="w-full py-16 relative">
-  <img src="/images/plates.webp" alt="Plates" class="w-[52%] 3xl:w-[47%] h-auto absolute right-0 top-1/2 transform -translate-y-1/2 z-5" width="1500" height="1298" decoding="async" loading="lazy"/>
+<section class="w-full py-8 md:py-16 relative">
+  <img
+    src="/images/plates.webp"
+    alt="Plates"
+    class="w-[48%] lg:w-[52%] 3xl:w-[47%] h-auto absolute right-0 top-1/2 transform -translate-y-1/2 z-5 hidden md:block"
+    width="1500"
+    height="1298"
+    decoding="async"
+    loading="lazy"
+  />
   <div
     class="w-full bg-accent flex justify-center items-center relative border-y-2 border-primary z-0"
   >
     <div
-      class="container-full flex flex-col justify-center items-start gap-8 py-20 text-primary"
+      class="container-full flex flex-col justify-center items-start gap-6 md:gap-8 py-16 md:py-20 text-primary"
     >
       <div class="flex flex-col justify-center items-start gap-4">
         <h2 class="title">{content.title}</h2>
         <p class="subtitle">{content.subtitle}</p>
       </div>
-      <p class="subtitle-sm max-w-[453px]">{content.tag}</p>
-      <p class="paragraph max-w-[453px]">{content.description}</p>
+      <p class="subtitle-sm max-w-[380px] lg:max-w-[453px]">{content.tag}</p>
+      <p class="paragraph max-w-[380px] lg:max-w-[453px]">
+        {content.description}
+      </p>
       <Button
         text={content.button.label}
         href={content.button.href}
         textClass="uppercase"
         extraBtnClass="bg-secondary"
+        width="w-full md:w-[144px]"
+      />
+      <img
+        src="/images/plates.webp"
+        alt="Plates"
+        class="w-full h-auto md:hidden block"
+        width="1500"
+        height="1298"
+        decoding="async"
+        loading="lazy"
       />
     </div>
   </div>

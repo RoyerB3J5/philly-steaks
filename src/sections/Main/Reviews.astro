@@ -1,0 +1,26 @@
+---
+import Button from "../../components/Button.astro";
+import ReviewCarousel from "../../components/ReviewCarousel";
+
+type Translations = typeof import("../../i18n/en").default;
+type ReviewsContent = Translations["main"]["reviews"];
+interface Props {
+  content: ReviewsContent;
+}
+const { content } = Astro.props as Props;
+---
+
+<section
+  class="w-full flex flex-col justify-center items-center gap-8 md:gap-12 py-16 md:py-20 xl:py-30 relative"
+>
+  <div class="flex flex-col justify-center items-center gap-4 px-4 md:px-0">
+    <p class="uppercase text-secondary subtitle-sm text-center">
+      {content.tag}
+    </p>
+    <h2
+      class="text-center title uppercase text-black text-center"
+      set:html={content.title}
+    />
+  </div>
+  <ReviewCarousel items={content.opinion} client:load />
+</section>

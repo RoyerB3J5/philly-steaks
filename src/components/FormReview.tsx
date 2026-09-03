@@ -51,6 +51,8 @@ export default function NuvisionForm() {
             left: 0,
             right: 0,
             bottom: 0,
+            width: "205px",
+            margin: "auto",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
