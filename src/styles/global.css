@@ -24,6 +24,9 @@ html {
 }
 :root {
   --header-height: 72px;
+  --anim-speed-slow: 30s; /* Muy lenta y compleja */
+  --anim-speed-gentle: 20s; /* Lenta pero con más rebote */
+  --anim-speed-meandering: 25s; /* Lenta y errante */
 }
 @keyframes shake {
   0%,
@@ -114,7 +117,7 @@ html {
 @keyframes fadeUpFast {
   from {
     opacity: 0;
-    transform: translateY(15%);
+    transform: translateY(100%);
   }
   to {
     opacity: 1;
@@ -186,6 +189,177 @@ html {
 
 .fade-right-a.active {
   animation: fadeRight 0.6s ease-in-out forwards;
+}
+
+@keyframes fadeDownBounce {
+  0% {
+    opacity: 0;
+    transform: translateY(-500px);
+    animation-timing-function: ease-in; /* Caída inicial rápida */
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0);
+    animation-timing-function: ease-out; /* Sube rápido sin frenarse arriba */
+  }
+  72% {
+    transform: translateY(-50px); /* Menor altura = sin efecto flotante */
+    animation-timing-function: ease-in; /* Cae de inmediato */
+  }
+  88% {
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  95% {
+    transform: translateY(-6px); /* Micro rebote final instantáneo */
+    animation-timing-function: ease-in;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-down-bounce {
+  opacity: 0;
+}
+
+.fade-down-bounce.active {
+  /* 0.55s para que la física sea reactiva y sin demoras */
+  animation: fadeDownBounce 0.55s forwards;
+}
+
+/* ----------------------------------------------------------- */
+/* ANIMACIÓN PRINCIPAL (COMPLEJA, SINUSOIDAL Y LENTA) - Slow Wavy Drift */
+/* Combina movimiento en X, Y, rotación y un pulso de escala para profundidad. */
+@keyframes slow-wavy-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    animation-timing-function: cubic-bezier(
+      0.445,
+      0.05,
+      0.55,
+      0.95
+    ); /* Movimiento orgánico */
+  }
+  25% {
+    transform: translate(1.5vw, -2.5vh) rotate(5deg) scale(1.02);
+    animation-timing-function: cubic-bezier(
+      0.55,
+      0.085,
+      0.68,
+      0.53
+    ); /* Ralentización arriba */
+  }
+  50% {
+    transform: translate(-1vw, 2vh) rotate(-3deg) scale(0.98);
+    animation-timing-function: cubic-bezier(
+      0.25,
+      0.46,
+      0.45,
+      0.94
+    ); /* Caída suave */
+  }
+  75% {
+    transform: translate(2vw, -1.2vh) rotate(7deg) scale(1.03);
+    animation-timing-function: cubic-bezier(
+      0.445,
+      0.05,
+      0.55,
+      0.95
+    ); /* Subida orgánica */
+  }
+}
+
+/* Clase de aplicación para el HTML */
+.item-flotante-complejo {
+  animation: slow-wavy-drift var(--anim-speed-slow) ease-in-out infinite;
+  will-change: transform; /* Optimización para el navegador */
+}
+
+/* ----------------------------------------------------------- */
+/* VARIANTE EXTRA 1 (ELÁSTICA, CON REBOTE SUAVE) - Gentle Bounce Float */
+/* Menos movimiento horizontal, más vertical con un balanceo elástico de rotación. */
+@keyframes gentle-bounce-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+    animation-timing-function: cubic-bezier(0.3, 0, 0.7, 1); /* Entrada suave */
+  }
+  20% {
+    transform: translateY(-2.5vh) rotate(-15deg);
+    animation-timing-function: cubic-bezier(
+      0.3,
+      1,
+      0.7,
+      1
+    ); /* Ralentización arriba */
+  }
+  50% {
+    transform: translateY(1.5vh) rotate(10deg);
+    animation-timing-function: cubic-bezier(
+      0.3,
+      0,
+      0.7,
+      1
+    ); /* Caída y subida suave */
+  }
+  80% {
+    transform: translateY(-0.8vh) rotate(-5deg);
+    animation-timing-function: cubic-bezier(
+      0.3,
+      1,
+      0.7,
+      1
+    ); /* Ralentización arriba */
+  }
+}
+
+/* Clase de aplicación para el HTML */
+.item-flotante-rebote {
+  animation: gentle-bounce-float var(--anim-speed-gentle) infinite;
+  will-change: transform;
+}
+
+/* ----------------------------------------------------------- */
+/* VARIANTE EXTRA 2 (ERRANTE, ALEATORIA EN UNA ZONA) - Meandering Wander */
+/* Un patrón de movimiento no lineal y ramificado en una zona pequeña. */
+@keyframes meandering-wander {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  15% {
+    transform: translate(1.2vw, -1.8vh) rotate(-8deg);
+  }
+  30% {
+    transform: translate(-0.8vw, 1.2vh) rotate(5deg);
+  }
+  45% {
+    transform: translate(2.8vw, -0.4vh) rotate(-12deg);
+  }
+  60% {
+    transform: translate(0.2vw, 3vh) rotate(18deg);
+  }
+  75% {
+    transform: translate(-2.5vw, -0.9vh) rotate(-2deg);
+  }
+  90% {
+    transform: translate(1vw, 1.4vh) rotate(10deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+/* Clase de aplicación para el HTML */
+.item-flotante-errante {
+  animation: meandering-wander var(--anim-speed-meandering) ease-out infinite;
+  will-change: transform;
+}
+
+.header-intro {
+  animation: fadeDown 0.5s ease-in-out;
 }
 
 .container-full {

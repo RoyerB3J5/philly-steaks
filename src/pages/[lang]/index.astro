@@ -35,10 +35,10 @@ const seo = t.seo.main;
   <Steaks content={t.main.steaks} position="first" />
   <Halal content={t.main.Halal} />
   <Good content={t.main.Good} position="first" />
-  <section
-    class="w-full h-auto grid grid-cols-1 md:grid-cols-2 max-h-[720px] aspect-square md:aspect-1440/720"
-  >
-    <div class="w-full h-full relative overflow-hidden">
+  <section class="w-full h-auto grid grid-cols-1 md:grid-cols-2">
+    <div
+      class="w-full h-full relative overflow-hidden fade-right-a aspect-square"
+    >
       <img
         src="/images/main/gall-1.webp"
         alt="Gallery Image 1"
@@ -47,7 +47,9 @@ const seo = t.seo.main;
         class="h-full w-auto object-cover"
       />
     </div>
-    <div class="hidden md:block w-full h-full relative overflow-hidden">
+    <div
+      class="hidden md:block w-full h-full relative overflow-hidden fade-left-a aspect-square"
+    >
       <img
         src="/images/main/gall-2.webp"
         alt="Gallery Image 2"

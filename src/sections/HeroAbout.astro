@@ -31,7 +31,7 @@ const { content } = Astro.props as Props;
       decoding="async"
       loading="eager"
     />
-    <h1 class="title relative z-5 text-white uppercase">{content.title}</h1>
+    <h1 class="title relative z-5 text-white uppercase fade-up-a">{content.title}</h1>
   </div>
   <a
     href="#"
@@ -48,13 +48,13 @@ const { content } = Astro.props as Props;
       "Tomate"
       width="700"
       height="709"
-      class="w-[100px] lg:w-[156px] h-auto absolute top-[3%] left-[2%] rotate-[90deg] hidden md:block"
+      class="w-[100px] lg:w-[156px] h-auto absolute top-[3%] left-[2%] rotate-[90deg] hidden md:block item-flotante-errante"
     />
     <div
       class="container-full flex flex-col justify-center items-center gap-10 py-15 3xl:py-20"
     >
-      <h2 set:html={content.Halal.title} class="subtitle uppercase" />
-      <p class="paragraph text-center max-w-[80%] lg:max-w-[896px]">
+      <h2 set:html={content.Halal.title} class="subtitle uppercase fade-up-a" />
+      <p class="paragraph text-center max-w-[80%] lg:max-w-[896px] fade-up-a">
         {content.Halal.description}
       </p>
     </div>

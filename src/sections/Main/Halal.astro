@@ -14,10 +14,10 @@ const { content } = Astro.props as Props;
     class="container-full flex flex-col justify-center items-center gap-8 md:gap-10 py-16 md:py-20"
   >
     <h2
-      class="subtitle text-primary uppercase text-center"
+      class="subtitle text-primary uppercase text-center fade-up-a"
       set:html={content.title}
     />
-    <p class="paragraph text-primary max-w-[896px] text-center">
+    <p class="paragraph text-primary max-w-[896px] text-center fade-up-a">
       {content.description}
     </p>
   </div>

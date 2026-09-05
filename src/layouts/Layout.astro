@@ -68,20 +68,21 @@ const {
   </body>
 </html>
 
-<script is:inline>
-  document.addEventListener("DOMContentLoaded", () => {
+<script>
+  function initGlobalInteractions() {
+    // -------------------------------------------------------------
+    // 1. ANIMACIONES DE SCROLL (IntersectionObserver)
+    // -------------------------------------------------------------
     const animationElements = document.querySelectorAll(
-      ".fade-up-a, .fade-down-a, .fade-left-a, .fade-right-a, .progress-reveal, .bars-icon",
+      ".fade-up-a, .fade-down-a, .fade-left-a, .fade-right-a, .progress-reveal, .bars-icon, .fade-down-bounce"
     );
 
     const animationObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const el = entry.target;
-            // Fuerza un reflow para que el navegador "vea" el estado inicial
-            // antes de aplicar .active; si no, salta directo al estado final.
-            el.getBoundingClientRect();
+            const el = entry.target as HTMLElement;
+            el.getBoundingClientRect(); // Fuerza reflow
             requestAnimationFrame(() => {
               requestAnimationFrame(() => {
                 el.classList.add("active");
@@ -91,11 +92,53 @@ const {
           }
         });
       },
-      { threshold: 0.3 },
+      { threshold: 0.3 }
     );
 
-    animationElements.forEach((element) => {
-      animationObserver.observe(element);
+    animationElements.forEach((element) => animationObserver.observe(element));
+
+    // -------------------------------------------------------------
+    // 2. INTERACCIÓN DE EMPUJE CON MOUSE (data-push-container)
+    // -------------------------------------------------------------
+    const pushContainers = document.querySelectorAll<HTMLElement>('[data-push-container]');
+
+    pushContainers.forEach((container) => {
+      const img = container.querySelector<HTMLElement>('img');
+      
+      // Evita vincular event listeners repetidos si la función se vuelve a ejecutar
+      if (!img || container.dataset.pushInitialized) return;
+      container.dataset.pushInitialized = "true";
+
+      container.addEventListener('mousemove', (e) => {
+        const rect = container.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        const deltaX = e.clientX - centerX;
+        const deltaY = e.clientY - centerY;
+
+        const pushFactor = 0.06;
+        const maxDistance = 12;
+
+        const moveX = Math.max(-maxDistance, Math.min(maxDistance, deltaX * pushFactor));
+        const moveY = Math.max(-maxDistance, Math.min(maxDistance, deltaY * pushFactor));
+
+        img.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
+      });
+
+      container.addEventListener('mouseleave', () => {
+        img.style.transform = 'translate3d(0px, 0px, 0)';
+      });
     });
-  });
+  }
+
+  // Ejecución en la carga inicial del documento
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initGlobalInteractions);
+  } else {
+    initGlobalInteractions();
+  }
+
+  // Soporte para Astro View Transitions (por si usas transiciones de página en el futuro)
+  document.addEventListener("astro:page-load", initGlobalInteractions);
 </script>

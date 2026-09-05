@@ -17,29 +17,38 @@ const { content } = Astro.props as Props;
     <div
       class="flex flex-col justify-start items-start gap-8 w-full md:w-[48%] max-w-[535px] relative h-auto md:h-full"
     >
-      <img
-        src="/images/tomate.webp"
-        alt=""
-        "Tomate"
-        width="700"
-        height="709"
-        class="w-[130px] lg:w-[156px] h-auto absolute bottom-[20%] lg:bottom-[30%] xl:bottom-[20%] left-[5%] xl:left-[10%] rotate-[90deg] hidden md:block"
-      />
-      <img
-        src="/images/papa.webp"
-        alt="Papa"
-        width="700"
-        height="837"
-        class="w-[140px] h-auto absolute bottom-0 xl:-bottom-[10%] right-[5%] xl:right-[0%] rotate-[20deg] hidden md:block"
-      />
-      <div class="flex flex-col justify-center items-start gap-4">
-        <p class="uppercase subtitle-sm">{content.tag}</p>
-        <h1 class="title uppercase">{content.title}</h1>
+      <div
+        class="w-[130px] lg:w-[156px] h-auto absolute bottom-[20%] lg:bottom-[30%] xl:bottom-[20%] left-[5%] xl:left-[10%] rotate-[90deg] hidden md:block item-flotante-complejo" data-push-container
+      >
+        <img
+          src="/images/tomate.webp"
+          alt=""
+          "Tomate"
+          width="700"
+          height="709"
+          class="w-full h-auto pointer-events-auto transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] will-change-transform"
+        />
       </div>
-      <p class="paragraph">{content.description}</p>
+      <div
+        class="w-[140px] h-auto absolute bottom-0 xl:-bottom-[10%] right-[5%] xl:right-[0%] rotate-[20deg] hidden md:block item-flotante-rebote" data-push-container
+      >
+        <img
+          src="/images/papa.webp"
+          alt="Papa"
+          width="700"
+          height="837"
+          class="w-full h-auto pointer-events-auto transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] will-change-transform"
+        />
+      </div>
+
+      <div class="flex flex-col justify-center items-start gap-4">
+        <p class="uppercase subtitle-sm fade-up-a">{content.tag}</p>
+        <h1 class="title uppercase fade-up-a">{content.title}</h1>
+      </div>
+      <p class="paragraph fade-up-a">{content.description}</p>
     </div>
     <div
-      class="w-full md:w-[52%] p-8 border-[1.5px] rounded-2xl border-black bg-white h-full xl:h-[65vh]"
+      class="w-full md:w-[52%] p-8 border-[1.5px] rounded-2xl border-black bg-white h-full xl:h-[65vh] fade-up-a"
     >
     </div>
   </div>

@@ -13,12 +13,36 @@ const { content } = Astro.props as Props;
 <section
   class="w-full flex flex-col justify-center items-center gap-8 md:gap-12 py-16 md:py-20 xl:py-30 relative"
 >
+  <div
+    class="hidden md:block w-[100px] lg:w-[181px] h-auto absolute top-0 -translate-y-1/2 right-0 item-flotante-complejo"
+    data-push-container
+  >
+    <img
+      src="/images/lechuga.webp"
+      alt="Lechuga"
+      width="227"
+      height="492"
+      class="w-full h-auto pointer-events-auto transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] will-change-transform"
+    />
+  </div>
+  <div
+    class="hidden md:block w-[150px] lg:w-[180px] h-auto absolute -top-[5%] left-[0] scale-x-[-1] item-flotante-rebote"
+    data-push-container
+  >
+    <img
+      src="/images/hoja2.webp"
+      alt="Hoja 2"
+      width="306"
+      height="390"
+      class="w-full h-auto pointer-events-auto transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] will-change-transform"
+    />
+  </div>
   <div class="flex flex-col justify-center items-center gap-4 px-4 md:px-0">
-    <p class="uppercase text-secondary subtitle-sm text-center">
+    <p class="uppercase text-secondary subtitle-sm text-center fade-up-a">
       {content.tag}
     </p>
     <h2
-      class="text-center title uppercase text-black text-center"
+      class="text-center title uppercase text-black text-center fade-up-a"
       set:html={content.title}
     />
   </div>

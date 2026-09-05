@@ -21,7 +21,7 @@ const IMAGES_MAP: Record<string, ImageItem[]> = {
       width: 700,
       height: 837,
       class:
-        "hidden md:block w-[140px] h-auto absolute -top-[12%] left-[3%] rotate-[20deg]",
+        "hidden md:block w-[140px] h-auto absolute top-[0%] left-[3%] rotate-[20deg] item-flotante-complejo",
     },
   ],
   second: [
@@ -31,7 +31,7 @@ const IMAGES_MAP: Record<string, ImageItem[]> = {
       width: 151,
       height: 127,
       class:
-        "hidden md:block w-[100px] lg:w-[151px] h-auto absolute top-[0%] lg:top-[3%] right-[1%]",
+        "hidden md:block w-[100px] lg:w-[151px] h-auto absolute top-[0%] lg:top-[3%] right-[1%] item-flotante-errante",
     },
     {
       src: "/images/hoja2.webp",
@@ -39,7 +39,7 @@ const IMAGES_MAP: Record<string, ImageItem[]> = {
       width: 306,
       height: 390,
       class:
-        "hidden md:block w-[180px] h-auto absolute -bottom-[20%] xl:bottom-[0%] left-[0] scale-x-[-1]",
+        "hidden md:block w-[180px] h-auto absolute -bottom-[20%] xl:bottom-[0%] left-[0] scale-x-[-1] item-flotante-rebote",
     },
   ],
   third: [
@@ -49,7 +49,7 @@ const IMAGES_MAP: Record<string, ImageItem[]> = {
       width: 700,
       height: 837,
       class:
-        "hidden md:block w-[100px] lg:w-[140px] h-auto absolute top-[3%] left-[2%] rotate-[20deg]",
+        "hidden md:block w-[100px] lg:w-[140px] h-auto absolute top-[3%] left-[2%] rotate-[20deg] item-flotante-complejo",
     },
     {
       src: "/images/lechuga.webp",
@@ -57,7 +57,7 @@ const IMAGES_MAP: Record<string, ImageItem[]> = {
       width: 227,
       height: 492,
       class:
-        "hidden md:block w-[100px] lg:w-[181px] h-auto absolute top-0 -translate-y-1/2 right-0",
+        "hidden md:block w-[100px] lg:w-[181px] h-auto absolute top-0 -translate-y-1/2 right-0 item-flotante-complejo",
     },
   ],
   four: [
@@ -67,7 +67,7 @@ const IMAGES_MAP: Record<string, ImageItem[]> = {
       width: 151,
       height: 127,
       class:
-        "hidden md:block w-[110px] lg:w-[151px] h-auto absolute top-[0%] lg:top-[3%] right-[1%]",
+        "hidden md:block w-[110px] lg:w-[151px] h-auto absolute top-[0%] lg:top-[3%] right-[1%] item-flotante-complejo",
     },
     {
       src: "/images/hoja2.webp",
@@ -75,7 +75,7 @@ const IMAGES_MAP: Record<string, ImageItem[]> = {
       width: 306,
       height: 390,
       class:
-        "hidden md:block w-[150px] lg:w-[180px] h-auto absolute -bottom-[20%] left-[0] scale-x-[-1]",
+        "hidden md:block w-[150px] lg:w-[180px] h-auto absolute -bottom-[20%] left-[0] scale-x-[-1] item-flotante-rebote",
     },
   ],
 };
@@ -83,28 +83,42 @@ const currentImages = IMAGES_MAP[position];
 ---
 
 <section class="w-full flex justify-center items-center bg-white relative z-5">
-  {currentImages.map((img) => <img {...img} />)}
+  {
+    currentImages.map((img) => (
+      <div class={`${img.class}`} data-push-container>
+        <img
+          src={img.src}
+          alt={img.alt}
+          width={img.width}
+          height={img.height}
+          class="w-full h-auto pointer-events-auto transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] will-change-transform"
+        />
+      </div>
+    ))
+  }
 
   <div
     class="container-full flex flex-col justify-center items-center gap-8 md:gap-12 py-16 md:py-20 lg:py-30"
   >
-    <h2 class="subtitle text-primary uppercase text-center">{content.title}</h2>
+    <h2 class="subtitle text-primary uppercase text-center fade-up-a">
+      {content.title}
+    </h2>
     <ul
       class="w-full grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-20 justify-center items-start"
     >
       {
         content.Pros.map((pro) => (
-          <li class="flex flex-col justify-center items-center gap-6 md:gap-8">
+          <li class="flex flex-col justify-center items-center gap-6 md:gap-8 ">
             <img
               src={`/icons/${pro.image}.svg`}
               alt={pro.title}
               width="147"
               height="147"
-              class="w-[147px] h-auto "
+              class="w-[147px] h-auto fade-down-bounce"
             />
             <div class="flex flex-col justify-center items-center gap-2 text-center text-primary">
-              <h3 class="subtitle-sm uppercase">{pro.title}</h3>
-              <p class="paragraph text-center">{pro.description}</p>
+              <h3 class="subtitle-sm uppercase fade-up-a">{pro.title}</h3>
+              <p class="paragraph text-center fade-up-a">{pro.description}</p>
             </div>
           </li>
         ))

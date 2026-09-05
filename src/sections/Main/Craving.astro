@@ -13,7 +13,7 @@ const { content } = Astro.props as Props;
   <img
     src="/images/plates.webp"
     alt="Plates"
-    class="w-[48%] lg:w-[52%] 3xl:w-[47%] h-auto absolute right-0 top-1/2 transform -translate-y-1/2 z-5 hidden md:block"
+    class="w-[48%] lg:w-[52%] 3xl:w-[47%] h-auto absolute right-0 top-1/2 transform -translate-y-1/2 z-5 hidden md:block fade-left-a"
     width="1500"
     height="1298"
     decoding="async"
@@ -26,24 +26,24 @@ const { content } = Astro.props as Props;
       class="container-full flex flex-col justify-center items-start gap-6 md:gap-8 py-16 md:py-20 text-primary"
     >
       <div class="flex flex-col justify-center items-start gap-4">
-        <h2 class="title">{content.title}</h2>
-        <p class="subtitle">{content.subtitle}</p>
+        <h2 class="title fade-up-a">{content.title}</h2>
+        <p class="subtitle fade-up-a">{content.subtitle}</p>
       </div>
-      <p class="subtitle-sm max-w-[380px] lg:max-w-[453px]">{content.tag}</p>
-      <p class="paragraph max-w-[380px] lg:max-w-[453px]">
+      <p class="subtitle-sm max-w-[380px] lg:max-w-[453px] fade-up-a">{content.tag}</p>
+      <p class="paragraph max-w-[380px] lg:max-w-[453px] fade-up-a">
         {content.description}
       </p>
       <Button
         text={content.button.label}
         href={content.button.href}
         textClass="uppercase"
-        extraBtnClass="bg-secondary"
+        extraBtnClass="bg-secondary fade-up-a"
         width="w-full md:w-[144px]"
       />
       <img
         src="/images/plates.webp"
         alt="Plates"
-        class="w-full h-auto md:hidden block"
+        class="w-full h-auto md:hidden block fade-left-a"
         width="1500"
         height="1298"
         decoding="async"

@@ -22,7 +22,7 @@ const IMAGES_MAP: Record<string, ImageItem[]> = {
       width: 700,
       height: 709,
       class:
-        "hidden md:block w-[100px] lg:w-[156px] h-auto absolute top-[3%] left-[5%] rotate-[90deg]",
+        "hidden md:block w-[100px] lg:w-[156px] h-auto absolute top-[3%] left-[5%] rotate-[90deg] item-flotante-rebote",
     },
     {
       src: "/images/lechuga.webp",
@@ -30,7 +30,7 @@ const IMAGES_MAP: Record<string, ImageItem[]> = {
       width: 227,
       height: 492,
       class:
-        "hidden md:block w-[120px] lg:w-[181px] h-auto absolute bottom-0 translate-y-1/2 right-0",
+        "hidden md:block w-[120px] lg:w-[181px] h-auto absolute bottom-0 translate-y-1/2 right-0 item-flotante-complejo",
     },
   ],
   second: [
@@ -40,14 +40,14 @@ const IMAGES_MAP: Record<string, ImageItem[]> = {
       width: 700,
       height: 837,
       class:
-        "hidden md:block w-[140px] h-auto absolute top-[3%] left-[3%] rotate-[20deg]",
+        "hidden md:block w-[140px] h-auto absolute top-[3%] left-[3%] rotate-[20deg] item-flotante-errante",
     },
     {
       src: "/images/tomate-2.webp",
       alt: "Tomate 2",
       width: 700,
       height: 683,
-      class: "hidden md:block w-[146px] h-auto absolute bottom-[3%] right-[2%]",
+      class: "hidden md:block w-[146px] h-auto absolute bottom-[3%] right-[2%] item-flotante-rebote",
     },
   ],
   third: [
@@ -57,14 +57,14 @@ const IMAGES_MAP: Record<string, ImageItem[]> = {
       width: 700,
       height: 837,
       class:
-        "hidden md:block w-[140px] h-auto absolute top-[3%] left-[3%] rotate-[20deg]",
+        "hidden md:block w-[140px] h-auto absolute top-[3%] left-[3%] rotate-[20deg] item-flotante-complejo",
     },
     {
       src: "/images/tomate-2.webp",
       alt: "Tomate 2",
       width: 700,
       height: 683,
-      class: "hidden md:block w-[146px] h-auto absolute bottom-[3%] right-[2%]",
+      class: "hidden md:block w-[146px] h-auto absolute bottom-[3%] right-[2%] item-flotante-rebote",
     },
   ],
 };
@@ -72,25 +72,40 @@ const currentImages = IMAGES_MAP[position];
 ---
 
 <section class="w-full flex bg-white justify-center items-center relative z-5">
-  {currentImages.map((img) => <img {...img} />)}
+  {
+    currentImages.map((img) => (
+      <div class={`${img.class}`} data-push-container>
+        <img
+          src={img.src}
+          alt={img.alt}
+          width={img.width}
+          height={img.height}
+          class="w-full h-auto pointer-events-auto transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] will-change-transform"
+        />
+      </div>
+    ))
+  }
 
   <div
     class="container-full flex flex-col justify-center items-center gap-8 md:gap-12 py-16 md:py-30"
   >
     <div class="flex flex-col justify-center items-center gap-4">
-      <h2 class="subtitle text-primary uppercase text-center">
+      <h2 class="subtitle text-primary uppercase text-center fade-up-a">
         {content.title}
       </h2>
-      <p class="subtitle-sm uppercase text-secondary">{content.tag}</p>
+      <p class="subtitle-sm uppercase text-secondary fade-up-a">
+        {content.tag}
+      </p>
     </div>
-    <ul
-      class="w-full grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-20"
-    >
+    <ul class="w-full grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-20">
       {
-        content.plates.map((plate) => (
-          <li class="flex flex-col justify-start items-center text-center">
+        content.plates.map((plate, index) => (
+          <li
+            class="flex flex-col justify-start items-center text-center fade-up-a group"
+            style={`animation-delay: ${index * 0.2}s`}
+          >
             <div
-              class="w-full h-auto relative overflow-hidden"
+              class="w-full h-auto relative overflow-hidden group-hover:-rotate-5 transition-transform duration-300 ease-in-out"
               style="aspect-ratio: 326/226"
             >
               <img
@@ -104,14 +119,16 @@ const currentImages = IMAGES_MAP[position];
               />
             </div>
             <div class="flex flex-col justify-center items-center gap-2 text-primary">
-              <h3 class="subtitle-sm uppercase">{plate.title}</h3>
-              <p class="paragraph text-center">{plate.despcription}</p>
+              <h3 class="subtitle-sm uppercase fade-up-a">{plate.title}</h3>
+              <p class="paragraph text-center fade-up-a">
+                {plate.despcription}
+              </p>
             </div>
           </li>
         ))
       }
     </ul>
-    <div class="flex justify-center items-center gap-4">
+    <div class="flex justify-center items-center gap-4 fade-up-a">
       <Button
         text={content.buttons[0].label}
         href={content.buttons[0].href}
