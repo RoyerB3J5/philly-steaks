@@ -1,0 +1,27 @@
+---
+import Button from "../../components/Button.astro";
+type Translations = typeof import("../../i18n/en").default;
+type ClientsContent = Translations["main"]["clients"];
+interface Props {
+  content: ClientsContent;
+}
+const { content } = Astro.props as Props;
+
+// Comprueba si la URL coincide con la raíz o los prefijos de idioma (/ , /es, /es/, /en, /en/)
+const pathname = Astro.url.pathname;
+---
+
+<section class="bg-[#FDFAF6] flex justify-center items-center w-full">
+  <div>
+    <div>
+      <p set:html={content.tag} />
+      <h2>{content.title}</h2>
+      <p set:html={content.tag2} />
+    </div>
+    <div></div>
+    <div>
+      <p>{content.follow}</p>
+      <div></div>
+    </div>
+  </div>
+</section>

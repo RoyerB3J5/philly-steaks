@@ -1,49 +1,55 @@
 ---
+export const prerender = false;
+
 import en from "../../../i18n/en";
 import es from "../../../i18n/es";
 import Layout from "../../../layouts/Layout.astro";
-import BlogGrid from "../../../sections/BlogGrid.astro";
+import BlogSection from "../../../sections/BlogSection";
 import BannerLoop from "../../../sections/Main/BannerLoop.astro";
 import Craving from "../../../sections/Main/Craving.astro";
 import Good from "../../../sections/Main/Good.astro";
 import type { Language } from "../../../types/language.type";
+import { getAllPosts } from "../../../lib/ghl/blog-services";
+import type { BlogCardDTO } from "../../../lib/ghl/types";
 
-export function getStaticPaths() {
-  return [{ params: { lang: "es" } }, { params: { lang: "en" } }];
-}
+const { lang: rawLang } = Astro.params;
+const lang = (rawLang === "es" ? "es" : "en") as Language;
 
-export const defaultRedirect = "/en";
-
-const lang = Astro.params.lang as Language;
 const translations = { es, en };
-const t = translations[lang];
+const t = translations[lang] || translations.en;
 const seo = t.seo.blog;
-const posts = [
+
+// Fallback mock posts used only when GHL has no published posts or credentials are not yet configured
+const mockPosts: BlogCardDTO[] = [
   {
+    id: "1",
     image: "/images/blog/food1.webp",
-    date: "13 August 2023",
+    date: lang === "es" ? "13 de agosto de 2023" : "13 August 2023",
     title: "Exploring the Delicious Fusion: Gyro & Fries -...",
     description:
       "When it comes to culinary delights, Orlando, Florida, is undoubtedly a melting pot of flavors and cultures. With its vibrant food scene, the city constantly surprises and delights food enthusiasts with...",
-    id: "1",
   },
   {
+    id: "2",
     image: "/images/blog/food2.webp",
-    date: "13 August 2023",
+    date: lang === "es" ? "13 de agosto de 2023" : "13 August 2023",
     title: "A Culinary Oasis Near Disney: Unveiling the...",
     description:
       "In the heart of the enchanting city of Orlando, where dreams and magic intertwine, lies a halal food oasis that beckons to food enthusiasts and adventurers alike. A stone's throw away...",
-    id: "2",
   },
   {
+    id: "3",
     image: "/images/blog/food3.webp",
-    date: "02 November 2022",
+    date: lang === "es" ? "02 de noviembre de 2022" : "02 November 2022",
     title: "Start your day with Orlando's Philly steak...",
     description:
       "The best halal breakfast is available in Orlando, Florida, close to the Disney World Resort. Here, at a casual breakfast place close to Disney Theme Parks, there are simply too many deserving selections to choose from. Breakfast from ...",
-    id: "3",
   },
 ];
+
+// Fetch live posts from GoHighLevel CRM
+const livePosts = await getAllPosts(lang);
+const posts = livePosts.length > 0 ? livePosts : mockPosts;
 ---
 
 <Layout
@@ -54,7 +60,17 @@ const posts = [
   keywords={seo.keywords}
   canonicalPath="/blog"
 >
-  <BlogGrid content={t.blog.orlando} items={posts} />
+  <BlogSection
+    client:load
+    content={t.blog.orlando}
+    items={posts}
+    lang={lang}
+    readMoreText={t.blog.readMore}
+    previousText={t.blog.previous}
+    nextText={t.blog.next}
+    noPostsText={t.blog.noPosts}
+    itemsPerPage={9}
+  />
   <BannerLoop content={t.main.banner} />
   <Good content={t.main.options} position="four" />
   <Craving content={t.main.craving} />

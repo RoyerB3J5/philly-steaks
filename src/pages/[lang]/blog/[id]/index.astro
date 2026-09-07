@@ -1,0 +1,257 @@
+---
+export const prerender = false;
+
+import en from "../../../../i18n/en";
+import es from "../../../../i18n/es";
+import Layout from "../../../../layouts/Layout.astro";
+import BannerLoop from "../../../../sections/Main/BannerLoop.astro";
+import Craving from "../../../../sections/Main/Craving.astro";
+import type { Language } from "../../../../types/language.type";
+import { getPostById } from "../../../../lib/ghl/blog-services";
+import type { BlogPostDetailDTO } from "../../../../lib/ghl/types";
+
+const { id, lang: rawLang } = Astro.params;
+const lang = (rawLang === "es" ? "es" : "en") as Language;
+
+const translations = { es, en };
+const t = translations[lang] || translations.en;
+
+// Mock posts fallback for testing when GHL credentials are not yet configured
+const mockPostsDetails: Record<string, BlogPostDetailDTO> = {
+  "1": {
+    id: "1",
+    title: "Exploring the Delicious Fusion: Gyro & Fries",
+    description:
+      "When it comes to culinary delights, Orlando, Florida, is undoubtedly a melting pot of flavors and cultures.",
+    image: "/images/blog/food1.webp",
+    date: lang === "es" ? "13 de agosto de 2023" : "13 August 2023",
+    author: "Orlando's Philly Steak",
+    content: `
+      <p>When it comes to culinary delights, Orlando, Florida, is undoubtedly a melting pot of flavors and cultures. With its vibrant food scene, the city constantly surprises and delights food enthusiasts with innovative combinations that push boundaries.</p>
+      <h2>A Perfect Blend of Traditions</h2>
+      <p>One such culinary masterpiece that has taken Orlando by storm is the mouthwatering fusion of <strong>Gyro and Fries</strong>. Tender slices of seasoned gyro meat, served on warm pita with crispy golden fries and authentic tzatziki sauce, create a satisfying harmony of flavors and textures.</p>
+      <p>Whether you are visiting after a long day at the theme parks or stopping by for a hearty lunch, this combination never fails to impress.</p>
+    `,
+    readTimeInMinutes: 4,
+  },
+  "2": {
+    id: "2",
+    title: "A Culinary Oasis Near Disney: Unveiling Halal Delights",
+    description:
+      "In the heart of the enchanting city of Orlando, where dreams and magic intertwine, lies a halal food oasis.",
+    image: "/images/blog/food2.webp",
+    date: lang === "es" ? "13 de agosto de 2023" : "13 August 2023",
+    author: "Orlando's Philly Steak",
+    content: `
+      <p>In the heart of the enchanting city of Orlando, where dreams and magic intertwine, lies a halal food oasis that beckons to food enthusiasts and adventurers alike. Just a stone's throw away from Disney World Resort, authentic quality food awaits.</p>
+      <h2>Fresh Ingredients, Prepared Daily</h2>
+      <p>Every dish is crafted with fresh, certified halal ingredients, prepared to order. From our signature Philly cheesesteaks to our flavorful wings and fresh Mediterranean salads, every bite is packed with authentic flavor.</p>
+    `,
+    readTimeInMinutes: 5,
+  },
+  "3": {
+    id: "3",
+    title: "Start Your Day with Orlando's Philly Steak",
+    description:
+      "The best halal food is available in Orlando, Florida, close to the Disney World Resort.",
+    image: "/images/blog/food3.webp",
+    date: lang === "es" ? "02 de noviembre de 2022" : "02 November 2022",
+    author: "Orlando's Philly Steak",
+    content: `
+      <p>Looking for a hearty meal near Disney Theme Parks? Orlando's Philly Steak offers casual dining with an extensive selection of flavorful meals.</p>
+      <h2>Fast, Fresh, and Satisfying</h2>
+      <p>Save time on your vacation schedule by calling ahead and ordering your favorite dishes so they are hot and ready when you arrive!</p>
+    `,
+    readTimeInMinutes: 3,
+  },
+};
+
+// 1. Fetch live post by ID from GHL
+let post = id ? await getPostById(id, lang) : null;
+
+// 2. Fallback to mock post for preview if GHL returned nothing and ID matches preview mock
+if (!post && id && mockPostsDetails[id]) {
+  post = mockPostsDetails[id];
+}
+
+// 3. Return 404 response if post is not found
+if (!post) {
+  return new Response(null, { status: 404, statusText: "Post Not Found" });
+}
+---
+
+<Layout
+  lang={lang}
+  t={t}
+  title={`${post.title} | Orlando's Philly Steak`}
+  description={post.description || post.title}
+  image={post.image}
+  canonicalPath={`/blog/${post.id}`}
+>
+  <article class="w-full flex flex-col justify-center items-center bg-white">
+    <div
+      class="container-full flex flex-col justify-center items-center py-12 md:py-16 lg:py-20 gap-8 md:gap-12 max-w-[1100px] w-full px-4"
+    >
+      {/* Back button */}
+      <div class="w-full flex justify-start">
+        <a
+          href={`/${lang}/blog`}
+          class="inline-flex items-center gap-2 text-sm md:text-base font-semibold text-[#717171] hover:text-secondary transition-colors duration-200 fade-up-a"
+        >
+          <span aria-hidden="true">&larr;</span>
+          {t.blog.backToBlog}
+        </a>
+      </div>
+
+      {/* Title & Metadata */}
+      <header
+        class="flex flex-col items-center text-center gap-4 max-w-[900px] w-full"
+      >
+        <h1
+          class="title text-center fade-up-a !text-3xl md:!text-5xl lg:!text-6xl font-extrabold text-black"
+        >
+          {post.title}
+        </h1>
+
+        <div
+          class="flex flex-wrap items-center justify-center gap-2 text-sm md:text-base text-[#717171] font-medium fade-up-a"
+        >
+          <span
+            >{t.blog.postedBy}
+            <strong class="text-black">Philly Steak</strong></span
+          >
+          {
+            post.date && (
+              <>
+                <span>&bull;</span>
+                <time datetime={post.date}>{post.date}</time>
+              </>
+            )
+          }
+          {
+            post.readTimeInMinutes && (
+              <>
+                <span>&bull;</span>
+                <span>
+                  {post.readTimeInMinutes} {t.blog.minRead}
+                </span>
+              </>
+            )
+          }
+        </div>
+      </header>
+
+      {/* Featured Image */}
+      {
+        post.image && (
+          <div
+            class="w-full relative overflow-hidden rounded-2xl shadow-sm fade-up-a max-w-[1000px]"
+            style="aspect-ratio: 16/9;"
+          >
+            <img
+              src={post.image}
+              alt={post.title}
+              width="1200"
+              height="675"
+              decoding="async"
+              loading="eager"
+              class="w-full h-full object-center object-cover absolute inset-0"
+            />
+          </div>
+        )
+      }
+
+      {/* Blog HTML Content */}
+      <div
+        set:html={post.content}
+        class="blog-content w-full max-w-[850px] paragraph text-black fade-up-a leading-relaxed mt-4"
+      />
+    </div>
+  </article>
+
+  <BannerLoop content={t.main.banner} />
+  <Craving content={t.main.craving} />
+</Layout>
+
+<style is:global>
+  /* Blog post rich HTML content typography and spacing */
+  .blog-content {
+    color: #222222;
+    font-size: 1.125rem;
+    line-height: 1.8;
+  }
+
+  .blog-content p {
+    margin-bottom: 1.5rem;
+  }
+
+  .blog-content h1,
+  .blog-content h2,
+  .blog-content h3,
+  .blog-content h4 {
+    color: #000000;
+    font-family: var(--font-family);
+    font-weight: 800;
+    line-height: 1.25;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .blog-content h1 {
+    font-size: 2rem;
+  }
+
+  .blog-content h2 {
+    font-size: 1.65rem;
+  }
+
+  .blog-content h3 {
+    font-size: 1.35rem;
+  }
+
+  .blog-content ul,
+  .blog-content ol {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    padding-left: 1.75rem;
+  }
+
+  .blog-content ul {
+    list-style-type: disc;
+  }
+
+  .blog-content ol {
+    list-style-type: decimal;
+  }
+
+  .blog-content li {
+    margin-bottom: 0.5rem;
+  }
+
+  .blog-content a {
+    color: var(--color-secondary, #b52132);
+    text-decoration: underline;
+    font-weight: 600;
+    transition: opacity 0.2s ease;
+  }
+
+  .blog-content a:hover {
+    opacity: 0.8;
+  }
+
+  .blog-content blockquote {
+    border-left: 4px solid var(--color-accent, #ffb035);
+    padding-left: 1.25rem;
+    font-style: italic;
+    margin: 1.5rem 0;
+    color: #555555;
+  }
+
+  .blog-content img {
+    border-radius: 1rem;
+    max-width: 100%;
+    height: auto;
+    margin: 2rem auto;
+    display: block;
+  }
+</style>

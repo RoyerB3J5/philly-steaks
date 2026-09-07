@@ -25,7 +25,7 @@ export default {
     buttons: [
       {
         label: "Call Now",
-        href: "#",
+        href: "tel:+14072394976",
       },
       {
         label: "Order Now",
@@ -42,7 +42,7 @@ export default {
       buttons: [
         {
           label: "Call Now",
-          href: "#",
+          href: "tel:+14072394976",
         },
         {
           label: "Order Now",
@@ -76,7 +76,7 @@ export default {
       buttons: [
         {
           label: "Call Now",
-          href: "#",
+          href: "tel:+14072394976",
         },
         {
           label: "Order Now",
@@ -135,7 +135,7 @@ export default {
       buttons: [
         {
           label: "Call Now",
-          href: "#",
+          href: "tel:+14072394976",
         },
         {
           label: "Order Now",
@@ -181,7 +181,7 @@ export default {
         "Skip the long lines and enjoy delicious halal food just minutes from Disney. Order ahead and we’ll have your meal ready when you arrive. Fresh, tasty, and affordable.",
       button: {
         label: "call now",
-        href: "#",
+        href: "tel:+14072394976",
       },
     },
     clients: {
@@ -234,7 +234,7 @@ export default {
       buttons: [
         {
           label: "Call Now",
-          href: "#",
+          href: "tel:+14072394976",
         },
         {
           label: "Order Now",
@@ -289,6 +289,16 @@ export default {
       title:
         'BLOG OF <br/> <span class="text-accent"> Orlando’s Philly Steak</span>',
     },
+    readMore: "Read More",
+    previous: "Previous",
+    next: "Next",
+    page: "Page",
+    of: "of",
+    backToBlog: "Back to Blog",
+    postedBy: "Posted by",
+    on: "on",
+    noPosts: "No blog posts available at the moment.",
+    minRead: "min read",
   },
   contact: {
     form: {
@@ -306,7 +316,7 @@ export default {
       buttons: [
         {
           label: "Call Now",
-          href: "#",
+          href: "tel:+14072394976",
         },
         {
           label: "Order Now",

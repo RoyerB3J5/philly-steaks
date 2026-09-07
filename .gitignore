@@ -3,6 +3,7 @@ dist/
 
 # generated types
 .astro/
+.vercel/
 
 # dependencies
 node_modules/
@@ -16,6 +17,7 @@ pnpm-debug.log*
 # environment variables
 .env
 .env.production
+.env.example
 
 # macOS-specific files
 .DS_Store

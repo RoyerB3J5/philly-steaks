@@ -25,7 +25,7 @@ export default {
     buttons: [
       {
         label: "Call Now",
-        href: "#",
+        href: "tel:+14072394976",
       },
       {
         label: "Order Now",
@@ -42,7 +42,7 @@ export default {
       buttons: [
         {
           label: "Call Now",
-          href: "#",
+          href: "tel:+14072394976",
         },
         {
           label: "Order Now",
@@ -76,7 +76,7 @@ export default {
       buttons: [
         {
           label: "Call Now",
-          href: "#",
+          href: "tel:+14072394976",
         },
         {
           label: "Order Now",
@@ -135,7 +135,7 @@ export default {
       buttons: [
         {
           label: "Call Now",
-          href: "#",
+          href: "tel:+14072394976",
         },
         {
           label: "Order Now",
@@ -181,13 +181,13 @@ export default {
         "Skip the long lines and enjoy delicious halal food just minutes from Disney. Order ahead and we’ll have your meal ready when you arrive. Fresh, tasty, and affordable.",
       button: {
         label: "call now",
-        href: "#",
+        href: "tel:+14072394976",
       },
     },
     clients: {
-      tag: '<span class="text-accent"> On the feed:</span>',
+      tag: '<span class="text-secondary"> On the feed:</span>',
       title: "clients love",
-      tag2: '<span class="text-accent"> Follow the flavor!</span>',
+      tag2: '<span class="text-secondary"> Follow the flavor!</span>',
       follow: "Follow us",
     },
     reviews: {
@@ -234,7 +234,7 @@ export default {
       buttons: [
         {
           label: "Call Now",
-          href: "#",
+          href: "tel:+14072394976",
         },
         {
           label: "Order Now",
@@ -289,6 +289,16 @@ export default {
       title:
         'BLOG OF <br/> <span class="text-accent"> Orlando’s Philly Steak</span>',
     },
+    readMore: "Read More",
+    previous: "Previous",
+    next: "Next",
+    page: "Page",
+    of: "of",
+    backToBlog: "Back to Blog",
+    postedBy: "Posted by",
+    on: "on",
+    noPosts: "No blog posts available at the moment.",
+    minRead: "min read",
   },
   contact: {
     form: {
@@ -306,7 +316,7 @@ export default {
       buttons: [
         {
           label: "Call Now",
-          href: "#",
+          href: "tel:+14072394976",
         },
         {
           label: "Order Now",
@@ -365,39 +375,39 @@ export default {
   },
   seo: {
     main: {
-      title: "Orlando's Philly Steak | Gyro & Wings",
+      title: "Halal Philly Steak & Gyro Near Disney | Orlando's Philly Steak",
       description:
-        "Orlando's Philly Steak is your go-to destination for authentic Philly cheesesteaks, gyros, and wings. Experience the best flavors in town!",
+        "Craving halal food near Disney? Orlando's Philly Steak serves fresh cheesesteaks, gyros, shawarma & rice. Open daily 11AM-10:30PM, minutes from Disney World.",
       keywords:
-        "Orlando Philly Steak, Gyro, Wings, Cheesesteak, Best Philly Cheesesteak in Orlando",
+        "halal food near Disney, Philly cheesesteak Orlando, gyro Orlando, shawarma Orlando, halal restaurant Orlando, Orlando's Philly Steak",
     },
     menu: {
-      title: "Orlando's Philly Steak | Gyro & Wings",
+      title: "Menu & Prices | Halal Cheesesteaks, Gyros & Shawarma Orlando",
       description:
-        "Orlando's Philly Steak is your go-to destination for authentic Philly cheesesteaks, gyros, and wings. Experience the best flavors in town!",
+        "Explore the Orlando's Philly Steak menu: halal cheesesteaks, gyro & greek salad, chicken gyro & fries, shawarma & rice. Fresh, tasty and affordable near Disney.",
       keywords:
-        "Orlando Philly Steak, Gyro, Wings, Cheesesteak, Best Philly Cheesesteak in Orlando",
+        "Orlando Philly Steak menu, halal menu Orlando, gyro salad menu, cheesesteak prices Orlando, shawarma and rice, halal food near Disney menu",
     },
     aboutUs: {
-      title: "Orlando's Philly Steak | Gyro & Wings",
+      title: "About Us | Halal Restaurant Near Disney - Orlando's Philly Steak",
       description:
-        "Orlando's Philly Steak is your go-to destination for authentic Philly cheesesteaks, gyros, and wings. Experience the best flavors in town!",
+        "Family-owned halal restaurant near Disney World. Fresh quality food, low prices and clean environment. Open 7 days 11AM-10:30PM near Disney Resort.",
       keywords:
-        "Orlando Philly Steak, Gyro, Wings, Cheesesteak, Best Philly Cheesesteak in Orlando",
+        "about Orlando's Philly Steak, halal restaurant Orlando story, Muslim owned restaurant Orlando, clean halal restaurant, halal food near Disney World",
     },
     blog: {
-      title: "Orlando's Philly Steak | Gyro & Wings",
+      title: "Blog | Halal Food Guides & Disney Dining Tips - Philly Steak",
       description:
-        "Orlando's Philly Steak is your go-to destination for authentic Philly cheesesteaks, gyros, and wings. Experience the best flavors in town!",
+        "Read the Orlando's Philly Steak blog: halal food guides, Disney dining tips, new dishes and restaurant news from your halal spot near Disney World.",
       keywords:
-        "Orlando Philly Steak, Gyro, Wings, Cheesesteak, Best Philly Cheesesteak in Orlando",
+        "halal food blog Orlando, Disney dining tips, Orlando food blog, gyro guides, halal restaurant news, Philly Steak blog",
     },
     contact: {
-      title: "Orlando’s Philly Steak | Gyro & Wings",
+      title: "Contact Us | Halal Food Near Disney - Orlando's Philly Steak",
       description:
-        "Orlando’s Philly Steak is your go-to destination for authentic Philly cheesesteaks, gyros, and wings. Experience the best flavors in town!",
+        "Questions? Contact Orlando's Philly Steak, 11985 S Apopka Vineland Rd, Orlando FL. Call +1 407 239 4976. Open daily 11AM-10:30PM, minutes from Disney.",
       keywords:
-        "Orlando Philly Steak, Gyro, Wings, Cheesesteak, Best Philly Cheesesteak in Orlando",
+        "contact Orlando Philly Steak, halal restaurant phone Orlando, halal restaurant address Disney, halal catering Orlando, directions halal food Disney",
     },
   },
 };
