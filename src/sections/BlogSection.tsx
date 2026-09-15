@@ -38,7 +38,7 @@ export default function BlogSection({
     if (!containerRef.current) return;
 
     const elements = containerRef.current.querySelectorAll<HTMLElement>(
-      ".fade-up-a, .fade-down-a, .fade-left-a, .fade-right-a"
+      ".fade-up-a, .fade-down-a, .fade-left-a, .fade-right-a",
     );
 
     const observer = new IntersectionObserver(
@@ -56,7 +56,7 @@ export default function BlogSection({
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.15 },
     );
 
     elements.forEach((el) => {
@@ -85,11 +85,11 @@ export default function BlogSection({
       ref={containerRef}
       className="w-full flex flex-col justify-center items-center bg-white"
     >
-      <div className="container-full flex flex-col justify-center items-center py-16 md:py-20 lg:py-30 gap-8 md:gap-12">
+      <div className="container-full flex flex-col justify-center items-center py-16 gap-8 md:gap-16">
         <div className="flex flex-col justify-center items-center gap-12">
           <h1
             dangerouslySetInnerHTML={{ __html: content.title }}
-            className="title text-center fade-up-a"
+            className="text-[56px] md:text-[96px] font-rust text-black leading-[100%] font-normal fade-up-a text-center"
           />
         </div>
 
@@ -190,7 +190,7 @@ export default function BlogSection({
                           {pageNum}
                         </button>
                       );
-                    }
+                    },
                   )}
                 </div>
 

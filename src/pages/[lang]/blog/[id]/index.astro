@@ -4,8 +4,7 @@ export const prerender = false;
 import en from "../../../../i18n/en";
 import es from "../../../../i18n/es";
 import Layout from "../../../../layouts/Layout.astro";
-import BannerLoop from "../../../../sections/Main/BannerLoop.astro";
-import Craving from "../../../../sections/Main/Craving.astro";
+
 import type { Language } from "../../../../types/language.type";
 import { getPostById } from "../../../../lib/ghl/blog-services";
 import type { BlogPostDetailDTO } from "../../../../lib/ghl/types";
@@ -168,9 +167,6 @@ if (!post) {
       />
     </div>
   </article>
-
-  <BannerLoop content={t.main.banner} />
-  <Craving content={t.main.craving} />
 </Layout>
 
 <style is:global>

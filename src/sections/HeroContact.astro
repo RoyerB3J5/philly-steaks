@@ -9,46 +9,25 @@ const { content } = Astro.props as Props;
 ---
 
 <section
-  class="w-full h-auto md:h-[60vh] xl:h-[calc(100vh-var(--header-height))] flex flex-col justify-start xl:justify-end items-center overflow-hidden relative bg-accent"
+  class="w-full h-auto flex flex-col justify-start xl:justify-end items-center overflow-hidden relative bg-black"
 >
   <div
-    class="container-full flex flex-col md:flex-row justify-center md:justify-between items-center md:items-start py-16 xl:pb-13 relative gap-8 md:gap-4 lg:gap-0 h-full xl:h-auto"
+    class="container-full flex flex-col md:flex-row justify-center md:justify-between items-center py-15 md:py-10 relative gap-6 md:gap-4 lg:gap-0 h-full"
   >
     <div
-      class="flex flex-col justify-start items-start gap-8 w-full md:w-[48%] max-w-[535px] relative h-auto md:h-full"
+      class="flex flex-col justify-center items-center md:items-start w-full md:w-[40%] xl:w-[50%] relative"
     >
-      <div
-        class="w-[130px] lg:w-[156px] h-auto absolute bottom-[20%] lg:bottom-[30%] xl:bottom-[20%] left-[5%] xl:left-[10%] rotate-[90deg] hidden md:block item-flotante-complejo" data-push-container
-      >
-        <img
-          src="/images/tomate.webp"
-          alt=""
-          "Tomate"
-          width="700"
-          height="709"
-          class="w-full h-auto pointer-events-auto transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] will-change-transform"
-        />
-      </div>
-      <div
-        class="w-[140px] h-auto absolute bottom-0 xl:-bottom-[10%] right-[5%] xl:right-[0%] rotate-[20deg] hidden md:block item-flotante-rebote" data-push-container
-      >
-        <img
-          src="/images/papa.webp"
-          alt="Papa"
-          width="700"
-          height="837"
-          class="w-full h-auto pointer-events-auto transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] will-change-transform"
-        />
-      </div>
-
-      <div class="flex flex-col justify-center items-start gap-4">
-        <p class="uppercase subtitle-sm fade-up-a">{content.tag}</p>
-        <h1 class="title uppercase fade-up-a">{content.title}</h1>
-      </div>
-      <p class="paragraph fade-up-a">{content.description}</p>
+      <p class="tag-size text-white fade-up-a">{content.tag}</p>
+      <h1
+        class="text-[56px] md:text-[64px] lg:text-[80px] font-rust text-white leading-[100%] font-normal fade-up-a text-center md:text-start mt-4 md:mt-6"
+        set:html={content.title}
+      />
+      <p class="paragraph fade-up-a text-white w-full xl:w-[70%] text-center md:text-start">
+        {content.description}
+      </p>
     </div>
     <div
-      class="w-full md:w-[52%] p-8 border-[1.5px] rounded-2xl border-black bg-white h-full xl:h-[65vh] fade-up-a"
+      class="w-full md:w-[55%] xl:w-[50%] p-11 rounded-3xl bg-white/5 h-[50vh] xl:h-[65vh] fade-up-a"
     >
     </div>
   </div>

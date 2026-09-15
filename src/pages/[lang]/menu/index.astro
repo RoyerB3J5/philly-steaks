@@ -2,10 +2,10 @@
 import en from "../../../i18n/en";
 import es from "../../../i18n/es";
 import Layout from "../../../layouts/Layout.astro";
-import BannerLoop from "../../../sections/Main/BannerLoop.astro";
-import Craving from "../../../sections/Main/Craving.astro";
+import Big from "../../../sections/Main/Big.astro";
 import Hero from "../../../sections/Main/Hero.astro";
-import Steaks from "../../../sections/Main/Steaks.astro";
+import Quality from "../../../sections/Main/Quality.astro";
+import Reviews from "../../../sections/Main/Reviews.astro";
 import type { Language } from "../../../types/language.type";
 
 export function getStaticPaths() {
@@ -29,7 +29,7 @@ const seo = t.seo.menu;
   canonicalPath="/menu"
 >
   <Hero content={t.menu.hero} />
-  <Steaks content={t.menu.difference} position="third" />
-  <BannerLoop content={t.main.banner} />
-  <Craving content={t.main.craving} />
+  <Reviews content={t.main.reviews} />
+  <Quality content={t.main.quality} />
+  <Big content={t.main.big} />
 </Layout>

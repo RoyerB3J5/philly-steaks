@@ -1,20 +1,18 @@
 import {
   useState,
   useEffect,
+  useLayoutEffect,
   useRef,
   useCallback,
   type MouseEvent,
   type TouchEvent,
 } from "react";
 
-const GAP = 24;
 const AUTOPLAY_INTERVAL = 8000;
 
 type ReviewItem = {
   description: string;
   name: string;
-  color: string;
-  icon: string;
 };
 
 interface CarouselReviewProps {
@@ -22,18 +20,14 @@ interface CarouselReviewProps {
 }
 
 export default function ReviewCarousel({ items }: CarouselReviewProps) {
-  if (items.length === 0) return null;
-
   const N = items.length;
   const expandedItems = [...items, ...items, ...items];
 
   const [currentIndex, setCurrentIndex] = useState(N);
-  const [isTransitioning, setIsTransitioning] = useState(true);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [containerWidth, setContainerWidth] = useState(0);
-  const [visibleItems, setVisibleItems] = useState(1);
-  const [peekFraction, setPeekFraction] = useState(0.2);
 
   const dragStart = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -46,42 +40,49 @@ export default function ReviewCarousel({ items }: CarouselReviewProps) {
     }
   }, []);
 
-  useEffect(() => {
+  // True once we know the real viewport width. Before that every slide
+  // would compute width 0 and pile up at translate 0, so the track stays
+  // hidden and unanimated until measurement lands.
+  const isMeasured = containerWidth > 0;
+
+  // useLayoutEffect so the width is measured before the browser paints —
+  // otherwise the zero-width (piled-up) layout flashes on load.
+  useLayoutEffect(() => {
     const handleResize = () => {
       setIsTransitioning(false);
-
-      const windowWidth = window.innerWidth;
-      if (windowWidth < 640) {
-        setVisibleItems(1);
-        setPeekFraction(0.02);
-      } else if (windowWidth < 1024) {
-        setVisibleItems(2);
-        setPeekFraction(0.15);
-      } else if (windowWidth < 1280) {
-        setVisibleItems(3);
-        setPeekFraction(0.2);
-      } else {
-        setVisibleItems(4);
-        setPeekFraction(0.2);
-      }
-
       measureContainerWidth();
     };
 
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+
+    // The carousel fills remaining flex space, so its width can change
+    // without a window resize (e.g. siblings loading). Observe it directly.
+    const el = containerRef.current;
+    let observer: ResizeObserver | null = null;
+    if (el && typeof ResizeObserver !== "undefined") {
+      observer = new ResizeObserver(() => {
+        setIsTransitioning(false);
+        measureContainerWidth();
+      });
+      observer.observe(el);
+    }
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      if (observer) observer.disconnect();
+    };
   }, [measureContainerWidth]);
 
   useEffect(() => {
-    if (!isTransitioning) {
+    if (!isTransitioning && isMeasured) {
       const raf = requestAnimationFrame(() => {
         setIsTransitioning(true);
         isResetting.current = false;
       });
       return () => cancelAnimationFrame(raf);
     }
-  }, [currentIndex, isTransitioning]);
+  }, [currentIndex, isTransitioning, isMeasured]);
 
   const stopAutoplay = useCallback(() => {
     if (autoplayTimer.current) {
@@ -99,9 +100,10 @@ export default function ReviewCarousel({ items }: CarouselReviewProps) {
   }, [stopAutoplay]);
 
   useEffect(() => {
+    if (!isMeasured) return;
     startAutoplay();
     return () => stopAutoplay();
-  }, [visibleItems, startAutoplay, stopAutoplay]);
+  }, [isMeasured, startAutoplay, stopAutoplay]);
 
   const handleTransitionEnd = () => {
     if (isResetting.current) return;
@@ -189,22 +191,21 @@ export default function ReviewCarousel({ items }: CarouselReviewProps) {
     startAutoplay();
   };
 
-  const itemWidth =
-    containerWidth > 0
-      ? (containerWidth - (visibleItems + 1) * GAP) /
-        (visibleItems + 2 * peekFraction)
-      : 0;
-  const stepWidth = itemWidth + GAP;
-  // Account for the outer gaps so the neighboring-card peeks match exactly.
-  const peekOffset = peekFraction * itemWidth + GAP;
-  const translateX = -currentIndex * stepWidth + peekOffset + dragOffset;
+  if (N === 0) return null;
+
+  // One slide fills the viewport exactly. The track has no inter-item gap,
+  // so each step is exactly one container width — no sliver of the next
+  // slide can peek through (including subpixel rounding cases).
+  const itemWidth = containerWidth > 0 ? containerWidth : 0;
+  const stepWidth = itemWidth;
+  const translateX = -currentIndex * stepWidth + dragOffset;
 
   const arrowClass =
-    "w-8 h-8 rounded-full border border-white text-white flex items-center justify-center transition-colors duration-300 hover:bg-[#2D2D2D] hover:text-white cursor-pointer";
+    "w-8 h-8 rounded-full border border-black text-black flex items-center justify-center transition-colors duration-300 hover:border-secondary hover:text-secondary cursor-pointer";
 
   return (
-    <section className="w-full flex flex-col justify-center items-center">
-      <div className="w-full">
+    <section className="w-full lg:w-auto lg:flex-1 min-w-0 flex flex-col justify-center items-center">
+      <div className="w-full ">
         <div
           ref={containerRef}
           className="w-full overflow-hidden cursor-grab active:cursor-grabbing select-none"
@@ -221,41 +222,48 @@ export default function ReviewCarousel({ items }: CarouselReviewProps) {
           <div
             className="flex items-stretch"
             style={{
-              gap: `${GAP}px`,
+              gap: 0,
               transform: `translate3d(${translateX}px, 0, 0)`,
-              transition: isTransitioning ? "transform 300ms ease-out" : "none",
+              transition:
+                isTransitioning && isMeasured
+                  ? "transform 300ms ease-out"
+                  : "none",
+              visibility: isMeasured ? "visible" : "hidden",
             }}
             onTransitionEnd={handleTransitionEnd}
           >
             {expandedItems.map((item, index) => (
               <div
-                className={`shrink-0 rounded-3xl ${item.color} flex flex-col justify-center items-start gap-7 p-8 border-2 border-black`}
+                className={`shrink-0 flex flex-col md:flex-row justify-center items-start md:items-stretch gap-4 md:gap-6`}
                 style={{ width: itemWidth }}
                 key={index}
               >
-                <img
-                  src="/icons/coma.svg"
-                  alt="Coma"
-                  className="w-[34px] h-8"
-                  decoding="async"
-                  loading="lazy"
-                />
-                <p className="paragraph text-primary">{item.description}</p>
-                <div className="w-full flex justify-between items-center">
-                  <h3 className="paragraph-bold text-secondary">{item.name}</h3>
-                  <img
-                    src={`/icons/${item.icon}.svg`}
-                    alt={item.icon}
-                    className="w-14 h-14"
-                    decoding="async"
-                    loading="lazy"
-                  />
+                <p className="self-start md:[writing-mode:vertical-lr] rotate-0 md:rotate-180 text-[16px] font-medium leading-[120%] tracking-[5.12px] uppercase text-secondary">
+                  {item.name}
+                </p>
+                <div className="w-full md:w-[1px] h-[1px] md:h-auto bg-black/10" />
+                <div className="flex flex-col justify-center items-start gap-4 md:gap-6">
+                  <p className="paragraph text-paragraph">{item.description}</p>
+                  <div className="flex justify-center items-center gap-2">
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <img
+                        key={i}
+                        src="/icons/star-small.svg"
+                        alt="Star"
+                        decoding="async"
+                        loading="eager"
+                        width="8"
+                        height="8"
+                        className="w-4 h-4"
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
-        <div className="flex items-center justify-center gap-3 mt-6 hidden">
+        <div className="flex items-center justify-start gap-4 mt-8 w-full">
           <button
             type="button"
             onClick={() => slide(-1)}

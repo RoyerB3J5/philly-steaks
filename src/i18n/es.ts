@@ -1,6 +1,12 @@
 export default {
   header: {
+    description:
+      "Call and order at <a href='tel:+14072394976'>+1 407 239 4976</a> or find us on <a href='#' class=' underline decoration-[#FFEA00] underline-offset-4'>Here</a>",
     nav: [
+      {
+        label: "Home",
+        href: "/",
+      },
       {
         label: "Menu",
         href: "/menu",
@@ -18,10 +24,6 @@ export default {
         href: "/contact",
       },
     ],
-    direction: {
-      label: "Direction",
-      href: "#",
-    },
     buttons: [
       {
         label: "Call Now",
@@ -35,8 +37,9 @@ export default {
   },
   main: {
     hero: {
+      tag: "Orlando’s Philly Steak",
       title:
-        'ORLANDO’S PHILLY STEAK <br/> <span class="text-accent"> Halal foods</span>',
+        "TASTE OF HALAL <br/> <span class='inline-block font-script text-[80px] md:text-[90px] lg:text-[112px] text-accent leading-[80%] font-normal -translate-y-4 md:-translate-y-7'>Done Right</span>",
       image: "/main/hero",
       imageMobile: "/main/hero-mobile",
       buttons: [
@@ -51,176 +54,124 @@ export default {
       ],
     },
     steaks: {
-      title: "The steaks everyone craves",
-      tag: "Fresh off grill",
+      title:
+        "signature <br/> <span class='inline-block font-script text-[80px] md:text-[112px] text-accent leading-[80%] font-normal -translate-y-4 md:-translate-y-7'>Food</span>",
+      tag: " Good Food, Done Right",
       plates: [
         {
           image: "plate1",
-          title: "Gyro salad",
+          title: "Get Halal Food",
           despcription:
-            "Fresh lettuce topped with seasoned gyro meat, tomatoes, onions, cucumbers, feta cheese, olives and tzatziki sauce.",
+            "Get delicious quality food at a <br/> Reasonable Worth.",
         },
         {
           image: "plate2",
-          title: "Shawarma & Rice",
+          title: "Low Cost",
           despcription:
-            "Tender marinated shawarma served over seasoned rice with fresh salad and creamy garlic sauce.",
+            "Our food items are Fresh, <br/> Tasty, and Qualityful.",
         },
         {
           image: "plate3",
           title: "Gyro salad",
           despcription:
-            "Fresh lettuce topped with seasoned gyro meat, tomatoes, onions, cucumbers, feta cheese, olives and tzatziki sauce.",
-        },
-      ],
-      buttons: [
-        {
-          label: "Call Now",
-          href: "tel:+14072394976",
-        },
-        {
-          label: "Order Now",
-          href: "#",
+            "Our restaurant Environment <br/> is Clean and Comfortable.",
         },
       ],
     },
-    Halal: {
-      title: 'Halal food near <span class="text-secondary"> Disney!</span>',
+    halal: {
+      title: "Halal <br/> Food",
+      title2: "Near Disney!",
       description:
-        "Enjoy delicious and healthy Halal food after your Disney adventure. Orlando’s Philly Steak & Gyro is open daily from 11:00 AM to 10:30 PM, offering fresh, affordable meals every day of the week. Relax and enjoy the parks knowing quality food is nearby. Save time by calling ahead and ordering your favorite dishes from our menu.",
-    },
-    Good: {
-      title: "Good food, done right",
-      Pros: [
-        {
-          image: "Halal",
-          title: "Get halal food",
-          description: "Get delicious quality food at a Reasonable Worth.",
-        },
-        {
-          image: "Low",
-          title: "Low cost",
-          description: "Our food items are Fresh, Tasty, and Qualityful.",
-        },
-        {
-          image: "Clean",
-          title: "Clean environment",
-          description: "Our restaurant Environment is Clean and Comfortable.",
-        },
-      ],
-    },
-    difference: {
-      title: "Taste the Difference",
-      tag: "Satisfy your cravings",
-      plates: [
-        {
-          image: "plate4",
-          title: "Gyro & greek salad",
-          despcription:
-            "Fresh lettuce topped with seasoned gyro meat, tomatoes, onions, cucumbers, feta cheese, olives and tzatziki sauce.",
-        },
-        {
-          image: "plate5",
-          title: "chicken gyro & fries",
-          despcription:
-            "Warm pita filled with seasoned grilled chicken, lettuce, tomatoes, onions and tzatziki sauce, served with crispy golden fries.",
-        },
-        {
-          image: "plate6",
-          title: "chicken",
-          despcription:
-            "Fresh lettuce topped with grilled chicken, tomatoes, onions, cucumbers, feta cheese and a creamy dressing.",
-        },
-      ],
-      buttons: [
-        {
-          label: "Call Now",
-          href: "tel:+14072394976",
-        },
-        {
-          label: "Order Now",
-          href: "#",
-        },
-      ],
-    },
-    banner: {
-      title: "check the menu",
+        "Orlando’s Philly Steak & Gyro provides delicious and healthy Halal food daily from 11:00 AM to 10:30 PM, perfect for post-Disney adventures. Enjoy fresh, affordable meals and save time by calling ahead to order your favorites.",
       button: {
-        label: "Order Now",
+        label: "Read More",
+        href: "#",
+      },
+      satisfy: "Satisfy your cravings",
+    },
+    quality: {
+      tag: "quality halal food",
+      title:
+        "GOOD FOOD <br/> <span class='inline-block font-script text-[80px] md:text-[150px] lg:text-[216px] text-accent leading-[80%] font-normal -translate-y-5 md:-translate-y-9'>Good Vibes</span>",
+      button: {
+        label: "CHECK THE  FULL MENU",
         href: "#",
       },
     },
-    options: {
-      title: "Choose your perfect option",
-      Pros: [
+    perfect: {
+      tag: "choose your",
+      title:
+        "perfect <br/> <span class='inline-block font-script text-[80px] md:text-[112px] text-secondary leading-[80%] font-normal -translate-y-5 md:-translate-y-9'>Options</span>",
+      items: [
         {
-          image: "dine",
           title: "Dine-In",
           description:
             "Step into our inviting space, where you can enjoy our halal food in the best atmosphere and take advantage of the attentive service offered by our friendly staff.",
         },
         {
-          image: "Take",
+          title: "Delivery",
+          description:
+            "Call us at <a href='tel:+14072394976' class='hover:text-secondary transition-all duration-300 ease-in-out'>+1 407 239 4976</a> to place your order, pick it up with just a few easy steps, and enjoy the delicious Halal food near Disney.",
+        },
+        {
           title: "Take-out",
           description:
             "Experience the convenience of ordering from the menu and then picking up your carefully prepared meals—perfect for enjoying wherever your day takes you.",
         },
+      ],
+    },
+    big: {
+      tag: "Halal Food Near Disney <br class='md:hidden'/> for Every Craving",
+      title:
+        "BIG CRAVING? <br/> <span class='inline-block font-script text-[80px] md:text-[120px] lg:text-[144px] text-accent leading-[80%] font-normal -translate-y-4 md:-translate-y-9'>We've Got You, Guy.</span>",
+    },
+    delicious: {
+      tag: "Orlando’s Philly Steak",
+      title:
+        "delicious <br/> <span class='inline-block font-script text-[80px] md:text-[120px] lg:text-[144px] text-accent leading-[80%] font-normal -translate-y-4 md:-translate-y-9'>Food</span>",
+      description:
+        "Skip the long lines and enjoy delicious halal food just minutes from Disney. Order ahead and we’ll have your meal ready when you arrive. Fresh, tasty, and affordable.",
+      buttons: [
         {
-          image: "Delivery",
-          title: "Delivery",
-          description:
-            "Call us at +1 407 239 4976 to place your order, pick it up with just a few easy steps, and enjoy the delicious Halal food near Disney.",
+          label: "Call Now",
+          href: "tel:+14072394976",
+        },
+        {
+          label: "Order Now",
+          href: "#",
         },
       ],
     },
-    craving: {
-      title: "Big craving?",
-      subtitle: "WE’VE GOT YOU, GUY.",
-      tag: "Halal Food Near Disney for Every Craving",
-      description:
-        "Skip the long lines and enjoy delicious halal food just minutes from Disney. Order ahead and we’ll have your meal ready when you arrive. Fresh, tasty, and affordable.",
-      button: {
-        label: "call now",
-        href: "tel:+14072394976",
-      },
-    },
     clients: {
-      tag: '<span class="text-accent"> On the feed:</span>',
-      title: "clients love",
-      tag2: '<span class="text-accent"> Follow the flavor!</span>',
+      tag: "on the feed:",
+      title:
+        "clients love <br/> <span class='inline-block font-script text-[80px] md:text-[112px] text-accent leading-[80%] font-normal -translate-y-3 md:-translate-y-7'>The Flavor!</span>",
       follow: "Follow us",
     },
     reviews: {
-      tag: "Words from our wonderful people",
-      title: "what people are <br class='hidden md:block'> saying.",
+      tag: "food lovers",
+      title:
+        "SATISFIED <br/> <span class='inline-block font-script text-[80px] xl:text-[96px] text-secondary leading-[80%] font-normal -translate-y-4.5 md:-translate-y-6'>Customers</span>",
       opinion: [
         {
           description:
             "Small restaurant, but everything organized and clean. We ordered the philly cheese steak and the chicken, was ok.",
-          name: "Mariana Boff",
-          icon: "heart",
-          color: "bg-white",
+          name: "Mariana B.",
         },
         {
           description:
             "The food is fresh and delicious.  The service is excellent and the prices are very reasonable.  Kids menu is available.",
-          name: "Rabih J",
-          icon: "smile",
-          color: "bg-accent",
+          name: "Rabih J.",
         },
         {
           description:
             "All the meat is halal, which is a big plus. From what I could tell, it also seems to be Muslim-owned, and they came across as good people.",
-          name: "Asif Rehmani",
-          icon: "like",
-          color: "bg-white",
+          name: "Asif R.",
         },
         {
           description:
             "I’ve been coming here for the last 11 years and the food is always fresh and has great flavor! The My go to meal is the Gyro.",
-          name: "John Restrepo",
-          icon: "star",
-          color: "bg-accent",
+          name: "John R.",
         },
       ],
     },
@@ -228,7 +179,9 @@ export default {
 
   menu: {
     hero: {
-      title: 'All menus & <br/> <span class="text-accent"> prices</span>',
+      tag: "Orlando’s Philly Steak",
+      title:
+        "ALL MENUS <br/> <span class='inline-block font-script text-[112px] text-accent leading-[80%] font-normal -translate-y-7'>& Prices</span>",
       image: "/hero-menu",
       imageMobile: "/hero-menu-mobile",
       buttons: [
@@ -275,19 +228,27 @@ export default {
   },
   aboutUs: {
     hero: {
-      title: "about us",
-      button: "order now",
-      Halal: {
-        title: 'Halal food near <span class="text-secondary"> Disney!</span>',
-        description:
-          "Enjoy delicious and healthy Halal food after your Disney adventure. Orlando’s Philly Steak & Gyro is open daily from 11:00 AM to 10:30 PM, offering fresh, affordable meals every day of the week. Relax and enjoy the parks knowing quality food is nearby. Save time by calling ahead and ordering your favorite dishes from our menu.",
-      },
+      tag: "Orlando’s Philly Steak",
+      title:
+        "TASTE OF HALAL <br/> <span class='inline-block font-script text-[112px] text-accent leading-[80%] font-normal -translate-y-7'>Done Right</span>",
+      image: "/main/hero",
+      imageMobile: "/main/hero-mobile",
+      buttons: [
+        {
+          label: "Call Now",
+          href: "tel:+14072394976",
+        },
+        {
+          label: "Order Now",
+          href: "#",
+        },
+      ],
     },
   },
   blog: {
     orlando: {
       title:
-        'BLOG OF <br/> <span class="text-accent"> Orlando’s Philly Steak</span>',
+        "Orlando's <br/> <span class='inline-block font-script text-[112px] text-secondary leading-[80%] font-normal -translate-y-7'>Philly Blog</span>",
     },
     readMore: "Read More",
     previous: "Previous",
@@ -303,7 +264,8 @@ export default {
   contact: {
     form: {
       tag: "contact orlando’s philly steak",
-      title: "still curious?",
+      title:
+        "Still<br/> <span class='inline-block font-script text-[80px] lg:text-[96px] text-accent leading-[80%] font-normal -translate-y-4 lg:-translate-y-7'>Curious?</span>",
       description:
         "We hope you found everything you needed about Orlando’s Philly Stake. But if you’ve got more questions, hit us up.",
     },
@@ -375,39 +337,39 @@ export default {
   },
   seo: {
     main: {
-      title: "Orlando's Philly Steak | Gyro & Wings",
+      title: "Halal Philly Steak & Gyro Near Disney | Orlando's Philly Steak",
       description:
-        "Orlando's Philly Steak is your go-to destination for authentic Philly cheesesteaks, gyros, and wings. Experience the best flavors in town!",
+        "Craving halal food near Disney? Orlando's Philly Steak serves fresh cheesesteaks, gyros, shawarma & rice. Open daily 11AM-10:30PM, minutes from Disney World.",
       keywords:
-        "Orlando Philly Steak, Gyro, Wings, Cheesesteak, Best Philly Cheesesteak in Orlando",
+        "halal food near Disney, Philly cheesesteak Orlando, gyro Orlando, shawarma Orlando, halal restaurant Orlando, Orlando's Philly Steak",
     },
     menu: {
-      title: "Orlando's Philly Steak | Gyro & Wings",
+      title: "Menu & Prices | Halal Cheesesteaks, Gyros & Shawarma Orlando",
       description:
-        "Orlando's Philly Steak is your go-to destination for authentic Philly cheesesteaks, gyros, and wings. Experience the best flavors in town!",
+        "Explore the Orlando's Philly Steak menu: halal cheesesteaks, gyro & greek salad, chicken gyro & fries, shawarma & rice. Fresh, tasty and affordable near Disney.",
       keywords:
-        "Orlando Philly Steak, Gyro, Wings, Cheesesteak, Best Philly Cheesesteak in Orlando",
+        "Orlando Philly Steak menu, halal menu Orlando, gyro salad menu, cheesesteak prices Orlando, shawarma and rice, halal food near Disney menu",
     },
     aboutUs: {
-      title: "Orlando's Philly Steak | Gyro & Wings",
+      title: "About Us | Halal Restaurant Near Disney - Orlando's Philly Steak",
       description:
-        "Orlando's Philly Steak is your go-to destination for authentic Philly cheesesteaks, gyros, and wings. Experience the best flavors in town!",
+        "Family-owned halal restaurant near Disney World. Fresh quality food, low prices and clean environment. Open 7 days 11AM-10:30PM near Disney Resort.",
       keywords:
-        "Orlando Philly Steak, Gyro, Wings, Cheesesteak, Best Philly Cheesesteak in Orlando",
+        "about Orlando's Philly Steak, halal restaurant Orlando story, Muslim owned restaurant Orlando, clean halal restaurant, halal food near Disney World",
     },
     blog: {
-      title: "Orlando's Philly Steak | Gyro & Wings",
+      title: "Blog | Halal Food Guides & Disney Dining Tips - Philly Steak",
       description:
-        "Orlando's Philly Steak is your go-to destination for authentic Philly cheesesteaks, gyros, and wings. Experience the best flavors in town!",
+        "Read the Orlando's Philly Steak blog: halal food guides, Disney dining tips, new dishes and restaurant news from your halal spot near Disney World.",
       keywords:
-        "Orlando Philly Steak, Gyro, Wings, Cheesesteak, Best Philly Cheesesteak in Orlando",
+        "halal food blog Orlando, Disney dining tips, Orlando food blog, gyro guides, halal restaurant news, Philly Steak blog",
     },
     contact: {
-      title: "Orlando’s Philly Steak | Gyro & Wings",
+      title: "Contact Us | Halal Food Near Disney - Orlando's Philly Steak",
       description:
-        "Orlando’s Philly Steak is your go-to destination for authentic Philly cheesesteaks, gyros, and wings. Experience the best flavors in town!",
+        "Questions? Contact Orlando's Philly Steak, 11985 S Apopka Vineland Rd, Orlando FL. Call +1 407 239 4976. Open daily 11AM-10:30PM, minutes from Disney.",
       keywords:
-        "Orlando Philly Steak, Gyro, Wings, Cheesesteak, Best Philly Cheesesteak in Orlando",
+        "contact Orlando Philly Steak, halal restaurant phone Orlando, halal restaurant address Disney, halal catering Orlando, directions halal food Disney",
     },
   },
 };

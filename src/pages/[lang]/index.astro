@@ -2,13 +2,15 @@
 import en from "../../i18n/en";
 import es from "../../i18n/es";
 import Layout from "../../layouts/Layout.astro";
-import BannerLoop from "../../sections/Main/BannerLoop.astro";
-import Craving from "../../sections/Main/Craving.astro";
-import Good from "../../sections/Main/Good.astro";
+import Big from "../../sections/Main/Big.astro";
+import Delicious from "../../sections/Main/Delicious.astro";
 import Halal from "../../sections/Main/Halal.astro";
 import Hero from "../../sections/Main/Hero.astro";
+import Perfect from "../../sections/Main/Perfect.astro";
+import Posts from "../../sections/Main/Posts.astro";
+import Quality from "../../sections/Main/Quality.astro";
 import Reviews from "../../sections/Main/Reviews.astro";
-import Steaks from "../../sections/Main/Steaks.astro";
+import Signature from "../../sections/Main/Signature.astro";
 import type { Language } from "../../types/language.type";
 
 export function getStaticPaths() {
@@ -32,36 +34,12 @@ const seo = t.seo.main;
   canonicalPath="/"
 >
   <Hero content={t.main.hero} />
-  <Steaks content={t.main.steaks} position="first" />
-  <Halal content={t.main.Halal} />
-  <Good content={t.main.Good} position="first" />
-  <section class="w-full h-auto grid grid-cols-1 md:grid-cols-2">
-    <div
-      class="w-full h-full relative overflow-hidden fade-right-a aspect-square"
-    >
-      <img
-        src="/images/main/gall-1.webp"
-        alt="Gallery Image 1"
-        width="880"
-        height="303"
-        class="h-full w-auto object-cover"
-      />
-    </div>
-    <div
-      class="hidden md:block w-full h-full relative overflow-hidden fade-left-a aspect-square"
-    >
-      <img
-        src="/images/main/gall-2.webp"
-        alt="Gallery Image 2"
-        width="880"
-        height="303"
-        class="h-full w-auto object-cover"
-      />
-    </div>
-  </section>
-  <Steaks content={t.main.difference} position="second" />
-  <BannerLoop content={t.main.banner} />
-  <Good content={t.main.options} position="second" />
-  <Craving content={t.main.craving} />
+  <Signature content={t.main.steaks} />
+  <Halal content={t.main.halal} />
+  <Quality content={t.main.quality} />
+  <Perfect content={t.main.perfect} />
+  <Big content={t.main.big} />
+
+  <Posts content={t.main.clients} />
   <Reviews content={t.main.reviews} />
 </Layout>

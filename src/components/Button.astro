@@ -24,26 +24,33 @@ interface Props {
 
 const {
   text = "",
-  baseBtnClass = "flex justify-center items-center cursor-pointer  transition-all duration-500 ease-in-out z-[10]  py-3.5 rounded-[24px] border-[2px] border-black hover:rounded-none ",
+  baseBtnClass = "flex justify-center items-center cursor-pointer transition-all duration-500 ease-in-out z-[10]  h-12 hover:rounded-none border rounded-[8px] gap-2.5 box-container ",
   extraBtnClass = "",
-  baseTextClass = "text-[16px] font-paragraph font-bold  leading-[100%] text-center",
+  baseTextClass = "text-[15px] font-paragraph font-bold  leading-[100%] text-center",
   textClass = "",
   colorText = "text-white",
   href,
   target,
-  width = "w-[144px]",
+  width = "w-[164px]",
   rel,
   icon,
 } = Astro.props as Props;
 
-// Normalizar hrefs comunes: si por error tiene una barra inicial antes
-// de un esquema `tel:` o `mailto:` la removemos para evitar rutas internas
+// Normalizar hrefs comunes
 const normalizedHref =
   typeof href === "string" && /^\/(tel:|mailto:)/.test(href)
     ? href.replace(/^\/+/, "")
     : href;
 
-// No id necesario: usamos atributos data- para el script cliente
+// Evaluar el color base del SVG (para el atributo fill estático)
+const isSecondary = extraBtnClass.includes("bg-secondary");
+const svgColor = isSecondary ? "#B52132" : "#FFF"; // Por defecto blanco para móvil si es negro, o su color fijo si es secondary
+
+// Clases responsivas de Tailwind para el fill del SVG:
+// Si es secondary, se mantiene siempre #B52132. Si no, de md para abajo es #FFF (#FFFFFF) y de md para arriba es #000000.
+const svgFillClass = isSecondary
+  ? "fill-[#B52132]"
+  : "max-md:fill-[#FFFFFF] md:fill-[#000000]";
 
 // Construir clases finales
 const buttonClasses =
@@ -60,10 +67,42 @@ const paragraphClasses = `${baseTextClass} ${textClass}`.trim();
       rel={rel ?? (target === "_blank" ? "noopener noreferrer" : undefined)}
     >
       {text ? <p class={paragraphClasses}>{text}</p> : <slot />}
+      <div
+        class={`w-4 h-4 rounded-[4px]  flex justify-center items-center ${extraBtnClass.includes("bg-secondary") ? "bg-white" : "bg-black md:bg-white"}`}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="5"
+          height="9"
+          viewBox="0 0 5 9"
+          fill="none"
+        >
+          <path
+            class={svgFillClass}
+            d="M0.191235 8.48715C0.0687871 8.36468 -4.34891e-07 8.19859 -4.19751e-07 8.0254C-4.04611e-07 7.85222 0.0687872 7.68612 0.191235 7.56365L3.42402 4.33087L0.191235 1.09809C0.0760114 0.974313 0.0132892 0.810672 0.0162656 0.641593C0.0192421 0.472515 0.0876844 0.311183 0.207194 0.191541C0.326702 0.0719 0.48796 0.00327834 0.657035 0.000115015C0.82611 -0.00304831 0.989821 0.0594937 1.11372 0.174581L4.80877 3.8686C4.93121 3.99108 5 4.15717 5 4.33036C5 4.50354 4.93121 4.66964 4.80876 4.79211L1.11474 8.48715C0.992267 8.6096 0.826173 8.67839 0.652987 8.67839C0.479802 8.67839 0.313708 8.6096 0.191235 8.48715Z"
+            fill={svgColor}
+          />
+        </svg>
+      </div>
     </a>
   ) : (
     <button type="button" class={buttonClasses}>
       {text ? <p class={paragraphClasses}>{text}</p> : <slot />}
+      <div class="w-4 h-5 rounder-[4px] bg-white flex justify-center items-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="5"
+          height="9"
+          viewBox="0 0 5 9"
+          fill="none"
+        >
+          <path
+            class={svgFillClass}
+            d="M0.191235 8.48715C0.0687871 8.36468 -4.34891e-07 8.19859 -4.19751e-07 8.0254C-4.04611e-07 7.85222 0.0687872 7.68612 0.191235 7.56365L3.42402 4.33087L0.191235 1.09809C0.0760114 0.974313 0.0132892 0.810672 0.0162656 0.641593C0.0192421 0.472515 0.0876844 0.311183 0.207194 0.191541C0.326702 0.0719 0.48796 0.00327834 0.657035 0.000115015C0.82611 -0.00304831 0.989821 0.0594937 1.11372 0.174581L4.80877 3.8686C4.93121 3.99108 5 4.15717 5 4.33036C5 4.50354 4.93121 4.66964 4.80876 4.79211L1.11474 8.48715C0.992267 8.6096 0.826173 8.67839 0.652987 8.67839C0.479802 8.67839 0.313708 8.6096 0.191235 8.48715Z"
+            fill={svgColor}
+          />
+        </svg>
+      </div>
     </button>
   )
 }

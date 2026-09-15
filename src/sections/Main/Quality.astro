@@ -1,0 +1,56 @@
+---
+import Button from "../../components/Button.astro";
+
+type Translations = typeof import("../../i18n/en").default;
+type QualityContent = Translations["main"]["quality"];
+interface Props {
+  content: QualityContent;
+}
+const { content } = Astro.props as Props;
+---
+
+<section
+  class="h-screen md:h-[70vh] xl:h-screen w-full flex justify-center items-center bg-black relative"
+>
+  <img
+    src="/images/main/back-quality.webp"
+    class="absolute inset-0 object-cover z-0 w-full h-full object-left md:object-center"
+    alt="Background"
+    width="1672"
+    height="940"
+    decoding="async"
+    loading="lazy"
+  />
+  <img
+    src="/images/main/quality-1.webp"
+    class="absolute top-0 left-0 z-3 w-[70%] md:w-[30%] lg:w-[20%] h-auto"
+    width="521"
+    height="355"
+    decoding="async"
+    loading="lazy"
+  />
+  <img
+    src="/images/main/quality-2.webp"
+    class="absolute bottom-0 right-0 z-3 w-[65%] md:w-[30%] lg:w-[20%] h-auto"
+    width="521"
+    height="355"
+    decoding="async"
+    loading="lazy"
+  />
+  <div
+    class="container-full flex flex-col justify-center items-center gap-4 relative z-5"
+  >
+    <p class="tag-size text-white text-center">{content.tag}</p>
+    <h2
+      class="text-[56px] md:text-[96px] lg:text-[176px] font-rust text-white leading-[100%] font-normal fade-up-a text-center rotate-[-4deg]"
+      set:html={content.title}
+    />
+    <Button
+      text={content.button.label}
+      href={content.button.href}
+      textClass=" uppercase"
+      extraBtnClass="bg-black border-black"
+      width="w-[242px]"
+    />
+  </div>
+</section>

@@ -1,6 +1,8 @@
 ---
+import Button from "../../components/Button.astro";
+
 type Translations = typeof import("../../i18n/en").default;
-type HalalContent = Translations["main"]["Halal"];
+type HalalContent = Translations["main"]["halal"];
 interface Props {
   content: HalalContent;
 }
@@ -8,17 +10,81 @@ const { content } = Astro.props as Props;
 ---
 
 <section
-  class="w-full flex justify-center items-center bg-[#FDFAF6] border-y-2 border-secondary"
+  class="bg-white flex justify-center items-center h-[90vh] w-full relative md:h-[65vh] xl:h-screen"
 >
+  <img
+    src="/images/main/halal-back.png"
+    alt="Halal Background"
+    class="absolute inset-0 object-cover object-center w-full h-full z-0"
+    width="1440"
+    height="810"
+    decoding="async"
+    loading="lazy"
+  />
   <div
-    class="container-full flex flex-col justify-center items-center gap-8 md:gap-10 py-16 md:py-20"
+    class="container-full flex flex-col md:flex-row justify-center items-center gap-28 md:gap-6 z-10 relative h-full"
   >
     <h2
-      class="subtitle text-primary uppercase text-center fade-up-a"
       set:html={content.title}
+      class="font-rust text-[56px] md:text-[96px] lg:text-[136px] text-paragraph font-normal leading-[80%] text-center md:text-start absolute -translate-x-1/2 md:translate-x-0 left-1/2 md:left-0 top-[10%] md:top-[12%] z-10"
     />
-    <p class="paragraph text-primary max-w-[896px] text-center fade-up-a">
-      {content.description}
-    </p>
+    <h2
+      set:html={content.title2}
+      class="font-script text-[80px] md:text-[120px] lg:text-[152px] text-paragraph font-normal leading-[80%] text-center md:text-start absolute right-0 bottom-[17%] lg:bottom-[22%] z-10 hidden md:block"
+    />
+    <div class="w-full md:w-[70%] flex justify-end items-center relative">
+      <h2
+        set:html={content.title2}
+        class="font-script text-[80px] md:text-[152px] text-paragraph font-normal leading-[80%] text-center md:text-start absolute right-0 bottom-[-30%] z-10 md:hidden block"
+      />
+      <div
+        class="w-full md:w-[90%] h-auto relative aspect-398/285 lg:aspect-809/388"
+      >
+        <img
+          src="/icons/halal-1.svg"
+          alt="Halal 1"
+          class="w-[143px] h-[134px] z-3 absolute -top-14 md:-top-19 -right-12 md:-right-19 scale-50 lg:scale-100"
+          width="143"
+          height="134"
+        />
+        <div
+          class="absolute w-[139px] h-[131px] -bottom-16 -left-12 md:-left-16 z-3 py-[33px] px-[21px] gap-2 bg-[url('/icons/back-halal.svg')] bg-no-repeat bg-center bg-contain flex flex-col justify-center items-center -rotate-8 scale-50 lg:scale-100"
+        >
+          <img
+            src="/icons/star-small-2.svg"
+            alt="Star"
+            class="w-4 h-4"
+            width="8"
+            height="8"
+          />
+          <p
+            class="text-[16px] font-medium leading-[100%] uppercase text-white text-center"
+          >
+            {content.satisfy}
+          </p>
+        </div>
+        <img
+          src="/images/main/halal.webp"
+          alt="Halal"
+          width="1600"
+          height="893"
+          class="w-full h-full absolute inset-0 object-cover object-center z-0 rounded-4xl"
+          decoding="async"
+          loading="lazy"
+        />
+      </div>
+    </div>
+    <div
+      class="w-full md:w-[30%] flex flex-col justify-center items-start gap-6"
+    >
+      <p class="paragraph text-black">{content.description}</p>
+      <Button
+        text={content.button.label}
+        href={content.button.href}
+        textClass="uppercase"
+        extraBtnClass="bg-secondary border-secondary"
+        width="w-full md:w-[164px]"
+      />
+    </div>
   </div>
 </section>

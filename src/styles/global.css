@@ -1,15 +1,31 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
-
+@font-face {
+  font-family: "IntroRustG";
+  src: url("/font/IntroRustG.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IntroScriptR";
+  src: url("/font/IntroScriptR.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 @import "tailwindcss";
 
 @theme {
   --font-family: "Rubik", sans-serif;
   --font-paragraph: "Roboto", sans-serif;
+  --font-rust: "IntroRustG", sans-serif;
+  --font-script: "IntroScriptR", sans-serif;
   --color-primary: #000000;
   --color-primary-rgb: rgb(0, 0, 0);
   --color-secondary: #b52132;
   --color-accent: #ffb035;
+  --color-paragraph: #0d0d0d;
   --breakpoint-xs: 400px;
   --breakpoint-3xl: 106rem;
 }
@@ -111,6 +127,23 @@ html {
 @media (max-width: 769px) {
   .paragraph-bold {
     font-size: 15px;
+  }
+}
+
+.tag-size {
+  font-family: var(--font-paragraph);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%; /* 19.2px */
+  letter-spacing: 5.12px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 769px) {
+  .tag-size{
+    font-size: 15px;
+    letter-spacing: 4.8px;
   }
 }
 

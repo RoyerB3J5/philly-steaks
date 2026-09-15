@@ -5,12 +5,11 @@ import en from "../../../i18n/en";
 import es from "../../../i18n/es";
 import Layout from "../../../layouts/Layout.astro";
 import BlogSection from "../../../sections/BlogSection";
-import BannerLoop from "../../../sections/Main/BannerLoop.astro";
-import Craving from "../../../sections/Main/Craving.astro";
-import Good from "../../../sections/Main/Good.astro";
 import type { Language } from "../../../types/language.type";
 import { getAllPosts } from "../../../lib/ghl/blog-services";
 import type { BlogCardDTO } from "../../../lib/ghl/types";
+import Perfect from "../../../sections/Main/Perfect.astro";
+import Big from "../../../sections/Main/Big.astro";
 
 const { lang: rawLang } = Astro.params;
 const lang = (rawLang === "es" ? "es" : "en") as Language;
@@ -71,7 +70,6 @@ const posts = livePosts.length > 0 ? livePosts : mockPosts;
     noPostsText={t.blog.noPosts}
     itemsPerPage={9}
   />
-  <BannerLoop content={t.main.banner} />
-  <Good content={t.main.options} position="four" />
-  <Craving content={t.main.craving} />
+  <Big content={t.main.big} />
+  <Perfect content={t.main.perfect} />
 </Layout>

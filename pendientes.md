@@ -1,4 +1,5 @@
 - Seccion de Redes
 - Links
 - Traducir contenido
-- Conectar con CRM
+- Probar blog
+- Pedir que creen blog

@@ -1,0 +1,140 @@
+---
+type Translations = typeof import("../../i18n/en").default;
+type ClientsContent = Translations["main"]["clients"];
+interface Props {
+  content: ClientsContent;
+}
+const { content } = Astro.props as Props;
+const posts = [
+  {
+    img: "#",
+    href: "#",
+  },
+  {
+    img: "#",
+    href: "#",
+  },
+  {
+    img: "#",
+    href: "#",
+  },
+  {
+    img: "#",
+    href: "#",
+  },
+  {
+    img: "#",
+    href: "#",
+  },
+  {
+    img: "#",
+    href: "#",
+  },
+];
+const media = [
+  {
+    icon: "fb",
+    href: "#",
+  },
+  {
+    icon: "ig",
+    href: "#",
+  },
+];
+---
+
+<section class="bg-paragraph flex justify-center items-center w-full">
+  <div class="container-full flex flex-col justify-center items-center gap-12 py-30">
+    <div class="w-full flex flex-col justify-center items-center gap-6">
+      <p class="tag-size text-white text-center">{content.tag}</p>
+      <h2
+        class="text-[56px] md:text-[96px] font-rust text-white leading-[100%] font-normal fade-up-a text-center"
+        set:html={content.title}
+      />
+    </div>
+    <div
+      class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[27px]"
+    >
+      {
+        posts.map((post) => (
+          <a
+            class="flex flex-col justify-center items-center bg-white border-2 border-black rounded-2xl overflow-hidden relative"
+            style="aspect-ratio: 334/548;"
+            href={post.href}
+          >
+            <div class="w-full py-5 flex justify-between items-center px-2.5 border-b border-[#B7BAC7]">
+              <div class="flex justify-center items-center gap-1.5">
+                <img
+                  src="/icons/ig-perfil.svg"
+                  alt="Profile Picture"
+                  width="20"
+                  height="20"
+                  class="w-[31px] h-[31px]"
+                />
+                <p class="text-[#454B60] text-[10px] font-bold leading-[100%]">
+                  Orlando’s Philly Steak
+                </p>
+              </div>
+              <img
+                src="/icons/options.svg"
+                alt="Options Picture"
+                width="4"
+                height="15"
+                class="w-1 auto"
+              />
+            </div>
+            <div class="w-full h-full bg-gray-300" />
+            <div class="w-full py-5 flex justify-between items-center px-2.5 border-t border-[#B7BAC7]">
+              <div class="flex justify-center items-center gap-4">
+                <img
+                  src="/icons/ig-heart.svg"
+                  alt="Heart Picture"
+                  width="22"
+                  height="20"
+                  class="w-[22px] h-[20px]"
+                />
+                <img
+                  src="/icons/comments.svg"
+                  alt="Comments Picture"
+                  width="20"
+                  height="20"
+                  class="w-[19px] h-[19px]"
+                />
+              </div>
+              <img
+                src="/icons/save.svg"
+                alt="Save Picture"
+                width="16"
+                height="17"
+                class="w-[15px] h-auto"
+              />
+            </div>
+          </a>
+        ))
+      }
+    </div>
+    <div class="flex flex-col justify-center items-center gap-6">
+      <p class="paragraph text-white">{content.follow}</p>
+      <div class="flex justify-center items-center gap-4">
+        {
+          media.map((item) => (
+            <a
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex justify-center items-center w-15 h-15 bg-secondary rounded-full cursor-pointer hover:scale-110 transition-transform duration-300"
+            >
+              <img
+                src={`/icons/${item.icon}.svg`}
+                alt={`${item.icon} icon`}
+                width="24"
+                height="24"
+                class="w-[24px] h-[24px]"
+              />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

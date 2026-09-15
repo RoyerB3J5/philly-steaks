@@ -1,0 +1,94 @@
+---
+type Translations = typeof import("../../i18n/en").default;
+type PerfectContent = Translations["main"]["perfect"];
+interface Props {
+  content: PerfectContent;
+}
+const { content } = Astro.props as Props;
+---
+
+<section
+  class="bg-white flex justify-center items-center h-auto w-full relative md:h-[65vh] xl:h-screen"
+>
+  <img
+    src="/images/main/halal-back.png"
+    alt="Halal Background"
+    class="absolute inset-0 object-cover object-center w-full h-full z-0"
+    width="1440"
+    height="810"
+    decoding="async"
+    loading="lazy"
+  />
+  <div
+    class="container-full flex flex-col justify-between items-center gap-4 md:gap-6 z-10 relative h-full py-18 md:py-12"
+  >
+    <div class="flex flex-col justify-center items-center gap-6 md:gap-5">
+      <p class="tag-size text-paragraph text-center">
+        {content.tag}
+      </p>
+      <h2
+        class="text-[56px] md:text-[96px] font-rust text-paragraph leading-[100%] font-normal fade-up-a text-center"
+        set:html={content.title}
+      />
+    </div>
+    <img
+      src="/images/main/perfect-plate.webp"
+      alt="Perfect 1"
+      class="w-full max-w-[622px] h-auto z-3 md:hidden block"
+      width="1024"
+      height="666"
+      decoding="async"
+      loading="lazy"
+    />
+    <div
+      class="w-full flex flex-col md:flex-row justify-center md:justify-between items-center relative gap-8 md:gap-0"
+    >
+      <img
+        src="/images/main/perfect-plate.webp"
+        alt="Perfect 1"
+        class="w-[35%] xl:w-[50%] max-w-[622px] h-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-3 hidden md:block"
+        width="1024"
+        height="666"
+        decoding="async"
+        loading="lazy"
+      />
+      <div
+        class="flex flex-col justify-center items-center md:items-start gap-4 max-w-none md:max-w-[200px] lg:max-w-[280px] xl:max-w-[311px] w-full relative z-0"
+      >
+        <h3
+          class="text-[24px] text-secondary font-rust leading-[120%] font-normal uppercase"
+        >
+          {content.items[0].title}
+        </h3>
+        <p class="text-paragraph paragraph text-center md:text-left">
+          {content.items[0].description}
+        </p>
+      </div>
+      <div
+        class="flex flex-col justify-center items-center md:items-end gap-4 max-w-none md:md:max-w-[200px] lg:max-w-[311px] w-full"
+      >
+        <h3
+          class="text-[24px] text-secondary font-rust leading-[120%] font-normal uppercase"
+        >
+          {content.items[1].title}
+        </h3>
+        <p
+          class="text-paragraph paragraph text-center md:text-right"
+          set:html={content.items[1].description}
+        />
+      </div>
+    </div>
+    <div
+      class="flex flex-col justify-center items-center gap-4 max-w-none md:max-w-[398px] w-full"
+    >
+      <h3
+        class="text-[24px] text-secondary font-rust leading-[120%] font-normal uppercase"
+      >
+        {content.items[2].title}
+      </h3>
+      <p class="text-paragraph paragraph text-center">
+        {content.items[2].description}
+      </p>
+    </div>
+  </div>
+</section>
