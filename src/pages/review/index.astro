@@ -1,11 +1,7 @@
 ---
 import Starts from "../../components/Starts";
 import LayoutSec from "../../layouts/LayoutSec.astro";
-import {
-  emailAddress,
-  facebookLink,
-  instagramLink,
-} from "../../constants/info";
+import { emailAddress, facebookLink } from "../../constants/info";
 ---
 
 <LayoutSec
@@ -79,12 +75,6 @@ import {
           class="p-2 rounded-full flex items-center justify-center bg-primary shrink-0"
         >
           <img src="/images/facebook.svg" alt="Facebook" class="w-4 h-4" />
-        </a>
-        <a
-          href={instagramLink}
-          class="p-2 rounded-full flex items-center justify-center bg-primary shrink-0"
-        >
-          <img src="/images/instagram.svg" alt="Instagram" class="w-4 h-4" />
         </a>
       </div>
       <div class="flex flex-col justify-center items-center gap-2.25">

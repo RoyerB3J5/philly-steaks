@@ -7,27 +7,27 @@ interface Props {
 const { content } = Astro.props as Props;
 const posts = [
   {
-    img: "#",
+    img: "/images/posts/post-1.webp",
     href: "#",
   },
   {
-    img: "#",
+    img: "/images/posts/post-2.webp",
     href: "#",
   },
   {
-    img: "#",
+    img: "/images/posts/post-3.webp",
     href: "#",
   },
   {
-    img: "#",
+    img: "/images/posts/post-4.webp",
     href: "#",
   },
   {
-    img: "#",
+    img: "/images/posts/post-5.webp",
     href: "#",
   },
   {
-    img: "#",
+    img: "/images/posts/post-6.webp",
     href: "#",
   },
 ];
@@ -35,11 +35,7 @@ const media = [
   {
     icon: "fb",
     href: "#",
-  },
-  {
-    icon: "ig",
-    href: "#",
-  },
+  }
 ];
 ---
 
@@ -83,7 +79,9 @@ const media = [
                 class="w-1 auto"
               />
             </div>
-            <div class="w-full h-full bg-gray-300" />
+            <div class="w-full h-full relative">
+              <img src={post.img} alt="Post Image" class="w-full h-full object-cover" width="1080" height="1350" decoding="async" loading="lazy" />
+            </div>
             <div class="w-full py-5 flex justify-between items-center px-2.5 border-t border-[#B7BAC7]">
               <div class="flex justify-center items-center gap-4">
                 <img

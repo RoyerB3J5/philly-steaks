@@ -7,10 +7,14 @@ interface Props {
   content: QualityContent;
 }
 const { content } = Astro.props as Props;
+
+// Same line-split pattern as the Signature h2 so the mask reveal matches
+const lines = content.title.split(/<br\s*\/?>/i);
 ---
 
 <section
-  class="h-screen md:h-[70vh] xl:h-screen w-full flex justify-center items-center bg-black relative"
+  data-quality
+  class="h-screen md:h-[70vh] xl:h-screen w-full flex justify-center items-center bg-black relative overflow-hidden"
 >
   <img
     src="/images/main/back-quality.webp"
@@ -22,6 +26,7 @@ const { content } = Astro.props as Props;
     loading="lazy"
   />
   <img
+    data-quality-q1
     src="/images/main/quality-1.webp"
     class="absolute top-0 left-0 z-3 w-[70%] md:w-[30%] lg:w-[20%] h-auto"
     width="521"
@@ -30,6 +35,7 @@ const { content } = Astro.props as Props;
     loading="lazy"
   />
   <img
+    data-quality-q2
     src="/images/main/quality-2.webp"
     class="absolute bottom-0 right-0 z-3 w-[65%] md:w-[30%] lg:w-[20%] h-auto"
     width="521"
@@ -40,17 +46,132 @@ const { content } = Astro.props as Props;
   <div
     class="container-full flex flex-col justify-center items-center gap-4 relative z-5"
   >
-    <p class="tag-size text-white text-center">{content.tag}</p>
+    <p data-quality-tag class="tag-size text-white text-center overflow-hidden">
+      {content.tag}
+    </p>
     <h2
-      class="text-[56px] md:text-[96px] lg:text-[176px] font-rust text-white leading-[100%] font-normal fade-up-a text-center rotate-[-4deg]"
-      set:html={content.title}
-    />
-    <Button
-      text={content.button.label}
-      href={content.button.href}
-      textClass=" uppercase"
-      extraBtnClass="bg-black border-black"
-      width="w-[242px]"
-    />
+      data-quality-title
+      class="text-[56px] md:text-[96px] lg:text-[176px] font-rust text-white leading-[100%] font-normal text-center rotate-[-4deg] isolate"
+    >
+      {
+        lines.map((line, index) => (
+          <div
+            class={`relative overflow-clip ${index !== 0 ? "z-[3] -mt-[0.4em] pt-[0.4em]" : "z-0"}`}
+          >
+            <span class="block font-rust" data-quality-line set:html={line} />
+          </div>
+        ))
+      }
+    </h2>
+    <div data-quality-cta>
+      <Button
+        text={content.button.label}
+        href={content.button.href}
+        textClass=" uppercase"
+        extraBtnClass="bg-black border-black"
+        width="w-[242px]"
+      />
+    </div>
   </div>
 </section>
+
+<script>
+  import { gsap } from "../../utils/animations";
+
+  function initQualityReveal() {
+    const section = document.querySelector<HTMLElement>("[data-quality]");
+    if (!section) return;
+
+    // Guard against double init (DOMContentLoaded + astro:page-load both fire
+    // on first load): a second context would create a duplicate timeline +
+    // observer fighting over the same elements, leaving partial states behind.
+    if (section.dataset.qualityInit === "true") return;
+    section.dataset.qualityInit = "true";
+
+    const q1 = section.querySelector<HTMLElement>("[data-quality-q1]");
+    const tag = section.querySelector<HTMLElement>("[data-quality-tag]");
+    const titleLines = section.querySelectorAll<HTMLElement>(
+      "[data-quality-line]",
+    );
+    const cta = section.querySelector<HTMLElement>("[data-quality-cta]");
+    const q2 = section.querySelector<HTMLElement>("[data-quality-q2]");
+    if (!q1 || !tag || titleLines.length === 0 || !q2) return;
+
+    // Respect reduced motion — leave content visible, no animation.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const ctx = gsap.context(() => {
+      // Initial states via GSAP only (no CSS opacity:0), so no-JS still shows content.
+      // Diagonal offsets only (x + y, transform) — Tailwind rotate/position
+      // utilities use their own CSS properties and stay intact.
+      gsap.set(q1, { x: -150, y: -150, autoAlpha: 0 });
+      gsap.set(tag, { y: 24, autoAlpha: 0 });
+      gsap.set(titleLines, { yPercent: 100, autoAlpha: 0 });
+      gsap.set(cta, { y: 24, autoAlpha: 0 });
+      gsap.set(q2, { x: 150, y: 150, autoAlpha: 0 });
+
+      // Paused timeline driven by IntersectionObserver (no ScrollTrigger,
+      // no scrub): plays on enter, resets on leave.
+      const tl = gsap.timeline({
+        paused: true,
+        defaults: { ease: "power2.inOut", overwrite: "auto" },
+      });
+
+      // 1. quality-1 enters diagonally downward (from top-left).
+      tl.to(
+        q1,
+        { x: 0, y: 0, autoAlpha: 1, duration: 0.5, ease: "power2.out" },
+        0
+      )
+        // 2. <p> + <h2> with the Signature structure/timing — chained with
+        // overlaps so there is no idle delay between animations.
+        .to(tag, { y: 0, autoAlpha: 1, duration: 0.35 }, "-=0.25")
+        .to(
+          titleLines,
+          { yPercent: 0, autoAlpha: 1, duration: 0.4, stagger: 0.1 },
+          "-=0.15"
+        )
+        .to(cta, { y: 0, autoAlpha: 1, duration: 0.4 }, "-=0.2")
+        // 3. quality-2 enters diagonally upward (from bottom-right).
+        .to(
+          q2,
+          { x: 0, y: 0, autoAlpha: 1, duration: 0.5, ease: "power2.out" },
+          "-=0.2"
+        );
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.intersectionRatio >= 0.3) {
+              // In view: replay at normal speed (resets timeScale in case
+              // a fast rewind was interrupted mid-exit).
+              tl.timeScale(1).play();
+            } else if (entry.intersectionRatio === 0) {
+              // Fully out of view: snap straight to the initial state so
+              // re-entering always replays cleanly from the start.
+              tl.pause(0);
+            } else {
+              // On the way out: rewind quickly while exiting.
+              tl.timeScale(2.5).reverse();
+            }
+          });
+        },
+        // Starts once the section is 30% into the viewport.
+        { threshold: [0, 0.3], rootMargin: "0px 0px -5% 0px" },
+      );
+      observer.observe(section);
+    }, section);
+
+    // Cleanup for Astro view transitions / HMR so timelines don't duplicate.
+    document.addEventListener("astro:before-preparation", () => ctx.revert(), {
+      once: true,
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initQualityReveal);
+  } else {
+    initQualityReveal();
+  }
+  document.addEventListener("astro:page-load", initQualityReveal);
+</script>

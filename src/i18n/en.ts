@@ -160,8 +160,8 @@ export default {
         },
         {
           description:
-            "The food is fresh and delicious.  The service is excellent and the prices are very reasonable.  Kids menu is available.",
-          name: "Rabih J.",
+            "I’ve been coming here for the last 11 years and the food is always fresh and has great flavor! The My go to meal is the Gyro.",
+          name: "John R.",
         },
         {
           description:
@@ -170,8 +170,8 @@ export default {
         },
         {
           description:
-            "I’ve been coming here for the last 11 years and the food is always fresh and has great flavor! The My go to meal is the Gyro.",
-          name: "John R.",
+            "Great food spot. The Philly cheesesteak is amazing. It tastes so good and they make it fresh. Also tried their wings and they were one of the best I’ve had in Orlando.",
+          name: "oliver f..",
         },
       ],
     },

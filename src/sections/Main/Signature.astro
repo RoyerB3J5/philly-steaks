@@ -5,38 +5,53 @@ interface Props {
   content: SteaksContent;
 }
 const { content } = Astro.props as Props;
+
+// Same structure as Hero: split title on <br/> so each line animates one by one
+const lines = content.title.split(/<br\s*\/?>/i);
 ---
 
 <section
+  data-signature
   class="h-auto md:h-auto lg:h-[70vh] xl:h-screen w-full flex justify-center items-center bg-black"
 >
   <div
     class="container-full flex flex-col justify-center items-center gap-6 md:gap-8 lg:gap-16 py-[50px] md:py-10 lg:py-0"
   >
     <div class="flex flex-col justify-center items-center gap-6 md:gap-7">
-      <p class="tag-size text-white text-center">
+      <p data-sig-tag class="tag-size text-white text-center overflow-hidden">
         {content.tag}
       </p>
       <h2
-        class="text-[56px] md:text-[96px] font-rust text-white leading-[100%] font-normal fade-up-a text-center"
-        set:html={content.title}
-      />
+        data-sig-title
+        class="text-[56px] md:text-[96px] font-rust text-white leading-[100%] font-normal text-center isolate"
+      >
+        {
+          lines.map((line, index) => (
+            <div
+              class={`relative overflow-clip ${index !== 0 ? "z-[3] -mt-[0.4em] pt-[0.4em]" : "z-0"}`}
+            >
+              <span class="block font-rust" data-sig-line set:html={line} />
+            </div>
+          ))
+        }
+      </h2>
     </div>
     <ul
+      data-sig-cards
       class="w-full flex flex-col lg:flex-row justify-center items-center gap-8 lg:gap-4"
     >
       {
         content.plates.map((plate, index) => {
           // Si el index es par (0, 2, 4...) rota -2deg, si es impar (1, 3, 5...) rota 2deg
           const mobileRotate =
-            index % 2 === 0 ? "-rotate-[2deg]" : "rotate-[2deg]";
+            index % 2 === 0 ? "-rotate-[2deg] " : "rotate-[2deg] lg:rotate-0";
 
           return (
             <li
+              data-sig-card
               class={`w-full max-w-none md:max-w-[376px] h-auto flex justify-center items-center aspect-376/245 relative 
           lg:first:-rotate-[4deg] lg:last:rotate-[4deg] lg:first:translate-y-3 lg:last:translate-y-3 
           ${mobileRotate}`}
-              style={`animation-delay: ${index * 0.2}s`}
             >
               <img
                 src="/icons/back-food.svg"
@@ -74,3 +89,125 @@ const { content } = Astro.props as Props;
     </ul>
   </div>
 </section>
+
+<script>
+  import { gsap } from "../../utils/animations";
+  import { ScrollTrigger } from "../../utils/animations";
+
+  function initSignatureReveal() {
+    const section = document.querySelector<HTMLElement>("[data-signature]");
+    if (!section) return;
+
+    const tag = section.querySelector<HTMLElement>("[data-sig-tag]");
+    const lines = section.querySelectorAll<HTMLElement>("[data-sig-line]");
+    const cards = section.querySelectorAll<HTMLElement>("[data-sig-card]");
+    if (!tag || lines.length === 0) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const ctx = gsap.context(() => {
+      gsap.set(tag, { y: 24, autoAlpha: 0 });
+      gsap.set(lines, { yPercent: 100, autoAlpha: 0 });
+
+      const STACK_X = 40; // Offset horizontal para que se vea que son 3
+      const STACK_Y = 15; // Offset vertical (útil en móviles)
+      const cardsList = section.querySelector<HTMLElement>("[data-sig-cards]");
+      let naturalX: number[] = [];
+      let naturalY: number[] = [];
+
+      if (cards.length > 0 && cardsList) {
+        // Guardamos la traslación original (para cuando se desempacan)
+        naturalX = Array.from(cards).map((el) =>
+          Number.parseFloat(String(gsap.getProperty(el, "x"))),
+        );
+        naturalY = Array.from(cards).map((el) =>
+          Number.parseFloat(String(gsap.getProperty(el, "y"))),
+        );
+
+        // --- NUEVA LÓGICA: PEGARLO AL BORDE DERECHO ---
+        const firstCardRect = cards[0].getBoundingClientRect();
+
+        // Calculamos el ancho total del "mazo" visual (ancho de 1 card + lo que asoman las demás)
+        const stackTotalWidth =
+          firstCardRect.width + STACK_X * (cards.length - 1);
+
+        // Calculamos en qué pixel de la pantalla debe estar la izquierda del mazo
+        // para que la derecha del mazo toque el borde de la pantalla (dejando 24px de respiro)
+        const targetLeft = window.innerWidth - stackTotalWidth - 24;
+
+        // Calculamos cuánto hay que mover la lista (<ul>) para llegar a ese pixel
+        // Si el resultado es negativo (p. ej. en móviles muy pequeños), forzamos un valor mínimo positivo para que siempre venga de la derecha
+        const baseX = Math.max(50, targetLeft - firstCardRect.left);
+
+        // Empujamos toda la lista a la derecha
+        gsap.set(cardsList, { x: baseX });
+        // ----------------------------------------------
+
+        // Apilamos las cards una debajo de la otra
+        gsap.set(cards, {
+          x: (i, el) => -(el.offsetLeft - cards[0].offsetLeft) + i * STACK_X,
+          y: (i, el) => -(el.offsetTop - cards[0].offsetTop) + i * STACK_Y,
+          zIndex: (i) => cards.length - i, // La primera queda encima
+        });
+      }
+
+      const tl = gsap.timeline({
+        defaults: { ease: "power2.inOut", overwrite: "auto" },
+        scrollTrigger: {
+          trigger: section,
+          start: "top 65%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      tl.to(tag, { y: 0, autoAlpha: 1, duration: 0.4 }, 0).to(
+        lines,
+        { yPercent: 0, autoAlpha: 1, duration: 0.4, stagger: 0.1 },
+        "-=0.15",
+      );
+
+      if (cards.length > 0 && cardsList) {
+        const cardsTl = gsap.timeline({
+          defaults: { ease: "none", overwrite: "auto" },
+          scrollTrigger: {
+            trigger: cardsList,
+            start: "top 85%",
+            end: "top 25%",
+            scrub: 1,
+            invalidateOnRefresh: true, // Recalcula si el usuario cambia el tamaño de ventana
+          },
+        });
+
+        // Fase A: La lista viaja desde el borde derecho hasta el centro (x: 0)
+        cardsTl.to(cardsList, { x: 0, duration: 1, stagger: 0 }, 0);
+
+        // Fase B: Las tarjetas se separan regresando a sus posiciones originales.
+        // Mismo inicio y misma duración que la Fase A: el viaje y la
+        // apertura ocurren como un solo movimiento simultáneo.
+        cardsTl.to(
+          cards,
+          {
+            x: (i) => naturalX[i],
+            y: (i) => naturalY[i],
+            duration: 1,
+            stagger: 0,
+          },
+          0,
+        );
+      }
+
+      requestAnimationFrame(() => ScrollTrigger.refresh());
+    }, section);
+
+    document.addEventListener("astro:before-preparation", () => ctx.revert(), {
+      once: true,
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSignatureReveal);
+  } else {
+    initSignatureReveal();
+  }
+  document.addEventListener("astro:page-load", initSignatureReveal);
+</script>

@@ -9,6 +9,7 @@ const { content } = Astro.props as Props;
 
 // Comprueba si la URL coincide con la raíz o los prefijos de idioma (/ , /es, /es/, /en, /en/)
 const pathname = Astro.url.pathname;
+const lines = content.title.split(/<br\s*\/?>/i);
 ---
 
 <section
@@ -35,28 +36,43 @@ const pathname = Astro.url.pathname;
     >
     </div>
     <div
-      class="container-full h-full flex flex-col justify-end items-center gap-4 md:gap-8 relative z-5 pb-10 md:pb-18"
+      class="container-full h-full flex flex-col justify-end items-center gap-4 md:gap-2 relative z-5 pb-10 md:pb-10 3xl:pb-18"
     >
-      <p class="tag-size text-white text-center">
+      <p class="tag-size text-white text-center fade-up-a overflow-hidden">
         {content.tag}
       </p>
       <h1
-        class="text-[56px] md:text-[72px] lg:text-[96px] font-rust text-white leading-[100%] font-normal fade-up-a text-center"
-        set:html={content.title}
-      />
-      <div class="flex flex-col md:flex-row justify-center items-center gap-4  fade-up-a w-full md:w-auto">
+        class="text-[56px] md:text-[72px] lg:text-[96px] text-white leading-[100%] font-normal text-center overflow-hidden"
+      >
+        {
+          lines.map((line, index) => (
+            <div
+              class={`relative overflow-clip ${index !== 0 ? "z-[3] -mt-[0.4em] pt-[0.4em]" : "z-0"}`}
+            >
+              <span
+                class="block fade-up-a font-rust"
+                style={`animation-delay: ${index * 0.1}s;`}
+                set:html={line}
+              />
+            </div>
+          ))
+        }
+      </h1>
+      <div
+        class="flex flex-col md:flex-row justify-center items-center gap-4 overflow-hidden w-full md:w-auto"
+      >
         <Button
           text={content.buttons[0].label}
           href={content.buttons[0].href}
           textClass="uppercase"
-          extraBtnClass="bg-secondary border-secondary"
+          extraBtnClass="bg-secondary border-secondary fade-up-a"
           width="w-full md:w-[164px]"
         />
         <Button
           text={content?.buttons[1].label}
           href={content?.buttons[1].href}
           textClass=" text-paragraph md:text-white  uppercase"
-          extraBtnClass="bg-white md:bg-transparent border-white"
+          extraBtnClass="bg-white md:bg-transparent border-white fade-up-a"
           width="w-full md:w-[164px]"
         />
       </div>

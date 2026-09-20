@@ -7,9 +7,13 @@ interface Props {
   content: HalalContent;
 }
 const { content } = Astro.props as Props;
+
+// Same line-split pattern as the Signature h2 so the mask reveal matches
+const lines = content.title.split(/<br\s*\/?>/i);
 ---
 
 <section
+  data-halal
   class="bg-white flex justify-center items-center h-[90vh] w-full relative md:h-[65vh] xl:h-screen"
 >
   <img
@@ -25,15 +29,27 @@ const { content } = Astro.props as Props;
     class="container-full flex flex-col md:flex-row justify-center items-center gap-28 md:gap-6 z-10 relative h-full"
   >
     <h2
-      set:html={content.title}
-      class="font-rust text-[56px] md:text-[96px] lg:text-[136px] text-paragraph font-normal leading-[80%] text-center md:text-start absolute -translate-x-1/2 md:translate-x-0 left-1/2 md:left-0 top-[10%] md:top-[12%] z-10"
-    />
+      data-halal-title
+      class="font-rust text-[56px] md:text-[96px] lg:text-[136px] text-paragraph font-normal leading-[80%] text-center md:text-start absolute -translate-x-1/2 md:translate-x-0 left-1/2 md:left-0 top-[10%] md:top-[12%] z-10 isolate"
+    >
+      {
+        lines.map((line, index) => (
+          <div
+            class={`relative overflow-clip ${index !== 0 ? "z-[3] -mt-[0.4em] pt-[0.4em]" : "z-0"}`}
+          >
+            <span class="block font-rust" data-halal-line set:html={line} />
+          </div>
+        ))
+      }
+    </h2>
     <h2
+      data-halal-title2
       set:html={content.title2}
-      class="font-script text-[80px] md:text-[120px] lg:text-[152px] text-paragraph font-normal leading-[80%] text-center md:text-start absolute right-0 bottom-[17%] lg:bottom-[22%] z-10 hidden md:block"
+      class="font-script text-[80px] md:text-[120px] lg:text-[152px] text-paragraph font-normal leading-[80%] text-center md:text-start absolute right-0 bottom-[17%] lg:bottom-[10%] 3xl:bottom-[22%] z-10 hidden md:block"
     />
     <div class="w-full md:w-[70%] flex justify-end items-center relative">
       <h2
+        data-halal-title2
         set:html={content.title2}
         class="font-script text-[80px] md:text-[152px] text-paragraph font-normal leading-[80%] text-center md:text-start absolute right-0 bottom-[-30%] z-10 md:hidden block"
       />
@@ -41,6 +57,7 @@ const { content } = Astro.props as Props;
         class="w-full md:w-[90%] h-auto relative aspect-398/285 lg:aspect-809/388"
       >
         <img
+          data-halal-deco
           src="/icons/halal-1.svg"
           alt="Halal 1"
           class="w-[143px] h-[134px] z-3 absolute -top-14 md:-top-19 -right-12 md:-right-19 scale-50 lg:scale-100"
@@ -48,6 +65,7 @@ const { content } = Astro.props as Props;
           height="134"
         />
         <div
+          data-halal-badge
           class="absolute w-[139px] h-[131px] -bottom-16 -left-12 md:-left-16 z-3 py-[33px] px-[21px] gap-2 bg-[url('/icons/back-halal.svg')] bg-no-repeat bg-center bg-contain flex flex-col justify-center items-center -rotate-8 scale-50 lg:scale-100"
         >
           <img
@@ -64,6 +82,7 @@ const { content } = Astro.props as Props;
           </p>
         </div>
         <img
+          data-halal-photo
           src="/images/main/halal.webp"
           alt="Halal"
           width="1600"
@@ -75,16 +94,138 @@ const { content } = Astro.props as Props;
       </div>
     </div>
     <div
-      class="w-full md:w-[30%] flex flex-col justify-center items-start gap-6"
+      class="w-full md:w-[30%] flex flex-col justify-center items-start gap-6 relative z-5"
     >
-      <p class="paragraph text-black">{content.description}</p>
-      <Button
-        text={content.button.label}
-        href={content.button.href}
-        textClass="uppercase"
-        extraBtnClass="bg-secondary border-secondary"
-        width="w-full md:w-[164px]"
-      />
+      <p data-halal-text class="paragraph text-black">{content.description}</p>
+      <div data-halal-cta class="w-full md:w-auto">
+        <Button
+          text={content.button.label}
+          href={content.button.href}
+          textClass="uppercase"
+          extraBtnClass="bg-secondary border-secondary"
+          width="w-full md:w-[164px]"
+        />
+      </div>
     </div>
   </div>
 </section>
+
+<script>
+  import { gsap } from "../../utils/animations";
+
+  function initHalalReveal() {
+    const section = document.querySelector<HTMLElement>("[data-halal]");
+    if (!section) return;
+
+    // Guard against double init (DOMContentLoaded + astro:page-load both fire
+    // on first load): a second context would create a duplicate timeline +
+    // observer fighting over the same elements, leaving partial states behind.
+    if (section.dataset.halalInit === "true") return;
+    section.dataset.halalInit = "true";
+
+    const titleLines =
+      section.querySelectorAll<HTMLElement>("[data-halal-line]");
+    const title2s =
+      section.querySelectorAll<HTMLElement>("[data-halal-title2]");
+    const photo = section.querySelector<HTMLElement>("[data-halal-photo]");
+    const deco = section.querySelector<HTMLElement>("[data-halal-deco]");
+    const badge = section.querySelector<HTMLElement>("[data-halal-badge]");
+    const text = section.querySelector<HTMLElement>("[data-halal-text]");
+    const cta = section.querySelector<HTMLElement>("[data-halal-cta]");
+    if (titleLines.length === 0) return;
+
+    // Respect reduced motion — leave content visible, no animation.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const ctx = gsap.context(() => {
+      // Initial states via GSAP only (no CSS opacity:0), so no-JS still shows content.
+      // Group 1 — h2s: Signature-style mask reveal for content.title,
+      // standard fade-up for the script title2s.
+      gsap.set(titleLines, { yPercent: 100, autoAlpha: 0 });
+      gsap.set(title2s, { y: 24, autoAlpha: 0 });
+      // Group 2 — photo scales up from the center.
+      gsap.set(photo, {
+        scale: 0.2,
+        autoAlpha: 0,
+        transformOrigin: "50% 50%",
+      });
+      // Group 3 — deco + badge scale from 0 (final transform is identity,
+      // so the Tailwind scale-50 / lg:scale-100 + -rotate-8 design is intact).
+      gsap.set([deco, badge], {
+        scale: 0,
+        autoAlpha: 0,
+        transformOrigin: "50% 50%",
+      });
+      gsap.set([text, cta], { y: 24, autoAlpha: 0 });
+
+      // Paused timeline driven by IntersectionObserver (no ScrollTrigger):
+      // plays on enter, reverses to initial state on leave.
+      const tl = gsap.timeline({
+        paused: true,
+        defaults: { ease: "power2.inOut", overwrite: "auto" },
+      });
+
+      // Group 1 — h2s first (title lines mirror Signature, slightly slowed).
+      // Short 0.15 beat before anything moves.
+      tl.to(
+        titleLines,
+        { yPercent: 0, autoAlpha: 1, duration: 0.5, stagger: 0.12 },
+        0.15
+      ).to(title2s, { y: 0, autoAlpha: 1, duration: 0.5 }, 0.25);
+
+      // Group 2 — photo scales up from the center (brief pause after the h2s).
+      tl.to(
+        photo,
+        { scale: 1, autoAlpha: 1, duration: 0.7, ease: "power2.out" },
+        ">0.12"
+      );
+
+      // Group 3 — deco + badge pop in together (brief pause after the photo);
+      // p then button fade up one by one with a short beat between them.
+      tl.to(
+        [deco, badge],
+        { scale: 1, autoAlpha: 1, duration: 0.6, ease: "power3.out" },
+        ">0.12"
+      )
+        .to(text, { y: 0, autoAlpha: 1, duration: 0.5 }, "<")
+        .to(cta, { y: 0, autoAlpha: 1, duration: 0.5 }, ">0.05");
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.intersectionRatio >= 0.3) {
+              // In view: replay at normal speed (resets timeScale in case
+              // a fast rewind was interrupted mid-exit).
+              tl.timeScale(1).play();
+            } else if (entry.intersectionRatio === 0) {
+              // Fully out of view: snap straight to the initial state so
+              // re-entering always replays cleanly from the start —
+              // no need to scroll far away and wait for a slow rewind.
+              tl.pause(0);
+            } else {
+              // On the way out: rewind quickly while exiting.
+              tl.timeScale(2.5).reverse();
+            }
+          });
+        },
+        // Fire at both boundaries so enter and leave are both caught.
+        // Trigger just as the section enters view so the full sequence
+        // plays while you're actually in it.
+        { threshold: [0, 0.3], rootMargin: "0px 0px -5% 0px" }
+      );
+      observer.observe(section);
+    }, section);
+
+    // Cleanup for Astro view transitions / HMR so timelines don't duplicate.
+    document.addEventListener("astro:before-preparation", () => ctx.revert(), {
+      once: true,
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initHalalReveal);
+  } else {
+    initHalalReveal();
+  }
+  document.addEventListener("astro:page-load", initHalalReveal);
+</script>
