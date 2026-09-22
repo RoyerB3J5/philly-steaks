@@ -141,7 +141,7 @@ html {
 }
 
 @media (max-width: 769px) {
-  .tag-size{
+  .tag-size {
     font-size: 15px;
     letter-spacing: 4.8px;
   }
@@ -191,6 +191,25 @@ html {
   }
 }
 
+@keyframes iamgesScale {
+  from {
+    opacity: 0;
+    scale: 0.5;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+.image-scale {
+  opacity: 0;
+}
+
+.image-scale.active {
+  animation: iamgesScale 0.4s ease-in-out forwards;
+}
+
 .fade-up-a {
   opacity: 0;
 }
@@ -222,6 +241,28 @@ html {
 
 .fade-right-a.active {
   animation: fadeRight 0.6s ease-in-out forwards;
+}
+
+/* Signature-style title mask reveal without GSAP: each line slides up
+   inside its overflow-clip wrapper, staggered via inline animation-delay,
+   triggered by the same `.active` IntersectionObserver system. */
+.mask-reveal .mask-line {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.mask-reveal.active .mask-line {
+  animation: fadeUpFast 0.4s ease-in-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mask-reveal .mask-line {
+    transform: none;
+    opacity: 1;
+  }
+  .mask-reveal.active .mask-line {
+    animation: none;
+  }
 }
 
 @keyframes fadeDownBounce {

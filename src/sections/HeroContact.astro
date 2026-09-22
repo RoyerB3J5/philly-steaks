@@ -6,6 +6,9 @@ interface Props {
   content: HeroContent;
 }
 const { content } = Astro.props as Props;
+
+// Same line-split pattern as the Signature h2 so the mask reveal matches
+const lines = content.title.split(/<br\s*\/?>/i);
 ---
 
 <section
@@ -19,9 +22,22 @@ const { content } = Astro.props as Props;
     >
       <p class="tag-size text-white fade-up-a">{content.tag}</p>
       <h1
-        class="text-[56px] md:text-[64px] lg:text-[80px] font-rust text-white leading-[100%] font-normal fade-up-a text-center md:text-start mt-4 md:mt-6"
-        set:html={content.title}
-      />
+        class="text-[56px] md:text-[64px] lg:text-[80px] font-rust text-white leading-[100%] font-normal mask-reveal text-center md:text-start mt-4 md:mt-6 isolate"
+      >
+        {
+          lines.map((line, index) => (
+            <div
+              class={`relative overflow-clip ${index !== 0 ? "z-[3] -mt-[0.4em] pt-[0.4em]" : "z-0"}`}
+            >
+              <span
+                class="block font-rust mask-line"
+                style={`animation-delay: ${index * 100}ms`}
+                set:html={line}
+              />
+            </div>
+          ))
+        }
+      </h1>
       <p class="paragraph fade-up-a text-white w-full xl:w-[70%] text-center md:text-start">
         {content.description}
       </p>

@@ -61,14 +61,11 @@ const {
       <slot />
     </main>
     <Footer content={t?.footer} />
-    {
-      /*
-    <Chatbot /> */
-    }
-     <script>
-      import { ScrollTrigger } from '../utils/animations';
+    <Chatbot />
+    <script>
+      import { ScrollTrigger } from "../utils/animations";
 
-      window.addEventListener('load', () => {
+      window.addEventListener("load", () => {
         ScrollTrigger.refresh();
       });
     </script>
@@ -81,7 +78,7 @@ const {
     // 1. ANIMACIONES DE SCROLL (IntersectionObserver)
     // -------------------------------------------------------------
     const animationElements = document.querySelectorAll(
-      ".fade-up-a, .fade-down-a, .fade-left-a, .fade-right-a, .progress-reveal, .bars-icon, .fade-down-bounce"
+      ".fade-up-a, .fade-down-a, .fade-left-a, .fade-right-a, .progress-reveal, .bars-icon, .fade-down-bounce, .image-scale, .mask-reveal",
     );
 
     const animationObserver = new IntersectionObserver(
@@ -99,7 +96,7 @@ const {
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.3 },
     );
 
     animationElements.forEach((element) => animationObserver.observe(element));
@@ -107,16 +104,18 @@ const {
     // -------------------------------------------------------------
     // 2. INTERACCIÓN DE EMPUJE CON MOUSE (data-push-container)
     // -------------------------------------------------------------
-    const pushContainers = document.querySelectorAll<HTMLElement>('[data-push-container]');
+    const pushContainers = document.querySelectorAll<HTMLElement>(
+      "[data-push-container]",
+    );
 
     pushContainers.forEach((container) => {
-      const img = container.querySelector<HTMLElement>('img');
-      
+      const img = container.querySelector<HTMLElement>("img");
+
       // Evita vincular event listeners repetidos si la función se vuelve a ejecutar
       if (!img || container.dataset.pushInitialized) return;
       container.dataset.pushInitialized = "true";
 
-      container.addEventListener('mousemove', (e) => {
+      container.addEventListener("mousemove", (e) => {
         const rect = container.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
@@ -127,14 +126,20 @@ const {
         const pushFactor = 0.06;
         const maxDistance = 12;
 
-        const moveX = Math.max(-maxDistance, Math.min(maxDistance, deltaX * pushFactor));
-        const moveY = Math.max(-maxDistance, Math.min(maxDistance, deltaY * pushFactor));
+        const moveX = Math.max(
+          -maxDistance,
+          Math.min(maxDistance, deltaX * pushFactor),
+        );
+        const moveY = Math.max(
+          -maxDistance,
+          Math.min(maxDistance, deltaY * pushFactor),
+        );
 
         img.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
       });
 
-      container.addEventListener('mouseleave', () => {
-        img.style.transform = 'translate3d(0px, 0px, 0)';
+      container.addEventListener("mouseleave", () => {
+        img.style.transform = "translate3d(0px, 0px, 0)";
       });
     });
   }

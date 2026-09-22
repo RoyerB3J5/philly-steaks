@@ -33,12 +33,15 @@ export default function BlogSection({
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = items.slice(startIndex, startIndex + itemsPerPage);
 
+  // Same line-split pattern as the Signature h2 so the mask reveal matches
+  const lines = content.title.split(/<br\s*\/?>/i);
+
   // Hook to handle fade-up-a animations consistently with Layout.astro on mount and page changes
   useEffect(() => {
     if (!containerRef.current) return;
 
     const elements = containerRef.current.querySelectorAll<HTMLElement>(
-      ".fade-up-a, .fade-down-a, .fade-left-a, .fade-right-a",
+      ".fade-up-a, .fade-down-a, .fade-left-a, .fade-right-a, .mask-reveal",
     );
 
     const observer = new IntersectionObserver(
@@ -87,10 +90,20 @@ export default function BlogSection({
     >
       <div className="container-full flex flex-col justify-center items-center py-16 gap-8 md:gap-16">
         <div className="flex flex-col justify-center items-center gap-12">
-          <h1
-            dangerouslySetInnerHTML={{ __html: content.title }}
-            className="text-[56px] md:text-[96px] font-rust text-black leading-[100%] font-normal fade-up-a text-center"
-          />
+          <h1 className="text-[56px] md:text-[96px] font-rust text-black leading-[100%] font-normal mask-reveal text-center isolate">
+            {lines.map((line, index) => (
+              <div
+                key={index}
+                className={`relative overflow-clip ${index !== 0 ? "z-[3] -mt-[0.4em] pt-[0.4em]" : "z-0"}`}
+              >
+                <span
+                  className="block font-rust mask-line"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                  dangerouslySetInnerHTML={{ __html: line }}
+                />
+              </div>
+            ))}
+          </h1>
         </div>
 
         {items.length === 0 ? (

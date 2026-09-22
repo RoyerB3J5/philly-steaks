@@ -35,18 +35,34 @@ const media = [
   {
     icon: "fb",
     href: "#",
-  }
+  },
 ];
+const lines = content.title.split(/<br\s*\/?>/i);
 ---
 
 <section class="bg-paragraph flex justify-center items-center w-full">
-  <div class="container-full flex flex-col justify-center items-center gap-12 py-30">
+  <div
+    class="container-full flex flex-col justify-center items-center gap-12 py-30"
+  >
     <div class="w-full flex flex-col justify-center items-center gap-6">
-      <p class="tag-size text-white text-center">{content.tag}</p>
+      <p class="tag-size text-white text-center fade-up-a">{content.tag}</p>
       <h2
-        class="text-[56px] md:text-[96px] font-rust text-white leading-[100%] font-normal fade-up-a text-center"
-        set:html={content.title}
-      />
+        class="text-[56px] md:text-[96px] font-rust text-white leading-[100%] font-normal text-center overflow-hidden"
+      >
+        {
+          lines.map((line, index) => (
+            <div
+              class={`relative overflow-clip ${index !== 0 ? "z-[3] -mt-[0.4em] pt-[0.4em]" : "z-0"}`}
+            >
+              <span
+                class="block fade-up-a font-rust"
+                style={`animation-delay: ${index * 0.1}s;`}
+                set:html={line}
+              />
+            </div>
+          ))
+        }
+      </h2>
     </div>
     <div
       class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[27px]"
@@ -54,7 +70,7 @@ const media = [
       {
         posts.map((post) => (
           <a
-            class="flex flex-col justify-center items-center bg-white border-2 border-black rounded-2xl overflow-hidden relative"
+            class="flex flex-col justify-center items-center bg-white border-2 border-black rounded-2xl overflow-hidden relative fade-up-a"
             style="aspect-ratio: 334/548;"
             href={post.href}
           >
@@ -80,7 +96,15 @@ const media = [
               />
             </div>
             <div class="w-full h-full relative">
-              <img src={post.img} alt="Post Image" class="w-full h-full object-cover" width="1080" height="1350" decoding="async" loading="lazy" />
+              <img
+                src={post.img}
+                alt="Post Image"
+                class="w-full h-full object-cover"
+                width="1080"
+                height="1350"
+                decoding="async"
+                loading="lazy"
+              />
             </div>
             <div class="w-full py-5 flex justify-between items-center px-2.5 border-t border-[#B7BAC7]">
               <div class="flex justify-center items-center gap-4">
@@ -112,8 +136,8 @@ const media = [
       }
     </div>
     <div class="flex flex-col justify-center items-center gap-6">
-      <p class="paragraph text-white">{content.follow}</p>
-      <div class="flex justify-center items-center gap-4">
+      <p class="paragraph text-white fade-up-a">{content.follow}</p>
+      <div class="flex justify-center items-center gap-4 fade-up-a">
         {
           media.map((item) => (
             <a

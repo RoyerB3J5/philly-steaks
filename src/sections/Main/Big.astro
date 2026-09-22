@@ -1,41 +1,357 @@
 ---
+import Delicious from "./Delicious.astro";
+
 type Translations = typeof import("../../i18n/en").default;
 type BigContent = Translations["main"]["big"];
+type DeliciousContent = Translations["main"]["delicious"];
 interface Props {
   content: BigContent;
+  // When provided, Delicious is nested behind Big (lower z-index) inside a
+  // pinned sequence: scroll drives the diagonal mask reveal Big -> Delicious.
+  // Pages that use Big solo (menu, about-us, blog) omit it and get only the
+  // entry animation.
+  deliciousContent?: DeliciousContent;
 }
-const { content } = Astro.props as Props;
+const { content, deliciousContent } = Astro.props as Props;
+
+// Same line-split pattern as Signature / Quality / Perfect so the mask reveal matches
+const bigLines = content.title.split(/<br\s*\/?>/i);
 ---
 
-<section
-  class="w-full h-screen md:h-[65vh] xl:h-screen relative flex justify-start items-start py-20"
->
-  <img
-    src="/images/main/big-back.webp"
-    alt="Back Big Philly Steak"
-    width="2500"
-    height="1121"
-    class="w-full h-full absolute inset-0 object-cover"
-  />
-  <div
-    class="flex flex-col justify-center items-start gap-8 px-6 md:px-14 relative z-5 -rotate-4"
-  >
-    <p
-      class="tag-size text-white text-start md:text-center"
-      set:html={content.tag}
-    />
-    <h2
-      class="text-[56px] md:text-[90px] lg:text-[120px] font-rust text-white leading-[100%] font-normal fade-up-a text-start"
-      set:html={content.title}
-    />
-  </div>
-  <img
-    src="/images/main/big-plate.webp"
-    class="absolute bottom-10 right-0 w-[90%] md:w-[45%] lg:w-[30%] h-auto"
-    width="944"
-    height="720"
-    decoding="async"
-    loading="lazy"
-    alt="Big Philly Steak Plate"
-  />
-</section>
+{
+  deliciousContent ? (
+    <div
+      data-big-delicious
+      class="relative w-full h-[250vh] md:h-[150vh] xl:h-[250vh]"
+    >
+      <div
+        data-big-sticky
+        class="sticky top-0 h-screen md:h-[65vh] xl:h-screen w-full overflow-hidden relative"
+      >
+        <Delicious content={deliciousContent} asLayer />
+        <section
+          data-big-layer
+          class="absolute inset-0 z-10 w-full h-full flex justify-start items-start py-20 overflow-hidden will-change-[clip-path]"
+        >
+          <img
+            src="/images/main/big-back.webp"
+            alt="Back Big Philly Steak"
+            width="2500"
+            height="1121"
+            class="w-full h-full absolute inset-0 object-cover"
+          />
+          <div class="flex flex-col justify-center items-start gap-8 px-6 md:px-14 relative z-5 -rotate-4">
+            <p
+              data-big-tag
+              class="tag-size text-white text-start md:text-center overflow-hidden"
+              set:html={content.tag}
+            />
+            <h2
+              data-big-title
+              class="text-[56px] md:text-[90px] lg:text-[120px] font-rust text-white leading-[100%] font-normal text-start isolate"
+            >
+              {bigLines.map((line, index) => (
+                <div
+                  class={`relative overflow-clip ${index !== 0 ? "z-[3] -mt-[0.4em] pt-[0.4em]" : "z-0"}`}
+                >
+                  <span class="block font-rust" data-big-line set:html={line} />
+                </div>
+              ))}
+            </h2>
+          </div>
+          <img
+            data-big-plate
+            src="/images/main/big-plate.webp"
+            class="absolute bottom-10 right-0 w-[90%] md:w-[45%] lg:w-[30%] h-auto"
+            width="944"
+            height="720"
+            decoding="async"
+            loading="lazy"
+            alt="Big Philly Steak Plate"
+          />
+        </section>
+      </div>
+    </div>
+  ) : (
+    <section
+      data-big-solo
+      class="w-full h-screen md:h-[65vh] xl:h-screen relative flex justify-start items-start py-20 overflow-hidden"
+    >
+      <img
+        src="/images/main/big-back.webp"
+        alt="Back Big Philly Steak"
+        width="2500"
+        height="1121"
+        class="w-full h-full absolute inset-0 object-cover"
+      />
+      <div class="flex flex-col justify-center items-start gap-8 px-6 md:px-14 relative z-5 -rotate-4">
+        <p
+          data-big-tag
+          class="tag-size text-white text-start md:text-center overflow-hidden"
+          set:html={content.tag}
+        />
+        <h2
+          data-big-title
+          class="text-[56px] md:text-[90px] lg:text-[120px] font-rust text-white leading-[100%] font-normal text-start isolate"
+        >
+          {bigLines.map((line, index) => (
+            <div
+              class={`relative overflow-clip ${index !== 0 ? "z-[3] -mt-[0.4em] pt-[0.4em]" : "z-0"}`}
+            >
+              <span class="block font-rust" data-big-line set:html={line} />
+            </div>
+          ))}
+        </h2>
+      </div>
+      <img
+        data-big-plate
+        src="/images/main/big-plate.webp"
+        class="absolute bottom-10 right-0 w-[90%] md:w-[45%] lg:w-[30%] h-auto"
+        width="944"
+        height="720"
+        decoding="async"
+        loading="lazy"
+        alt="Big Philly Steak Plate"
+      />
+    </section>
+  )
+}
+
+<script>
+  import { gsap } from "../../utils/animations";
+  import { ScrollTrigger } from "../../utils/animations";
+
+  function initBigSolo(section: HTMLElement) {
+    if (section.dataset.bigInit === "true") return;
+    section.dataset.bigInit = "true";
+
+    const tag = section.querySelector<HTMLElement>("[data-big-tag]");
+    const titleLines =
+      section.querySelectorAll<HTMLElement>("[data-big-line]");
+    const plate = section.querySelector<HTMLElement>("[data-big-plate]");
+    if (!tag || titleLines.length === 0 || !plate) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const ctx = gsap.context(() => {
+      // Initial states via GSAP only (no CSS opacity:0), so no-JS still shows content.
+      gsap.set(tag, { y: 24, autoAlpha: 0 });
+      gsap.set(titleLines, { yPercent: 100, autoAlpha: 0 });
+      // Plate slides in from the right (hidden off to the right).
+      gsap.set(plate, { x: 250, autoAlpha: 0 });
+
+      // Paused timeline driven by IntersectionObserver: plays on enter, resets on leave.
+      const tl = gsap.timeline({
+        paused: true,
+        defaults: { ease: "power2.inOut", overwrite: "auto" },
+      });
+
+      // 1. <p> first, 2. <h2> lines (Signature structure), 3. plate slides right -> left.
+      tl.to(tag, { y: 0, autoAlpha: 1, duration: 0.35 }, 0).to(
+        titleLines,
+        { yPercent: 0, autoAlpha: 1, duration: 0.4, stagger: 0.1 },
+        "-=0.15"
+      );
+      tl.to(
+        plate,
+        { x: 0, autoAlpha: 1, duration: 0.55, ease: "power2.out" },
+        ">0.1"
+      );
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.intersectionRatio >= 0.3) {
+              tl.timeScale(1).play();
+            } else if (entry.intersectionRatio === 0) {
+              tl.pause(0);
+            } else {
+              tl.timeScale(2.5).reverse();
+            }
+          });
+        },
+        { threshold: [0, 0.3], rootMargin: "0px 0px -5% 0px" }
+      );
+      observer.observe(section);
+    }, section);
+
+    document.addEventListener("astro:before-preparation", () => ctx.revert(), {
+      once: true,
+    });
+  }
+
+  function initBigDelicious(wrap: HTMLElement) {
+    if (wrap.dataset.bigInit === "true") return;
+    wrap.dataset.bigInit = "true";
+
+    const sticky = wrap.querySelector<HTMLElement>("[data-big-sticky]");
+    const bigLayer = wrap.querySelector<HTMLElement>("[data-big-layer]");
+    const bigTag = wrap.querySelector<HTMLElement>("[data-big-tag]");
+    const bigLines = wrap.querySelectorAll<HTMLElement>("[data-big-line]");
+    const bigPlate = wrap.querySelector<HTMLElement>("[data-big-plate]");
+    const delPhoto =
+      wrap.querySelector<HTMLElement>("[data-delicious-photo]");
+    const delTag = wrap.querySelector<HTMLElement>("[data-delicious-tag]");
+    const delLines = wrap.querySelectorAll<HTMLElement>(
+      "[data-delicious-line]"
+    );
+    const delDesc = wrap.querySelector<HTMLElement>("[data-delicious-desc]");
+    const delCta = wrap.querySelector<HTMLElement>("[data-delicious-cta]");
+    if (
+      !sticky ||
+      !bigLayer ||
+      !bigTag ||
+      bigLines.length === 0 ||
+      !bigPlate ||
+      !delPhoto ||
+      !delTag ||
+      delLines.length === 0 ||
+      !delDesc ||
+      !delCta
+    )
+      return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const ctx = gsap.context(() => {
+      // ---- Entry initial states (Big only) ----
+      gsap.set(bigTag, { y: 24, autoAlpha: 0 });
+      gsap.set(bigLines, { yPercent: 100, autoAlpha: 0 });
+      // Plate starts hidden off to the right, slides right -> left on enter.
+      gsap.set(bigPlate, { x: 250, autoAlpha: 0 });
+
+      // ---- Scrub initial states (Delicious hidden behind, Big mask full) ----
+      // Photo waits at 0 opacity + 50% scale; text blocks wait faded up.
+      gsap.set(delPhoto, {
+        scale: 0.5,
+        autoAlpha: 0,
+        transformOrigin: "50% 50%",
+      });
+      gsap.set(delTag, { y: 24, autoAlpha: 0 });
+      gsap.set(delLines, { yPercent: 100, autoAlpha: 0 });
+      gsap.set(delDesc, { y: 24, autoAlpha: 0 });
+      gsap.set(delCta, { y: 24, autoAlpha: 0 });
+
+      // Mask wipe (no opacity fade): Big opens from the tilted center line
+      // (55% top -> 45% bottom) outward toward the ends. Single 8-point
+      // polygon = full rect minus a slit tied to the top edge: the slit
+      // starts zero-width in the middle and widens until Big is gone,
+      // revealing Delicious behind with a pure clip-path open.
+      const CLOSED =
+        "polygon(0% 0%, 100% 0%, 100% 100%, 45% 100%, 55% 0%, 55% 0%, 45% 100%, 0% 100%)";
+      const OPEN =
+        "polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%, 100% 0%, 0% 0%, 0% 100%, 0% 100%)";
+      gsap.set(bigLayer, { clipPath: CLOSED });
+
+      // ---- Phase 1: entry (IO at 30%, not scrubbed) ----
+      const entry = gsap.timeline({
+        paused: true,
+        defaults: { ease: "power2.inOut", overwrite: "auto" },
+      });
+      entry
+        .to(bigTag, { y: 0, autoAlpha: 1, duration: 0.35 }, 0)
+        .to(
+          bigLines,
+          { yPercent: 0, autoAlpha: 1, duration: 0.4, stagger: 0.1 },
+          "-=0.15"
+        )
+        .to(
+          bigPlate,
+          { x: 0, autoAlpha: 1, duration: 0.55, ease: "power2.out" },
+          ">0.1"
+        );
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entryItem) => {
+            if (entryItem.intersectionRatio >= 0.3) {
+              entry.timeScale(1).play();
+            } else if (entryItem.intersectionRatio === 0) {
+              entry.pause(0);
+            } else {
+              entry.timeScale(2.5).reverse();
+            }
+          });
+        },
+        { threshold: [0, 0.3], rootMargin: "0px 0px -5% 0px" }
+      );
+      observer.observe(sticky);
+
+      // ---- Phase 2: scroll-controlled Big -> Delicious (reversible via scrub) ----
+      // Sticky CSS pins the viewport while the tall wrap scrolls; scrub maps
+      // scroll position to the transition so scrolling up reverses everything.
+      const scrub = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: {
+          trigger: wrap,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      // Breathing room: hold Big fully visible before the wipe starts and
+      // hold Delicious fully visible after it finishes, so each can be
+      // viewed instead of rushing through in one continuous motion.
+      const LEAD = 0.6;
+      const TAIL = 0.6;
+      scrub.to({}, { duration: LEAD }, 0);
+
+      // Big plate shrinks + fades while the mask opens.
+      scrub.to(
+        bigPlate,
+        {
+          scale: 0.5,
+          autoAlpha: 0,
+          transformOrigin: "50% 50%",
+          duration: 1,
+        },
+        LEAD
+      );
+      // Front section opens via clip-path only (no fade): the slit starts
+      // in the middle and widens toward the ends, revealing Delicious.
+      scrub.fromTo(
+        bigLayer,
+        { clipPath: CLOSED },
+        { clipPath: OPEN, duration: 2 },
+        LEAD
+      );
+      // Delicious photo scales 0.5/transparent -> original, then tag + title,
+      // then description fades up, then buttons.
+      scrub.to(delPhoto, { scale: 1, autoAlpha: 1, duration: 1 }, LEAD + 0.6);
+      scrub.to(delTag, { y: 0, autoAlpha: 1, duration: 0.5 }, LEAD + 1.0);
+      scrub.to(
+        delLines,
+        { yPercent: 0, autoAlpha: 1, duration: 0.6, stagger: 0.1 },
+        LEAD + 1.1
+      );
+      scrub.to(delDesc, { y: 0, autoAlpha: 1, duration: 0.5 }, LEAD + 1.8);
+      scrub.to(delCta, { y: 0, autoAlpha: 1, duration: 0.5 }, LEAD + 2.0);
+      scrub.to({}, { duration: TAIL });
+
+      requestAnimationFrame(() => ScrollTrigger.refresh());
+    }, wrap);
+
+    document.addEventListener("astro:before-preparation", () => ctx.revert(), {
+      once: true,
+    });
+  }
+
+  function initBig() {
+    const wrap = document.querySelector<HTMLElement>("[data-big-delicious]");
+    if (wrap) {
+      initBigDelicious(wrap);
+      return;
+    }
+    const solo = document.querySelector<HTMLElement>("[data-big-solo]");
+    if (solo) initBigSolo(solo);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initBig);
+  } else {
+    initBig();
+  }
+  document.addEventListener("astro:page-load", initBig);
+</script>

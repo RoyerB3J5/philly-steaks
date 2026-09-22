@@ -8,6 +8,7 @@ interface Props {
   content: ReviewsContent;
 }
 const { content } = Astro.props as Props;
+const lines = content.title.split(/<br\s*\/?>/i);
 ---
 
 <section
@@ -19,16 +20,29 @@ const { content } = Astro.props as Props;
     <div
       class="flex flex-col justify-center items-center lg:items-start gap-4 md:gap-6"
     >
-      <p class="tag-size text-paragraph">{content.tag}</p>
+      <p class="tag-size text-paragraph fade-up-a">{content.tag}</p>
       <h2
-        class="text-[56px] md:text-[64px] xl:text-[80px] font-rust text-paragraph leading-[100%] font-normal fade-up-a text-start"
-        set:html={content.title}
-      />
+        class="text-[56px] md:text-[64px] xl:text-[80px] font-rust text-paragraph leading-[100%] font-normal text-start"
+      >
+        {
+          lines.map((line, index) => (
+            <div
+              class={`relative overflow-clip ${index !== 0 ? "z-[3] -mt-[0.4em] pt-[0.4em]" : "z-0"}`}
+            >
+              <span
+                class="block fade-up-a font-rust"
+                style={`animation-delay: ${index * 0.1}s;`}
+                set:html={line}
+              />
+            </div>
+          ))
+        }
+      </h2>
     </div>
     <img
       src="/images/main/plate-review.webp"
       alt="Review"
-      class="w-full md:w-[50%] lg:w-[30%] h-auto"
+      class="w-full md:w-[50%] lg:w-[30%] h-auto image-scale"
       width="922"
       height="551"
     />

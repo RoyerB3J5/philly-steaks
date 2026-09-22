@@ -3,7 +3,6 @@ import en from "../../i18n/en";
 import es from "../../i18n/es";
 import Layout from "../../layouts/Layout.astro";
 import Big from "../../sections/Main/Big.astro";
-import Delicious from "../../sections/Main/Delicious.astro";
 import Halal from "../../sections/Main/Halal.astro";
 import Hero from "../../sections/Main/Hero.astro";
 import Perfect from "../../sections/Main/Perfect.astro";
@@ -38,7 +37,7 @@ const seo = t.seo.main;
   <Halal content={t.main.halal} />
   <Quality content={t.main.quality} />
   <Perfect content={t.main.perfect} />
-  <Big content={t.main.big} />
+  <Big content={t.main.big} deliciousContent={t.main.delicious} />
   <Posts content={t.main.clients} />
   <Reviews content={t.main.reviews} />
 </Layout>

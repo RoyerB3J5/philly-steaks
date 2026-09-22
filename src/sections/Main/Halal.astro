@@ -56,30 +56,34 @@ const lines = content.title.split(/<br\s*\/?>/i);
       <div
         class="w-full md:w-[90%] h-auto relative aspect-398/285 lg:aspect-809/388"
       >
-        <img
-          data-halal-deco
-          src="/icons/halal-1.svg"
-          alt="Halal 1"
-          class="w-[143px] h-[134px] z-3 absolute -top-14 md:-top-19 -right-12 md:-right-19 scale-50 lg:scale-100"
-          width="143"
-          height="134"
-        />
-        <div
-          data-halal-badge
-          class="absolute w-[139px] h-[131px] -bottom-16 -left-12 md:-left-16 z-3 py-[33px] px-[21px] gap-2 bg-[url('/icons/back-halal.svg')] bg-no-repeat bg-center bg-contain flex flex-col justify-center items-center -rotate-8 scale-50 lg:scale-100"
-        >
+        <div class="absolute z-3 -top-14 md:-top-19 -right-12 md:-right-19 scale-50 lg:scale-100">
           <img
-            src="/icons/star-small-2.svg"
-            alt="Star"
-            class="w-4 h-4"
-            width="8"
-            height="8"
+            data-halal-deco
+            src="/icons/halal-1.svg"
+            alt="Halal 1"
+            class="w-[143px] h-[134px]"
+            width="143"
+            height="134"
           />
-          <p
-            class="text-[16px] font-medium leading-[100%] uppercase text-white text-center"
+        </div>
+        <div class="absolute z-3 -bottom-16 -left-12 md:-left-16 -rotate-8 scale-50 lg:scale-100">
+          <div
+            data-halal-badge
+            class="w-[139px] h-[131px] py-[33px] px-[21px] gap-2 bg-[url('/icons/back-halal.svg')] bg-no-repeat bg-center bg-contain flex flex-col justify-center items-center"
           >
-            {content.satisfy}
-          </p>
+            <img
+              src="/icons/star-small-2.svg"
+              alt="Star"
+              class="w-4 h-4"
+              width="8"
+              height="8"
+            />
+            <p
+              class="text-[16px] font-medium leading-[100%] uppercase text-white text-center"
+            >
+              {content.satisfy}
+            </p>
+          </div>
         </div>
         <img
           data-halal-photo
@@ -149,8 +153,12 @@ const lines = content.title.split(/<br\s*\/?>/i);
         autoAlpha: 0,
         transformOrigin: "50% 50%",
       });
-      // Group 3 — deco + badge scale from 0 (final transform is identity,
-      // so the Tailwind scale-50 / lg:scale-100 + -rotate-8 design is intact).
+      // Group 3 — deco + badge inners scale from 0 to 1 freely. The
+      // responsive design scale (scale-50 lg:scale-100) + -rotate-8 live on
+      // the untouched wrappers and compose via nesting, because GSAP absorbs
+      // Tailwind v4's independent scale/rotate properties into its own
+      // matrix on first touch and would otherwise flatten them to full size
+      // below lg (and break them on resize).
       gsap.set([deco, badge], {
         scale: 0,
         autoAlpha: 0,

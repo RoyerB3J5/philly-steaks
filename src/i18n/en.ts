@@ -31,7 +31,7 @@ export default {
       },
       {
         label: "Order Now",
-        href: "#",
+        href: "https://cash.app/$orlandophillysteak",
       },
     ],
   },
@@ -49,7 +49,7 @@ export default {
         },
         {
           label: "Order Now",
-          href: "#",
+          href: "https://cash.app/$orlandophillysteak",
         },
       ],
     },
@@ -85,7 +85,7 @@ export default {
         "Orlando’s Philly Steak & Gyro provides delicious and healthy Halal food daily from 11:00 AM to 10:30 PM, perfect for post-Disney adventures. Enjoy fresh, affordable meals and save time by calling ahead to order your favorites.",
       button: {
         label: "Read More",
-        href: "#",
+        href: "/en/about-us",
       },
       satisfy: "Satisfy your cravings",
     },
@@ -95,7 +95,7 @@ export default {
         "GOOD FOOD <br/> <span class='inline-block font-script text-[80px] md:text-[150px] lg:text-[216px] text-accent leading-[80%] font-normal -translate-y-5 md:-translate-y-9'>Good Vibes</span>",
       button: {
         label: "CHECK THE  FULL MENU",
-        href: "#",
+        href: "https://cash.app/$orlandophillysteak",
       },
     },
     perfect: {
@@ -128,7 +128,7 @@ export default {
     delicious: {
       tag: "Orlando’s Philly Steak",
       title:
-        "delicious <br/> <span class='inline-block font-script text-[80px] md:text-[120px] lg:text-[144px] text-accent leading-[80%] font-normal -translate-y-4 md:-translate-y-24'>Food</span>",
+        "delicious <br/> <span class='inline-block font-script text-[80px] md:text-[90px] xl:text-[144px] text-accent leading-[80%] font-normal -translate-y-4 md:-translate-y-10 lg:-translate-y-24'>Food</span>",
       description:
         "Skip the long lines and enjoy delicious halal food just minutes from Disney. Order ahead and we’ll have your meal ready when you arrive. Fresh, tasty, and affordable.",
       buttons: [
@@ -138,7 +138,7 @@ export default {
         },
         {
           label: "Order Now",
-          href: "#",
+          href: "https://cash.app/$orlandophillysteak",
         },
       ],
     },
@@ -191,7 +191,7 @@ export default {
         },
         {
           label: "Order Now",
-          href: "#",
+          href: "https://cash.app/$orlandophillysteak",
         },
       ],
     },
@@ -221,7 +221,7 @@ export default {
       buttons: [
         {
           label: "Check the full menu",
-          href: "#",
+          href: "https://cash.app/$orlandophillysteak",
         },
       ],
     },
@@ -240,7 +240,7 @@ export default {
         },
         {
           label: "Order Now",
-          href: "#",
+          href: "https://cash.app/$orlandophillysteak",
         },
       ],
     },
@@ -282,7 +282,7 @@ export default {
         },
         {
           label: "Order Now",
-          href: "#",
+          href: "https://cash.app/$orlandophillysteak",
         },
       ],
     },
@@ -327,7 +327,7 @@ export default {
             tel: "tel:+14072394976",
           },
           {
-            icon: "map",
+            icon: "mail",
             label: "info@orlandophillysteak.com",
             href: "https://mail.google.com/mail/?view=cm&fs=1&to=info@orlandophillysteak.com",
           },
