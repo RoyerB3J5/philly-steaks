@@ -100,47 +100,7 @@ const {
 
     animationElements.forEach((element) => animationObserver.observe(element));
 
-    // -------------------------------------------------------------
-    // 2. INTERACCIÓN DE EMPUJE CON MOUSE (data-push-container)
-    // -------------------------------------------------------------
-    const pushContainers = document.querySelectorAll<HTMLElement>(
-      "[data-push-container]",
-    );
-
-    pushContainers.forEach((container) => {
-      const img = container.querySelector<HTMLElement>("img");
-
-      // Evita vincular event listeners repetidos si la función se vuelve a ejecutar
-      if (!img || container.dataset.pushInitialized) return;
-      container.dataset.pushInitialized = "true";
-
-      container.addEventListener("mousemove", (e) => {
-        const rect = container.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-
-        const deltaX = e.clientX - centerX;
-        const deltaY = e.clientY - centerY;
-
-        const pushFactor = 0.06;
-        const maxDistance = 12;
-
-        const moveX = Math.max(
-          -maxDistance,
-          Math.min(maxDistance, deltaX * pushFactor),
-        );
-        const moveY = Math.max(
-          -maxDistance,
-          Math.min(maxDistance, deltaY * pushFactor),
-        );
-
-        img.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
-      });
-
-      container.addEventListener("mouseleave", () => {
-        img.style.transform = "translate3d(0px, 0px, 0)";
-      });
-    });
+    
   }
 
   // Ejecución en la carga inicial del documento

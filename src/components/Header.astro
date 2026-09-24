@@ -66,7 +66,9 @@ const mainBarBgClass = isSolidPage ? "bg-[#0D0D0D]" : "bg-transparent";
     data-solid={isSolidPage ? "true" : "false"}
     class={`w-full ${mainBarBgClass} flex justify-center items-center h-18 md:h-20 transition-colors duration-300`}
   >
-    <div class="container-full flex justify-between items-center relative">
+    <div
+      class="max-w-[1280px] px-4 xl:px-0 w-full flex justify-between items-center relative"
+    >
       <a
         href={`/${lang}`}
         aria-label="Ir a la página principal"
