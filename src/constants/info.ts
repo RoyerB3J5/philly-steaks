@@ -3,4 +3,4 @@ export const phoneNumberLink = "tel:+14072394976";
 
 export const emailAddress = "info@orlandophillysteak.com";
 
-export const facebookLink = "#";
+export const facebookLink = "https://www.facebook.com/orlandophillysteak/";

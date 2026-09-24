@@ -24,15 +24,21 @@ const normalized =
 // Detectar el idioma actual ('en' o 'es')
 const match = currentPath.match(/^\/(en|es)/);
 const lang = match ? match[1] : "en";
+// Solo estas páginas (normalizadas sin prefijo de idioma) usan fondo transparente;
+// cualquier otra ruta usa fondo sólido.
+const transparentPages = ["/", "/menu", "/about-us"];
+const isSolidPage = !transparentPages.includes(normalized);
+const mainBarBgClass = isSolidPage ? "bg-[#0D0D0D]" : "bg-transparent";
 ---
 
 <header
-  class={`fixed left-0 right-0 z-50 w-full flex flex-col justify-center items-center top-0 header-intro`}
-  id="site-header"
+  class={`fixed left-0 right-0 z-50 w-full flex flex-col justify-center items-center top-0 border-b border-white/20`}
   style="transition: transform 0.3s ease-out, background-color 0.3s ease-out; will-change: transform;"
+  id="site-header"
 >
   <div
     class="bg-secondary py-2.5 md:flex justify-center items-center gap-2 w-full hidden"
+    id="header-top-bar"
   >
     <img
       src="/icons/star-small.svg"
@@ -43,7 +49,7 @@ const lang = match ? match[1] : "en";
       height="8"
     />
     <p
-      class="text-[14px] font-paragraph font-medium leadong-[120%] text-white"
+      class="text-[14px] font-paragraph font-normal leading-[120%] text-white"
       set:html={content?.description}
     />
     <img
@@ -55,7 +61,11 @@ const lang = match ? match[1] : "en";
       height="8"
     />
   </div>
-  <div class="w-full bg-black flex justify-center items-center h-18 md:h-20">
+  <div
+    id="header-main-bar"
+    data-solid={isSolidPage ? "true" : "false"}
+    class={`w-full ${mainBarBgClass} flex justify-center items-center h-18 md:h-20 transition-colors duration-300`}
+  >
     <div class="container-full flex justify-between items-center relative">
       <a
         href={`/${lang}`}
@@ -265,15 +275,17 @@ const lang = match ? match[1] : "en";
 
     // Header: height var + hide on scroll down / show on scroll up
     const header = document.getElementById("site-header");
+    const headerTopBar = document.getElementById("header-top-bar");
+    const headerMainBar = document.getElementById("header-main-bar");
 
     function updateHeaderHeight() {
-      const height = header?.offsetHeight || 0;
+      const height = headerTopBar?.offsetHeight || 0;
       document.documentElement.style.setProperty(
         "--header-height",
         `${height}px`,
       );
     }
-    if (header) {
+    if (headerTopBar) {
       updateHeaderHeight();
       window.addEventListener("resize", updateHeaderHeight);
     }
@@ -293,12 +305,27 @@ const lang = match ? match[1] : "en";
       header.style.transform = "translateY(-100%)";
     };
 
-    const isMenuOpen = () =>
-      menu?.classList.contains("translate-x-0") ?? false;
+    const isMenuOpen = () => menu?.classList.contains("translate-x-0") ?? false;
+
+    const updateMainBarBg = (currentY) => {
+      if (!headerMainBar) return;
+      // Solid pages (anything other than /, /menu, /about-us) always stay dark.
+      if (headerMainBar.dataset.solid === "true") {
+        headerMainBar.classList.add("bg-[#0D0D0D]");
+        headerMainBar.classList.remove("bg-transparent");
+        return;
+      }
+      // Past the initial viewport (with a small threshold so it triggers reliably)
+      const pastViewport = currentY > window.innerHeight - 80;
+      headerMainBar.classList.toggle("bg-[#0D0D0D]", pastViewport);
+      headerMainBar.classList.toggle("bg-transparent", !pastViewport);
+    };
 
     const onScroll = () => {
       const currentY = window.scrollY || document.documentElement.scrollTop;
       const diff = currentY - lastScrollY;
+
+      updateMainBarBg(currentY);
 
       // Don't hide while mobile menu is open
       if (isMenuOpen()) {
@@ -333,6 +360,9 @@ const lang = match ? match[1] : "en";
       },
       { passive: true },
     );
+    window.addEventListener("resize", () => {
+      updateMainBarBg(window.scrollY || document.documentElement.scrollTop);
+    });
     onScroll();
   });
 </script>

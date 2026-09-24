@@ -86,7 +86,7 @@ export default function BlogSection({
   return (
     <section
       ref={containerRef}
-      className="w-full flex flex-col justify-center items-center bg-white"
+      className="w-full flex flex-col justify-center items-center bg-white pt-16 md:pt-20"
     >
       <div className="container-full flex flex-col justify-center items-center py-16 gap-8 md:gap-16">
         <div className="flex flex-col justify-center items-center gap-12">
@@ -156,10 +156,20 @@ export default function BlogSection({
                   )}
 
                   <a
-                    className="w-[144px] py-3 border-[1.5px] rounded-full border-[#E6E6E6] hover:bg-accent hover:border-accent transition-all duration-300 ease-in-out paragraph-bold flex justify-center items-center uppercase mt-auto"
+                    className="group w-full h-12 rounded-[8px] border border-[#0D0D0D26] flex justify-center items-center text-[16px] font-paragraph font-bold leading-[100%] hover:bg-[#EEEEEE] hover:scale-103 transition-all duration-300 text-black overflow-hidden"
                     href={`/${lang}/blog/${item.id}`}
                   >
-                    {readMoreText}
+                    <span className="relative overflow-hidden">
+                      <span className="flex items-center justify-center transition-transform duration-200 ease-out group-hover:-translate-y-[calc(100%+0.5rem)] motion-reduce:transition-none motion-reduce:transform-none">
+                        {readMoreText}
+                      </span>
+                      <span
+                        aria-hidden="true"
+                        className="absolute inset-x-0 top-full mt-2 flex items-center justify-center transition-transform duration-200 ease-out group-hover:-translate-y-[calc(100%+0.5rem)] motion-reduce:transition-none motion-reduce:transform-none"
+                      >
+                        {readMoreText}
+                      </span>
+                    </span>
                   </a>
                 </article>
               ))}

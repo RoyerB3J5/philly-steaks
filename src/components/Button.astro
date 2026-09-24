@@ -20,17 +20,21 @@ interface Props {
   width?: string;
   /** Nombre del icono (se busca en /images/{icon}.svg) */
   icon?: string;
+  colorDiffenet?: boolean;
+  colorDifferent?: boolean;
 }
 
 const {
   text = "",
-  baseBtnClass = "flex justify-center items-center cursor-pointer transition-all duration-500 ease-in-out z-[10]  h-12 hover:rounded-none border rounded-[8px] gap-2.5 box-container ",
+  baseBtnClass = "group flex justify-center items-center cursor-pointer transition-all duration-300 ease-in-out z-[10] h-12  hover:scale-105 border rounded-[8px] gap-2.5 box-container ",
   extraBtnClass = "",
-  baseTextClass = "text-[15px] font-paragraph font-bold  leading-[100%] text-center",
+  baseTextClass = "text-[15px] font-paragraph font-bold leading-[100%] text-center",
   textClass = "",
   colorText = "text-white",
   href,
   target,
+  colorDiffenet,
+  colorDifferent,
   width = "w-[164px]",
   rel,
   icon,
@@ -46,16 +50,23 @@ const normalizedHref =
 const isSecondary = extraBtnClass.includes("bg-secondary");
 const svgColor = isSecondary ? "#B52132" : "#FFF"; // Por defecto blanco para móvil si es negro, o su color fijo si es secondary
 
+// Si colorDifferent (o el alias con typo colorDiffenet) es true, la flecha
+// pasa a blanco en group-hover.
+const colorDifferentActive = colorDifferent ?? colorDiffenet ?? false;
+
 // Clases responsivas de Tailwind para el fill del SVG:
 // Si es secondary, se mantiene siempre #B52132. Si no, de md para abajo es #FFF (#FFFFFF) y de md para arriba es #000000.
-const svgFillClass = isSecondary
-  ? "fill-[#B52132]"
-  : "max-md:fill-[#FFFFFF] md:fill-[#000000]";
+// Con colorDifferent activo se añade el blanco en group-hover.
+const svgFillClass = `${isSecondary ? "fill-[#B52132]" : "max-md:fill-[#FFFFFF] md:fill-[#000000]"} ${colorDifferentActive ? "group-hover:fill-[#FFFFFF] transition-[fill] duration-200" : ""}`.trim();
+
+const iconBoxClass = `w-4 h-4 rounded-[4px] flex justify-center items-center ${extraBtnClass.includes("bg-secondary") ? "bg-white" : "bg-black md:bg-white "} ${colorDifferentActive ? "group-hover:bg-[#0D0D0D]" : ""}`;
 
 // Construir clases finales
 const buttonClasses =
   `${baseBtnClass} ${icon ? "gap-[10px]" : ""} ${extraBtnClass} ${colorText} ${width}`.trim();
 const paragraphClasses = `${baseTextClass} ${textClass}`.trim();
+const rollRowClass =
+  "flex items-center gap-2.5 transition-transform duration-200 ease-out group-hover:-translate-y-[calc(100%+0.5rem)] motion-reduce:transition-none motion-reduce:transform-none";
 ---
 
 {
@@ -66,43 +77,97 @@ const paragraphClasses = `${baseTextClass} ${textClass}`.trim();
       target={target}
       rel={rel ?? (target === "_blank" ? "noopener noreferrer" : undefined)}
     >
-      {text ? <p class={paragraphClasses}>{text}</p> : <slot />}
-      <div
-        class={`w-4 h-4 rounded-[4px]  flex justify-center items-center ${extraBtnClass.includes("bg-secondary") ? "bg-white" : "bg-black md:bg-white"}`}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="5"
-          height="9"
-          viewBox="0 0 5 9"
-          fill="none"
+      <span class="relative overflow-hidden">
+        <span class={rollRowClass}>
+          {text ? <p class={paragraphClasses}>{text}</p> : <slot />}
+          <span class={iconBoxClass} aria-hidden="true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="5"
+              height="9"
+              viewBox="0 0 5 9"
+              fill="none"
+            >
+              <path
+                class={svgFillClass}
+                d="M0.191235 8.48715C0.0687871 8.36468 -4.34891e-07 8.19859 -4.19751e-07 8.0254C-4.04611e-07 7.85222 0.0687872 7.68612 0.191235 7.56365L3.42402 4.33087L0.191235 1.09809C0.0760114 0.974313 0.0132892 0.810672 0.0162656 0.641593C0.0192421 0.472515 0.0876844 0.311183 0.207194 0.191541C0.326702 0.0719 0.48796 0.00327834 0.657035 0.000115015C0.82611 -0.00304831 0.989821 0.0594937 1.11372 0.174581L4.80877 3.8686C4.93121 3.99108 5 4.15717 5 4.33036C5 4.50354 4.93121 4.66964 4.80876 4.79211L1.11474 8.48715C0.992267 8.6096 0.826173 8.67839 0.652987 8.67839C0.479802 8.67839 0.313708 8.6096 0.191235 8.48715Z"
+                fill={svgColor}
+              />
+            </svg>
+          </span>
+        </span>
+        <span
+          aria-hidden="true"
+          class={`${rollRowClass} absolute inset-x-0 top-full mt-2`}
         >
-          <path
-            class={svgFillClass}
-            d="M0.191235 8.48715C0.0687871 8.36468 -4.34891e-07 8.19859 -4.19751e-07 8.0254C-4.04611e-07 7.85222 0.0687872 7.68612 0.191235 7.56365L3.42402 4.33087L0.191235 1.09809C0.0760114 0.974313 0.0132892 0.810672 0.0162656 0.641593C0.0192421 0.472515 0.0876844 0.311183 0.207194 0.191541C0.326702 0.0719 0.48796 0.00327834 0.657035 0.000115015C0.82611 -0.00304831 0.989821 0.0594937 1.11372 0.174581L4.80877 3.8686C4.93121 3.99108 5 4.15717 5 4.33036C5 4.50354 4.93121 4.66964 4.80876 4.79211L1.11474 8.48715C0.992267 8.6096 0.826173 8.67839 0.652987 8.67839C0.479802 8.67839 0.313708 8.6096 0.191235 8.48715Z"
-            fill={svgColor}
-          />
-        </svg>
-      </div>
+          {text ? <p class={paragraphClasses}>{text}</p> : <slot />}
+          <span class={iconBoxClass} aria-hidden="true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="5"
+              height="9"
+              viewBox="0 0 5 9"
+              fill="none"
+            >
+              <path
+                class={svgFillClass}
+                d="M0.191235 8.48715C0.0687871 8.36468 -4.34891e-07 8.19859 -4.19751e-07 8.0254C-4.04611e-07 7.85222 0.0687872 7.68612 0.191235 7.56365L3.42402 4.33087L0.191235 1.09809C0.0760114 0.974313 0.0132892 0.810672 0.0162656 0.641593C0.0192421 0.472515 0.0876844 0.311183 0.207194 0.191541C0.326702 0.0719 0.48796 0.00327834 0.657035 0.000115015C0.82611 -0.00304831 0.989821 0.0594937 1.11372 0.174581L4.80877 3.8686C4.93121 3.99108 5 4.15717 5 4.33036C5 4.50354 4.93121 4.66964 4.80876 4.79211L1.11474 8.48715C0.992267 8.6096 0.826173 8.67839 0.652987 8.67839C0.479802 8.67839 0.313708 8.6096 0.191235 8.48715Z"
+                fill={svgColor}
+              />
+            </svg>
+          </span>
+        </span>
+      </span>
     </a>
   ) : (
     <button type="button" class={buttonClasses}>
-      {text ? <p class={paragraphClasses}>{text}</p> : <slot />}
-      <div class="w-4 h-5 rounder-[4px] bg-white flex justify-center items-center">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="5"
-          height="9"
-          viewBox="0 0 5 9"
-          fill="none"
+      <span class="relative overflow-hidden">
+        <span class={rollRowClass}>
+          {text ? <p class={paragraphClasses}>{text}</p> : <slot />}
+          <span
+            class="w-4 h-5 rounded-[4px] bg-white flex justify-center items-center"
+            aria-hidden="true"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="5"
+              height="9"
+              viewBox="0 0 5 9"
+              fill="none"
+            >
+              <path
+                class={svgFillClass}
+                d="M0.191235 8.48715C0.0687871 8.36468 -4.34891e-07 8.19859 -4.19751e-07 8.0254C-4.04611e-07 7.85222 0.0687872 7.68612 0.191235 7.56365L3.42402 4.33087L0.191235 1.09809C0.0760114 0.974313 0.0132892 0.810672 0.0162656 0.641593C0.0192421 0.472515 0.0876844 0.311183 0.207194 0.191541C0.326702 0.0719 0.48796 0.00327834 0.657035 0.000115015C0.82611 -0.00304831 0.989821 0.0594937 1.11372 0.174581L4.80877 3.8686C4.93121 3.99108 5 4.15717 5 4.33036C5 4.50354 4.93121 4.66964 4.80876 4.79211L1.11474 8.48715C0.992267 8.6096 0.826173 8.67839 0.652987 8.67839C0.479802 8.67839 0.313708 8.6096 0.191235 8.48715Z"
+                fill={svgColor}
+              />
+            </svg>
+          </span>
+        </span>
+        <span
+          aria-hidden="true"
+          class={`${rollRowClass} absolute inset-x-0 top-full mt-2`}
         >
-          <path
-            class={svgFillClass}
-            d="M0.191235 8.48715C0.0687871 8.36468 -4.34891e-07 8.19859 -4.19751e-07 8.0254C-4.04611e-07 7.85222 0.0687872 7.68612 0.191235 7.56365L3.42402 4.33087L0.191235 1.09809C0.0760114 0.974313 0.0132892 0.810672 0.0162656 0.641593C0.0192421 0.472515 0.0876844 0.311183 0.207194 0.191541C0.326702 0.0719 0.48796 0.00327834 0.657035 0.000115015C0.82611 -0.00304831 0.989821 0.0594937 1.11372 0.174581L4.80877 3.8686C4.93121 3.99108 5 4.15717 5 4.33036C5 4.50354 4.93121 4.66964 4.80876 4.79211L1.11474 8.48715C0.992267 8.6096 0.826173 8.67839 0.652987 8.67839C0.479802 8.67839 0.313708 8.6096 0.191235 8.48715Z"
-            fill={svgColor}
-          />
-        </svg>
-      </div>
+          {text ? <p class={paragraphClasses}>{text}</p> : <slot />}
+          <span
+            class="w-4 h-5 rounded-[4px] bg-white flex justify-center items-center"
+            aria-hidden="true"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="5"
+              height="9"
+              viewBox="0 0 5 9"
+              fill="none"
+            >
+              <path
+                class={svgFillClass}
+                d="M0.191235 8.48715C0.0687871 8.36468 -4.34891e-07 8.19859 -4.19751e-07 8.0254C-4.04611e-07 7.85222 0.0687872 7.68612 0.191235 7.56365L3.42402 4.33087L0.191235 1.09809C0.0760114 0.974313 0.0132892 0.810672 0.0162656 0.641593C0.0192421 0.472515 0.0876844 0.311183 0.207194 0.191541C0.326702 0.0719 0.48796 0.00327834 0.657035 0.000115015C0.82611 -0.00304831 0.989821 0.0594937 1.11372 0.174581L4.80877 3.8686C4.93121 3.99108 5 4.15717 5 4.33036C5 4.50354 4.93121 4.66964 4.80876 4.79211L1.11474 8.48715C0.992267 8.6096 0.826173 8.67839 0.652987 8.67839C0.479802 8.67839 0.313708 8.6096 0.191235 8.48715Z"
+                fill={svgColor}
+              />
+            </svg>
+          </span>
+        </span>
+      </span>
     </button>
   )
 }

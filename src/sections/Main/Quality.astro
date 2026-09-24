@@ -28,7 +28,7 @@ const lines = content.title.split(/<br\s*\/?>/i);
   <img
     data-quality-q1
     src="/images/main/quality-1.webp"
-    class="absolute top-0 left-0 z-3 w-[70%] md:w-[30%] lg:w-[20%] h-auto"
+    class="absolute top-0 left-0 z-3 w-[70%] md:w-[30%] lg:w-[25%] 3xl:w-[20%] h-auto max-w-[374px]"
     width="521"
     height="355"
     decoding="async"
@@ -37,7 +37,7 @@ const lines = content.title.split(/<br\s*\/?>/i);
   <img
     data-quality-q2
     src="/images/main/quality-2.webp"
-    class="absolute bottom-0 right-0 z-3 w-[65%] md:w-[30%] lg:w-[20%] h-auto"
+    class="absolute bottom-0 right-0 z-3 w-[65%] md:w-[30%] lg:w-[25%] 3xl:w-[20%] h-auto max-w-[321px]"
     width="521"
     height="355"
     decoding="async"
@@ -51,7 +51,7 @@ const lines = content.title.split(/<br\s*\/?>/i);
     </p>
     <h2
       data-quality-title
-      class="text-[56px] md:text-[96px] lg:text-[176px] font-rust text-white leading-[100%] font-normal text-center rotate-[-4deg] isolate"
+      class="text-[56px] md:text-[96px] lg:text-[176px] font-rust text-white leading-[100%] font-normal text-center rotate-[-4deg] isolate translate-y-0 md:translate-y-6"
     >
       {
         lines.map((line, index) => (
@@ -68,8 +68,9 @@ const lines = content.title.split(/<br\s*\/?>/i);
         text={content.button.label}
         href={content.button.href}
         textClass=" uppercase"
-        extraBtnClass="bg-black border-black"
+        extraBtnClass="bg-[#0D0D0D] border-[#0D0D0D] hover:bg-white hover:text-black"
         width="w-[242px]"
+        colorDiffenet={true}
       />
     </div>
   </div>

@@ -54,10 +54,9 @@ const {
 
   <body
     class="font-family antialiased overflow-x-clip bg-white flex flex-col justify-center items-center w-full"
-    data-show-loader={showLoader ? "true" : "false"}
   >
     <Header content={t?.header} />
-    <main class="flex flex-col w-full items-center pt-(--header-height)">
+    <main class="flex flex-col w-full items-center ">
       <slot />
     </main>
     <Footer content={t?.footer} />

@@ -39,7 +39,6 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 :root {
-  --header-height: 72px;
   --anim-speed-slow: 30s; /* Muy lenta y compleja */
   --anim-speed-gentle: 20s; /* Lenta pero con más rebote */
   --anim-speed-meandering: 25s; /* Lenta y errante */

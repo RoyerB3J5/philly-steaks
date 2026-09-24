@@ -12,7 +12,7 @@ const lines = content.title.split(/<br\s*\/?>/i);
 ---
 
 <section
-  class="w-full h-auto flex flex-col justify-start xl:justify-end items-center overflow-hidden relative bg-black"
+  class="w-full h-auto flex flex-col justify-start xl:justify-end items-center overflow-hidden relative bg-black pt-16 md:pt-28"
 >
   <div
     class="container-full flex flex-col md:flex-row justify-center md:justify-between items-center py-15 md:py-10 relative gap-6 md:gap-4 lg:gap-0 h-full"
@@ -38,7 +38,9 @@ const lines = content.title.split(/<br\s*\/?>/i);
           ))
         }
       </h1>
-      <p class="paragraph fade-up-a text-white w-full xl:w-[70%] text-center md:text-start">
+      <p
+        class="paragraph fade-up-a text-white w-full xl:w-[70%] text-center md:text-start"
+      >
         {content.description}
       </p>
     </div>

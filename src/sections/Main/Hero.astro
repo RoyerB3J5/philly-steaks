@@ -13,7 +13,7 @@ const lines = content.title.split(/<br\s*\/?>/i);
 ---
 
 <section
-  class="w-full h-[calc(100svh-var(--header-height))] md:h-[60vh] lg:h-[calc(100vh-var(--header-height))] flex flex-col justify-center items-end overflow-hidden relative"
+  class="w-full h-[calc(100svh)] md:h-[60vh] lg:h-[calc(100vh)] flex flex-col justify-center items-end overflow-hidden relative"
 >
   <div
     class="w-full h-full relative flex flex-col justify-end items-center overflow-hidden"
@@ -31,6 +31,7 @@ const lines = content.title.split(/<br\s*\/?>/i);
     >
       <source src="/images/video-portada.mp4" type="video/mp4" />
     </video>
+    <div class="w-full h-full absolute z-1 bg-[#0D0D0D]/20"></div>
     <div
       class="w-full h-full absolute z-2 bg-gradient-to-t from-[#0D0D0D] to-transparent to-[105.19%]"
     >

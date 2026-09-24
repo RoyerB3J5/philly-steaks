@@ -27,7 +27,10 @@ const lines = content.title.split(/<br\s*\/?>/i);
     class="container-full flex flex-col justify-between items-center gap-4 md:gap-6 z-10 relative h-full py-18 md:py-12"
   >
     <div class="flex flex-col justify-center items-center gap-6 md:gap-5">
-      <p data-perfect-tag class="tag-size text-paragraph text-center overflow-hidden">
+      <p
+        data-perfect-tag
+        class="tag-size text-paragraph text-center overflow-hidden"
+      >
         {content.tag}
       </p>
       <h2
@@ -62,7 +65,7 @@ const lines = content.title.split(/<br\s*\/?>/i);
         data-perfect-photo
         src="/images/main/perfect-plate.webp"
         alt="Perfect 1"
-        class="w-[35%] lg:w-[30%] 3xl:w-[40%] max-w-[622px] h-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-3 hidden md:block"
+        class="w-[35%] lg:w-[35%] 3xl:w-[40%] max-w-[622px] h-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-3 hidden md:block"
         width="1024"
         height="666"
         decoding="async"
@@ -126,12 +129,13 @@ const lines = content.title.split(/<br\s*\/?>/i);
     section.dataset.perfectInit = "true";
 
     const tag = section.querySelector<HTMLElement>("[data-perfect-tag]");
-    const titleLines =
-      section.querySelectorAll<HTMLElement>("[data-perfect-line]");
-    const photos =
-      section.querySelectorAll<HTMLElement>("[data-perfect-photo]");
-    const items =
-      section.querySelectorAll<HTMLElement>("[data-perfect-item]");
+    const titleLines = section.querySelectorAll<HTMLElement>(
+      "[data-perfect-line]",
+    );
+    const photos = section.querySelectorAll<HTMLElement>(
+      "[data-perfect-photo]",
+    );
+    const items = section.querySelectorAll<HTMLElement>("[data-perfect-item]");
     if (!tag || titleLines.length === 0 || photos.length === 0) return;
 
     // Respect reduced motion — leave content visible, no animation.
@@ -148,7 +152,15 @@ const lines = content.title.split(/<br\s*\/?>/i);
         autoAlpha: 0,
         transformOrigin: "50% 50%",
       });
-      gsap.set(items, { y: 24, autoAlpha: 0 });
+      // Staged item reveal: animate h3s and ps separately (never the whole
+      // item container at once), so h3 can enter first and p after more scroll.
+      const itemHeads = Array.from(items)
+        .map((el) => el.querySelector("h3"))
+        .filter((el): el is HTMLHeadingElement => el !== null);
+      const itemParas = Array.from(items)
+        .map((el) => el.querySelector("p"))
+        .filter((el): el is HTMLParagraphElement => el !== null);
+      gsap.set([...itemHeads, ...itemParas], { y: 24, autoAlpha: 0 });
 
       // Paused timeline driven by IntersectionObserver (no ScrollTrigger,
       // no scrub): plays on enter, resets on leave.
@@ -161,19 +173,19 @@ const lines = content.title.split(/<br\s*\/?>/i);
       tl.to(tag, { y: 0, autoAlpha: 1, duration: 0.35 }, 0).to(
         titleLines,
         { yPercent: 0, autoAlpha: 1, duration: 0.4, stagger: 0.1 },
-        "-=0.15"
+        "-=0.15",
       );
 
       // 2. Plate scales up to its final style.
       tl.to(
         photos,
         { scale: 1, autoAlpha: 1, duration: 0.5, ease: "power2.out" },
-        ">0.1"
+        ">0.1",
       );
 
-      // 3. All three h3+p divs fade up simultaneously (stagger 0),
-      // same on desktop and mobile.
-      tl.to(items, { y: 0, autoAlpha: 1, duration: 0.45, stagger: 0 }, ">0.1");
+      // 3. Items are NOT in this timeline — staged per-element observers below:
+      // contents 0+1 h3s together, then their ps together after more scroll,
+      // then content 2 h3 on its own entry, then its p.
 
       const observer = new IntersectionObserver(
         (entries) => {
@@ -193,9 +205,54 @@ const lines = content.title.split(/<br\s*\/?>/i);
           });
         },
         // Starts once the section is 30% into the viewport.
-        { threshold: [0, 0.3], rootMargin: "0px 0px -5% 0px" }
+        { threshold: [0, 0.3], rootMargin: "0px 0px -5% 0px" },
       );
       observer.observe(section);
+
+      // Helper: paused fade-up timeline bound to its own trigger element, so
+      // each group animates when ITS trigger enters view — never all at once.
+      const bindStagedReveal = (
+        targets: (HTMLElement | undefined)[],
+        trigger: Element,
+        bottomMargin: string,
+      ) => {
+        const els = targets.filter((el): el is HTMLElement => el != null);
+        if (els.length === 0 || !trigger) return;
+        const staged = gsap.timeline({
+          paused: true,
+          defaults: { ease: "power2.out", overwrite: "auto" },
+        });
+        staged.to(els, { y: 0, autoAlpha: 1, duration: 0.45, stagger: 0 }, 0);
+        const stagedObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.intersectionRatio >= 0.3) {
+                staged.timeScale(1).play();
+              } else if (entry.intersectionRatio === 0) {
+                staged.pause(0);
+              } else {
+                staged.timeScale(2.5).reverse();
+              }
+            });
+          },
+          { threshold: [0, 0.3], rootMargin: `0px 0px ${bottomMargin} 0px` },
+        );
+        stagedObserver.observe(trigger);
+      };
+
+      // Contents 0 + 1 share the row wrapper as trigger so both fire
+      // simultaneously on desktop AND mobile (where they stack vertically).
+      const rowA = items[0]?.parentElement ?? items[0];
+      // Step 1: h3s of 0+1 enter first (shallow trigger).
+      bindStagedReveal([itemHeads[0], itemHeads[1]], rowA, "-5%");
+      // Step 2: ps of 0+1 enter together after another scroll (deeper trigger).
+      bindStagedReveal([itemParas[0], itemParas[1]], rowA, "-25%");
+      // Step 3: content 2 h3 once IT enters the viewport...
+      if (items[2]) {
+        bindStagedReveal([itemHeads[2]], items[2], "-5%");
+        // Step 4: ...then its p after more scroll.
+        bindStagedReveal([itemParas[2]], items[2], "-25%");
+      }
     }, section);
 
     // Cleanup for Astro view transitions / HMR so timelines don't duplicate.

@@ -31,7 +31,7 @@ const bigLines = content.title.split(/<br\s*\/?>/i);
         <Delicious content={deliciousContent} asLayer />
         <section
           data-big-layer
-          class="absolute inset-0 z-10 w-full h-full flex justify-start items-start py-20 overflow-hidden will-change-[clip-path]"
+          class="absolute inset-0 z-10 w-full h-full flex justify-start items-start py-20 md:py-10 overflow-hidden will-change-[clip-path]"
         >
           <img
             src="/images/main/big-back.webp"
@@ -62,7 +62,7 @@ const bigLines = content.title.split(/<br\s*\/?>/i);
           <img
             data-big-plate
             src="/images/main/big-plate.webp"
-            class="absolute bottom-10 right-0 w-[90%] md:w-[45%] lg:w-[30%] h-auto"
+            class="absolute bottom-10 right-0 w-[90%] md:w-[45%] lg:w-[30%] xl:w-[507px] h-auto"
             width="944"
             height="720"
             decoding="async"
@@ -298,13 +298,13 @@ const bigLines = content.title.split(/<br\s*\/?>/i);
       const TAIL = 0.6;
       scrub.to({}, { duration: LEAD }, 0);
 
-      // Big plate shrinks + fades while the mask opens.
+      // Big plate exits to the right while the mask opens (slides off-screen,
+      // fading as it goes — no scaling).
       scrub.to(
         bigPlate,
         {
-          scale: 0.5,
+          x: () => (bigPlate?.offsetWidth ?? 500) + 120,
           autoAlpha: 0,
-          transformOrigin: "50% 50%",
           duration: 1,
         },
         LEAD
