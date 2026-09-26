@@ -1,5 +1,6 @@
 ---
 import Button from "../components/Button.astro";
+import FormContact from "../components/FormContact.astro";
 type Translations = typeof import("../i18n/en").default;
 type HeroContent = Translations["contact"]["form"];
 interface Props {
@@ -12,7 +13,7 @@ const lines = content.title.split(/<br\s*\/?>/i);
 ---
 
 <section
-  class="w-full h-auto flex flex-col justify-start xl:justify-end items-center overflow-hidden relative bg-black pt-16 md:pt-28"
+  class="w-full h-auto flex flex-col justify-start xl:justify-end items-center overflow-hidden relative bg-paragraph pt-16 md:pt-28"
 >
   <div
     class="container-full flex flex-col md:flex-row justify-center md:justify-between items-center py-15 md:py-10 relative gap-6 md:gap-4 lg:gap-0 h-full"
@@ -45,8 +46,9 @@ const lines = content.title.split(/<br\s*\/?>/i);
       </p>
     </div>
     <div
-      class="w-full md:w-[55%] xl:w-[50%] p-11 rounded-3xl bg-white/5 h-[50vh] xl:h-[65vh] fade-up-a"
+      class="w-full md:w-[55%] xl:w-[50%] p-11 rounded-3xl bg-white/5 fade-up-a"
     >
+      <FormContact />
     </div>
   </div>
 </section>

@@ -7,7 +7,7 @@ function Starts() {
   const [rating, setRating] = useState<number | null>(null);
   const showForm = rating !== null && rating <= 3;
   const total = 5;
-  const reviewLink = "#";
+  const reviewLink = "https://www.google.com/search?q=philly+steak+orlando&si=APenkKn5T4YN59srr511wD6k6Pufj9DEzRUvB1XJSwUeeT5afgtIzIgbeOP_xJaaKYqxONnt5MxCTo1PsLTVu6-5qKcwYUyOjvXvB8DQIMJJ7tJenbV-JnOMFmUorSA1_ZwRPGc8nRdMtwdGGvD6Oe7Q1NYXu8rbFA%3D%3D";
 
   // Move any client-only side effects (redirect) into useEffect so SSR won't break.
   useEffect(() => {

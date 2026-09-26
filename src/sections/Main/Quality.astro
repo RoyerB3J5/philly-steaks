@@ -14,7 +14,7 @@ const lines = content.title.split(/<br\s*\/?>/i);
 
 <section
   data-quality
-  class="h-screen md:h-[70vh] xl:h-screen w-full flex justify-center items-center bg-black relative overflow-hidden"
+  class="h-screen md:h-[70vh] xl:h-screen w-full flex justify-center items-center bg-paragraph relative overflow-hidden"
 >
   <img
     src="/images/main/back-quality.webp"
@@ -122,7 +122,7 @@ const lines = content.title.split(/<br\s*\/?>/i);
       tl.to(
         q1,
         { x: 0, y: 0, autoAlpha: 1, duration: 0.5, ease: "power2.out" },
-        0
+        0,
       )
         // 2. <p> + <h2> with the Signature structure/timing — chained with
         // overlaps so there is no idle delay between animations.
@@ -130,14 +130,14 @@ const lines = content.title.split(/<br\s*\/?>/i);
         .to(
           titleLines,
           { yPercent: 0, autoAlpha: 1, duration: 0.4, stagger: 0.1 },
-          "-=0.15"
+          "-=0.15",
         )
         .to(cta, { y: 0, autoAlpha: 1, duration: 0.4 }, "-=0.2")
         // 3. quality-2 enters diagonally upward (from bottom-right).
         .to(
           q2,
           { x: 0, y: 0, autoAlpha: 1, duration: 0.5, ease: "power2.out" },
-          "-=0.2"
+          "-=0.2",
         );
 
       const observer = new IntersectionObserver(

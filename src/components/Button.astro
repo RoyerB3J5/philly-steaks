@@ -57,9 +57,10 @@ const colorDifferentActive = colorDifferent ?? colorDiffenet ?? false;
 // Clases responsivas de Tailwind para el fill del SVG:
 // Si es secondary, se mantiene siempre #B52132. Si no, de md para abajo es #FFF (#FFFFFF) y de md para arriba es #000000.
 // Con colorDifferent activo se añade el blanco en group-hover.
-const svgFillClass = `${isSecondary ? "fill-[#B52132]" : "max-md:fill-[#FFFFFF] md:fill-[#000000]"} ${colorDifferentActive ? "group-hover:fill-[#FFFFFF] transition-[fill] duration-200" : ""}`.trim();
+const svgFillClass =
+  `${isSecondary ? "fill-[#B52132]" : "max-md:fill-[#FFFFFF] md:fill-[#000000]"} ${colorDifferentActive ? "group-hover:fill-[#FFFFFF] transition-[fill] duration-200" : ""}`.trim();
 
-const iconBoxClass = `w-4 h-4 rounded-[4px] flex justify-center items-center ${extraBtnClass.includes("bg-secondary") ? "bg-white" : "bg-black md:bg-white "} ${colorDifferentActive ? "group-hover:bg-[#0D0D0D]" : ""}`;
+const iconBoxClass = `w-4 h-4 rounded-[4px] flex justify-center items-center ${extraBtnClass.includes("bg-secondary") ? "bg-white" : "bg-paragraph md:bg-white "} ${colorDifferentActive ? "group-hover:bg-[#0D0D0D]" : ""}`;
 
 // Construir clases finales
 const buttonClasses =

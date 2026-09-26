@@ -244,9 +244,13 @@ const bigLines = content.title.split(/<br\s*\/?>/i);
       gsap.set(bigLayer, { clipPath: CLOSED });
 
       // ---- Phase 1: entry (IO at 30%, not scrubbed) ----
+      // NOTE: overwrite:false is required here — the entry and the scrub below
+      // both animate bigPlate (x/autoAlpha). With overwrite:"auto" the entry
+      // play would kill the scrub's plate tween, so the plate would freeze
+      // during the mask reveal instead of sliding right + fading.
       const entry = gsap.timeline({
         paused: true,
-        defaults: { ease: "power2.inOut", overwrite: "auto" },
+        defaults: { ease: "power2.inOut", overwrite: false },
       });
       entry
         .to(bigTag, { y: 0, autoAlpha: 1, duration: 0.35 }, 0)
@@ -257,7 +261,13 @@ const bigLines = content.title.split(/<br\s*\/?>/i);
         )
         .to(
           bigPlate,
-          { x: 0, autoAlpha: 1, duration: 0.55, ease: "power2.out" },
+          {
+            x: 0,
+            autoAlpha: 1,
+            duration: 0.55,
+            ease: "power2.out",
+            overwrite: false,
+          },
           ">0.1"
         );
 
@@ -281,7 +291,7 @@ const bigLines = content.title.split(/<br\s*\/?>/i);
       // Sticky CSS pins the viewport while the tall wrap scrolls; scrub maps
       // scroll position to the transition so scrolling up reverses everything.
       const scrub = gsap.timeline({
-        defaults: { ease: "none" },
+        defaults: { ease: "none", overwrite: false },
         scrollTrigger: {
           trigger: wrap,
           start: "top top",
@@ -299,13 +309,19 @@ const bigLines = content.title.split(/<br\s*\/?>/i);
       scrub.to({}, { duration: LEAD }, 0);
 
       // Big plate exits to the right while the mask opens (slides off-screen,
-      // fading as it goes — no scaling).
-      scrub.to(
+      // fading as it goes — no scaling). fromTo (not .to) so the scrub starts
+      // from the entered state (x:0 / visible) instead of the pre-entry hidden
+      // state (x:250 / autoAlpha:0) captured at timeline build time.
+      // immediateRender:false so it doesn't stomp the entry tween.
+      scrub.fromTo(
         bigPlate,
+        { x: 0, autoAlpha: 1 },
         {
           x: () => (bigPlate?.offsetWidth ?? 500) + 120,
           autoAlpha: 0,
           duration: 1,
+          immediateRender: false,
+          overwrite: false,
         },
         LEAD
       );

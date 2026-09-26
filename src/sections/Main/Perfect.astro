@@ -65,7 +65,7 @@ const lines = content.title.split(/<br\s*\/?>/i);
         data-perfect-photo
         src="/images/main/perfect-plate.webp"
         alt="Perfect 1"
-        class="w-[35%] lg:w-[35%] 3xl:w-[40%] max-w-[622px] h-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-3 hidden md:block"
+        class="w-[35%] lg:w-[35%] xl:w-[50%] 2xl:w-[36%] 3xl:w-[50%] max-w-[622px] h-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-3 hidden md:block"
         width="1024"
         height="666"
         decoding="async"
@@ -222,11 +222,12 @@ const lines = content.title.split(/<br\s*\/?>/i);
           paused: true,
           defaults: { ease: "power2.out", overwrite: "auto" },
         });
-        staged.to(els, { y: 0, autoAlpha: 1, duration: 0.45, stagger: 0 }, 0);
+        // Short + snappy so the whole staged sequence finishes with less scroll.
+        staged.to(els, { y: 0, autoAlpha: 1, duration: 0.32, stagger: 0 }, 0);
         const stagedObserver = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
-              if (entry.intersectionRatio >= 0.3) {
+              if (entry.intersectionRatio >= 0.15) {
                 staged.timeScale(1).play();
               } else if (entry.intersectionRatio === 0) {
                 staged.pause(0);
@@ -235,7 +236,8 @@ const lines = content.title.split(/<br\s*\/?>/i);
               }
             });
           },
-          { threshold: [0, 0.3], rootMargin: `0px 0px ${bottomMargin} 0px` },
+          // Lower threshold fires a touch earlier on scroll-in.
+          { threshold: [0, 0.15], rootMargin: `0px 0px ${bottomMargin} 0px` },
         );
         stagedObserver.observe(trigger);
       };
@@ -243,15 +245,15 @@ const lines = content.title.split(/<br\s*\/?>/i);
       // Contents 0 + 1 share the row wrapper as trigger so both fire
       // simultaneously on desktop AND mobile (where they stack vertically).
       const rowA = items[0]?.parentElement ?? items[0];
-      // Step 1: h3s of 0+1 enter first (shallow trigger).
-      bindStagedReveal([itemHeads[0], itemHeads[1]], rowA, "-5%");
-      // Step 2: ps of 0+1 enter together after another scroll (deeper trigger).
-      bindStagedReveal([itemParas[0], itemParas[1]], rowA, "-25%");
+      // Step 1: h3s of 0+1 enter first (shallow trigger — fires earlier).
+      bindStagedReveal([itemHeads[0], itemHeads[1]], rowA, "0%");
+      // Step 2: ps of 0+1 enter together after a short scroll (tighter gap).
+      bindStagedReveal([itemParas[0], itemParas[1]], rowA, "-12%");
       // Step 3: content 2 h3 once IT enters the viewport...
       if (items[2]) {
-        bindStagedReveal([itemHeads[2]], items[2], "-5%");
-        // Step 4: ...then its p after more scroll.
-        bindStagedReveal([itemParas[2]], items[2], "-25%");
+        bindStagedReveal([itemHeads[2]], items[2], "0%");
+        // Step 4: ...then its p after a short scroll.
+        bindStagedReveal([itemParas[2]], items[2], "-12%");
       }
     }, section);
 
