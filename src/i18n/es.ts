@@ -101,7 +101,7 @@ export default {
     perfect: {
       tag: "elige tu",
       title:
-        "tu <br/> <span class='inline-block font-script text-[80px] md:text-[112px] text-secondary leading-[80%] font-normal -translate-y-5 md:-translate-y-9'>Ideal</span>",
+        "Opciones <br/> <span class='inline-block font-script text-[80px] md:text-[112px] text-secondary leading-[80%] font-normal -translate-y-5 md:-translate-y-9'>Perfectas</span>",
       items: [
         {
           title: "En Local",
@@ -128,7 +128,7 @@ export default {
     delicious: {
       tag: "Orlando’s Philly Steak",
       title:
-        "rica <br/> <span class='inline-block font-script text-[80px] md:text-[90px] xl:text-[144px] text-accent leading-[80%] font-normal -translate-y-4 md:-translate-y-10 lg:-translate-y-24'>Comida</span>",
+        "Deliciosa <br/> <span class='inline-block font-script text-[80px] md:text-[90px] xl:text-[144px] text-accent leading-[80%] font-normal -translate-y-4 md:-translate-y-10 lg:-translate-y-24'>Comida</span>",
       description:
         "Evita las filas y disfruta halal cerca de Disney. Ordena antes y tu comida estará lista. Fresca, rica y barata.",
       buttons: [

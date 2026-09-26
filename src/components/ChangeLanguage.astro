@@ -15,7 +15,7 @@ const currentLang = match ? match[1] : "en";
     aria-expanded="false"
   >
     <div
-      class={`text-[16px] text-primary group-hover:font-extrabold font-normal leading-[150%] uppercase transition-all duration-300 ease-in-out flex justify-center items-center gap-2 `}
+      class={`text-[16px] text-white wfont-normal leading-[150%] uppercase transition-all duration-300 ease-in-out flex justify-center items-center gap-2 `}
     >
       {
         currentLang === "en" ? (
@@ -38,18 +38,18 @@ const currentLang = match ? match[1] : "en";
     >
       <path
         d="M7 10L12 15L17 10"
-        stroke="black"
+        stroke="white"
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"></path>
     </svg>
   </button>
   <div
-    class="lang-switch-menu absolute top-[150%] left-1/2 transform -translate-x-1/2 bg-white rounded-lg shadow-lg flex flex-col justify-center items-center duration-300 z-10 text-primary opacity-0 invisible pointer-events-none overflow-hidden"
+    class="lang-switch-menu absolute top-[180%] left-1/2 transform -translate-x-1/2 bg-white rounded-lg shadow-lg flex flex-col justify-center items-center duration-300 z-10 text-primary opacity-0 invisible pointer-events-none overflow-hidden"
   >
     <button
       data-lang="en"
-      class={`py-3 px-8 flex justify-center items-center cursor-pointer w-full hover:opacity-80 transition-opacity ${currentLang === "en" ? "bg-secondary font-semibold" : "font-normal"}`}
+      class={`py-3 px-8 flex justify-center items-center cursor-pointer w-full hover:opacity-80 transition-opacity ${currentLang === "en" ? "bg-secondary font-semibold text-white" : "font-normal"}`}
       aria-pressed={currentLang === "en" ? "true" : "false"}
     >
       <div
@@ -60,7 +60,7 @@ const currentLang = match ? match[1] : "en";
     </button>
     <button
       data-lang="es"
-      class={`cursor-pointer py-3 px-8 flex justify-center items-center w-full hover:opacity-80 transition-opacity ${currentLang === "es" ? "bg-secondary font-semibold" : "font-normal"}`}
+      class={`cursor-pointer py-3 px-8 flex justify-center items-center w-full hover:opacity-80 transition-opacity ${currentLang === "es" ? "bg-secondary font-semibold text-white" : "font-normal"}`}
       aria-pressed={currentLang === "es" ? "true" : "false"}
     >
       <div
