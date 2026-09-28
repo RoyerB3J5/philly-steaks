@@ -35,13 +35,13 @@ export default function NuvisionForm() {
     <div
       style={{
         position: "relative",
-        width: "370px",
-        height: "580px", // Altura específica basada en data-height
+        width: "350px",
+        height: "680px", // Altura específica basada en data-height
         padding: 0,
         overflow: "hidden",
         // Oculta cualquier contenido que se desborde
       }}
-      className=""
+      className="px-4"
     >
       {!loaded && (
         <div
@@ -51,12 +51,12 @@ export default function NuvisionForm() {
             left: 0,
             right: 0,
             bottom: 0,
-            width: "205px",
+            width: "300px",
             margin: "auto",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            background: "#d3ae6a",
+            background: "#b52132",
             overflow: "hidden",
           }}
         >
@@ -64,8 +64,8 @@ export default function NuvisionForm() {
         </div>
       )}
       <iframe
-        id="inline-VSiYI4kYJHQpXvmup04E"
-        src="https://link.inkshapecrm.com/widget/form/VSiYI4kYJHQpXvmup04E"
+        id="inline-5LZIKkpSGVy5SzDqnLmU"
+        src="https://link.inkshapecrm.com/widget/form/5LZIKkpSGVy5SzDqnLmU"
         title="Form Reviews"
         loading="lazy"
         onLoad={() => setLoaded(true)}
@@ -85,8 +85,8 @@ export default function NuvisionForm() {
         data-deactivation-type="neverDeactivate"
         data-form-name="Form Reviews"
         data-height="510"
-        data-layout-iframe-id="inline-VSiYI4kYJHQpXvmup04E"
-        data-form-id="VSiYI4kYJHQpXvmup04E"
+        data-layout-iframe-id="inline-5LZIKkpSGVy5SzDqnLmU"
+        data-form-id="5LZIKkpSGVy5SzDqnLmU"
       />
     </div>
   );

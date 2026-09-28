@@ -2,7 +2,6 @@
 import {
   emailAddress,
   facebookLink,
-
   phoneNumber,
   phoneNumberLink,
 } from "../constants/info";
@@ -26,9 +25,9 @@ const match = currentPath.match(/^\/(en|es)/);
 const lang = match ? match[1] : "en";
 const socialMedia = [
   {
-    icon: "facebook",
-    href: facebookLink,
-  }
+    icon: "fb",
+    href: "https://www.facebook.com/orlandophillysteak/",
+  },
 ];
 ---
 
@@ -56,12 +55,14 @@ const socialMedia = [
         </a>
         <div class="w-[1px] bg-white/10 hidden md:block"></div>
         <div
-          class="md:flex-1 flex flex-col md:flex-row justify-center md:justify-between items-center gap-6 md:gap-3 lg:gap-6"
+          class="md:flex-1 md:flex flex-col md:flex-row justify-center md:justify-between items-center gap-6 md:gap-3 lg:gap-6 hidden"
         >
           <div
-            class="flex flex-col justify-center items-center md:items-start gap-[5px] text-white"
+            class="flex flex-col justify-center items-center md:items-start gap-8 text-white"
           >
-            <h3 class="subtitle text-center md:text-start">
+            <h3
+              class="text-[20px] md:text-[30px] lg:text-[40px] font-bold leading-[125%] font-paragraph text-center md:text-start"
+            >
               {content?.section1.title}
             </h3>
             <p
@@ -91,20 +92,22 @@ const socialMedia = [
       </div>
       <div class="hidden md:block w-full h-[1px] bg-white/10"></div>
       <div
-        class="w-full flex flex-col md:flex-row justify-center md:justify-between items-start gap-[51px] md:gap-3 lg:gap-6"
+        class="w-full flex flex-col md:flex-row justify-center md:justify-between items-center md:items-start gap-[51px] md:gap-3 lg:gap-6"
       >
         <div
-          class="w-full flex flex-col jutify-center items-start gap-6 max-w-[678px]"
+          class="w-full flex flex-col jutify-center items-center md:items-start gap-6 max-w-[678px]"
         >
           <h3 class="subtitle-sm text-white">
             {content?.section2.about.title}
           </h3>
           <div class="w-25 h-0.75 bg-secondary"></div>
           <p
-            class="text-[16px] font-paragraph text-[#F2F2F2] leading-[175%] font-normal max-w-[765px]"
+            class="text-[16px] font-paragraph text-[#F2F2F2] leading-[175%] font-normal max-w-[765px] text-center md:text-start"
             set:html={content?.section2.about.description}
           />
-          <div class="flex justify-start items-center gap-2 w-full">
+          <div
+            class="flex justify-center md:justify-start items-center gap-2 w-full"
+          >
             {
               socialMedia.map((item) => (
                 <a
@@ -125,48 +128,68 @@ const socialMedia = [
             }
           </div>
         </div>
-        <div class="flex flex-col justify-center items-start gap-6">
+        <div
+          class="flex flex-col justify-center items-center md:items-start gap-6"
+        >
           <h3 class="subtitle-sm text-white whitespace-nowrap">
             {content?.section2.quickLinks.title}
           </h3>
           <div class="w-25 h-0.75 bg-secondary"></div>
-          <div class="flex flex-col justify-center items-start gap-6">
+          <div
+            class="flex flex-col justify-center itmes-center md:items-start gap-6"
+          >
             {
               content?.section2.quickLinks.links.map((link) => (
                 <a
                   href={`/${lang}${link.href}`}
-                  class="text-[16px] font-paragraph text-[#F2F2F2] leading-[21px] font-normal hover:text-secondary transition-all duration-300 ease-in-out flex justify-start itmes-center gap-[5px]"
+                  class="text-[16px] font-paragraph text-[#F2F2F2] leading-[21px] font-normal hover:text-secondary transition-all duration-300 ease-in-out flex justify-center md:justify-start items-center gap-[5px] "
                 >
-                  <p>{">"}</p>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="7"
+                    height="10"
+                    viewBox="0 0 7 10"
+                    fill="none"
+                    class="hidden md:block"
+                  >
+                    <path
+                      d="M6.24219 5.52344L1.99219 9.77344C1.67969 10.0859 1.21094 10.0859 0.929688 9.77344L0.210938 9.08594C-0.0703125 8.77344 -0.0703125 8.30469 0.210938 8.02344L3.24219 5.02344L0.210938 1.99219C-0.0703125 1.71094 -0.0703125 1.24219 0.210938 0.929688L0.929688 0.210938C1.21094 -0.0703125 1.67969 -0.0703125 1.99219 0.210938L6.24219 4.46094C6.52344 4.77344 6.52344 5.24219 6.24219 5.52344Z"
+                      fill="#F2F2F2"
+                    />
+                  </svg>
                   <p>{link.label}</p>
                 </a>
               ))
             }
           </div>
         </div>
-        <div class="flex flex-col justify-center items-start gap-6">
+        <div
+          class="flex flex-col justify-center items-center md:items-start gap-6"
+        >
           <h3 class="subtitle-sm text-white whitespace-nowrap">
             {content?.section2.contact.title}
           </h3>
           <div class="w-25 h-0.75 bg-secondary"></div>
-          <div class="flex flex-col justify-center items-start gap-6">
+          <div
+            class="flex flex-col justify-center items-center md:items-start gap-6"
+          >
             {
               content?.section2.contact.items.map((link) => (
-                <div class="flex justify-start items-center gap-4">
-                  <div class="flex justify-center items-center w-10 h-10 bg-secondary rounded-full">
+                <div class="flex justify-center md:justify-start items-center gap-4">
+                  <div class="md:flex justify-center items-center w-10 h-10 bg-secondary rounded-full hidden ">
                     <img
                       src={`/icons/${link.icon}.svg`}
                       alt={link.icon}
                       width="24"
                       height="24"
-                      class="w-[19.2px] h-[19.2px]"
+                      class="w-[19.2px] h-[19.2px] "
                       decoding="async"
                       loading="lazy"
                     />
                   </div>
                   <a
                     href={`/${lang}${link.href}`}
-                    class="text-[16px] font-paragraph text-[#F2F2F2] leading-[21px] font-normal hover:text-secondary transition-all duration-300 ease-in-out max-w-[209px]"
+                    class="text-[16px] font-paragraph text-[#F2F2F2] leading-[21px] font-normal hover:text-secondary transition-all duration-300 ease-in-out max-w-[209px] text-center md:text-start"
                   >
                     <p>{link.label}</p>
                   </a>

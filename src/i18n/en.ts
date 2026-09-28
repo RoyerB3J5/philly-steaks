@@ -171,7 +171,7 @@ export default {
         {
           description:
             "Great food spot. The Philly cheesesteak is amazing. It tastes so good and they make it fresh. Also tried their wings and they were one of the best I’ve had in Orlando.",
-          name: "oliver f..",
+          name: "oliver f.",
         },
       ],
     },

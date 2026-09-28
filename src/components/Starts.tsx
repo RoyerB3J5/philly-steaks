@@ -49,7 +49,7 @@ function Starts() {
           );
         })}
       </div>
-      {/*showForm && <FormReview />*/}
+      {showForm && <FormReview />}
     </>
   );
 }
