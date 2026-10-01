@@ -23,7 +23,8 @@ const mockPostsDetails: Record<string, BlogPostDetailDTO> = {
     description:
       "When it comes to culinary delights, Orlando, Florida, is undoubtedly a melting pot of flavors and cultures.",
     image: "/images/blog/food1.webp",
-    date: lang === "es" ? "13 de agosto de 2023" : "13 August 2023",
+    date: "August 13, 2023",
+    dateTime: "2023-08-13",
     author: "Orlando's Philly Steak",
     content: `
       <p>When it comes to culinary delights, Orlando, Florida, is undoubtedly a melting pot of flavors and cultures. With its vibrant food scene, the city constantly surprises and delights food enthusiasts with innovative combinations that push boundaries.</p>
@@ -39,7 +40,8 @@ const mockPostsDetails: Record<string, BlogPostDetailDTO> = {
     description:
       "In the heart of the enchanting city of Orlando, where dreams and magic intertwine, lies a halal food oasis.",
     image: "/images/blog/food2.webp",
-    date: lang === "es" ? "13 de agosto de 2023" : "13 August 2023",
+    date: "August 13, 2023",
+    dateTime: "2023-08-13",
     author: "Orlando's Philly Steak",
     content: `
       <p>In the heart of the enchanting city of Orlando, where dreams and magic intertwine, lies a halal food oasis that beckons to food enthusiasts and adventurers alike. Just a stone's throw away from Disney World Resort, authentic quality food awaits.</p>
@@ -54,7 +56,8 @@ const mockPostsDetails: Record<string, BlogPostDetailDTO> = {
     description:
       "The best halal food is available in Orlando, Florida, close to the Disney World Resort.",
     image: "/images/blog/food3.webp",
-    date: lang === "es" ? "02 de noviembre de 2022" : "02 November 2022",
+    date: "November 2, 2022",
+    dateTime: "2022-11-02",
     author: "Orlando's Philly Steak",
     content: `
       <p>Looking for a hearty meal near Disney Theme Parks? Orlando's Philly Steak offers casual dining with an extensive selection of flavorful meals.</p>
@@ -65,15 +68,18 @@ const mockPostsDetails: Record<string, BlogPostDetailDTO> = {
   },
 };
 
-// 1. Fetch live post by ID from GHL
-let post = id ? await getPostById(id, lang) : null;
+let post: BlogPostDetailDTO | null = null;
+try {
+  // Dynamic content is always preferred when the API responds successfully.
+  post = id ? await getPostById(id) : null;
+} catch (error) {
+  console.error("[blog] GHL detail fetch failed:", error);
+}
 
-// 2. Fallback to mock post for preview if GHL returned nothing and ID matches preview mock
 if (!post && id && mockPostsDetails[id]) {
   post = mockPostsDetails[id];
 }
 
-// 3. Return 404 response if post is not found
 if (!post) {
   return new Response(null, { status: 404, statusText: "Post Not Found" });
 }
@@ -118,13 +124,13 @@ if (!post) {
         >
           <span
             >{t.blog.postedBy}
-            <strong class="text-black"> Philly Steak</strong></span
+            <strong class="text-black"> {post.author}</strong></span
           >
           {
             post.date && (
               <>
                 <span>&bull;</span>
-                <time datetime={post.date}>{post.date}</time>
+                <time dateTime={post.dateTime}>{post.date}</time>
               </>
             )
           }
@@ -172,8 +178,10 @@ if (!post) {
 
 <style is:global>
   /* Blog post rich HTML content typography and spacing */
-  .blog-content {
+  .blog-content,
+  .blog-content * {
     color: #222222;
+    font-family: var(--font-paragraph) !important;
     font-size: 1.125rem;
     line-height: 1.8;
   }
@@ -187,7 +195,7 @@ if (!post) {
   .blog-content h3,
   .blog-content h4 {
     color: #000000;
-    font-family: var(--font-family);
+    font-family: var(--font-family) !important;
     font-weight: 800;
     line-height: 1.25;
     margin-top: 2rem;

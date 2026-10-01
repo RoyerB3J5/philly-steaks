@@ -1,128 +1,81 @@
-import { ghlFetch, GHL_CONFIG, GHLApiError } from "./client";
+// src/lib/ghl/blog-services.ts
+//
+// Estas 3 funciones son las 3 queries que necesitas. En Vercel con SSR,
+// cada una se ejecuta en el momento en que un usuario visita la página
+// correspondiente (dentro de la función serverless) — no en build time.
+import { ghlFetch, GHLApiError } from "./client";
 import { mapPostListItemToCard, mapPostDetailToDTO } from "./mapper";
 import type {
-  BlogCardDTO,
-  BlogPostDetailDTO,
   GHLPostListResponseRaw,
   GHLPostDetailResponseRaw,
+  BlogCardDTO,
+  BlogPostDetailDTO,
   PaginatedResult,
 } from "./types";
 
-export const POSTS_PAGE_SIZE = 9;
+const LOCATION_ID = import.meta.env.GHL_LOCATION_ID;
+const BLOG_ID = import.meta.env.GHL_BLOG_ID;
 
+const POSTS_PAGE_SIZE = 9;
+
+/**
+ * Query 1: página de posts publicados. Se llama en cada visita a /blog.
+ */
 export async function getPostsPage(
   page: number = 1,
-  limit: number = POSTS_PAGE_SIZE,
-  locale: string = "en"
 ): Promise<PaginatedResult<BlogCardDTO>> {
-  if (!GHL_CONFIG.token || !GHL_CONFIG.blogId) {
-    console.warn(
-      "[GHL blog-services] GHL_API_TOKEN or GHL_BLOG_ID is not configured."
-    );
-    return {
-      items: [],
-      total: 0,
-      page,
-      pageSize: limit,
-      totalPages: 1,
-    };
-  }
-
-  const offset = Math.max(0, (page - 1) * limit);
-
-  try {
-    const raw = await ghlFetch<GHLPostListResponseRaw>("/blogs/posts/all", {
-      locationId: GHL_CONFIG.locationId,
-      blogId: GHL_CONFIG.blogId,
-      limit,
-      offset,
+  const safePage = Math.max(1, Math.floor(page));
+  const data = await ghlFetch<GHLPostListResponseRaw>("/blogs/posts/all", {
+    params: {
+      locationId: LOCATION_ID,
+      blogId: BLOG_ID,
+      limit: POSTS_PAGE_SIZE,
+      offset: (safePage - 1) * POSTS_PAGE_SIZE,
       status: "PUBLISHED",
-    });
+    },
+  });
 
-    const items = (raw.blogs || []).map((post) =>
-      mapPostListItemToCard(post, locale)
-    );
-    const total = raw.count ?? items.length;
-    const totalPages = Math.max(1, Math.ceil(total / limit));
-
-    return {
-      items,
-      total,
-      page,
-      pageSize: limit,
-      totalPages,
-    };
-  } catch (error) {
-    console.error("[GHL blog-services] Error in getPostsPage:", error);
-    return {
-      items: [],
-      total: 0,
-      page,
-      pageSize: limit,
-      totalPages: 1,
-    };
-  }
+  return {
+    items: (data.blogs ?? []).map(mapPostListItemToCard),
+    total: data.count ?? data.blogs?.length ?? 0,
+    page: safePage,
+    pageSize: POSTS_PAGE_SIZE,
+    totalPages: Math.ceil(
+      (data.count ?? data.blogs?.length ?? 0) / POSTS_PAGE_SIZE,
+    ),
+  };
 }
 
-export async function getAllPosts(locale: string = "en"): Promise<BlogCardDTO[]> {
-  try {
-    const firstPage = await getPostsPage(1, POSTS_PAGE_SIZE, locale);
-    const posts: BlogCardDTO[] = [...firstPage.items];
+/** Obtiene todos los posts publicados para la paginación del componente. */
+export async function getAllPosts(): Promise<BlogCardDTO[]> {
+  const firstPage = await getPostsPage(1);
+  if (firstPage.totalPages <= 1) return firstPage.items;
 
-    if (firstPage.totalPages > 1) {
-      const remainingPages = Array.from(
-        { length: firstPage.totalPages - 1 },
-        (_, i) => i + 2
-      );
+  const remainingPages = await Promise.all(
+    Array.from({ length: firstPage.totalPages - 1 }, (_, index) =>
+      getPostsPage(index + 2),
+    ),
+  );
 
-      const remainingResults = await Promise.all(
-        remainingPages.map((p) => getPostsPage(p, POSTS_PAGE_SIZE, locale))
-      );
-
-      for (const res of remainingResults) {
-        posts.push(...res.items);
-      }
-    }
-
-    return posts;
-  } catch (error) {
-    console.error("[GHL blog-services] Error in getAllPosts:", error);
-    return [];
-  }
+  return [firstPage.items, ...remainingPages.map((page) => page.items)].flat();
 }
 
+/**
+ * Query 2: post individual por su _id. Se llama en cada visita a /blog/[id].
+ * Devuelve null si no existe (404 manejado en la página).
+ */
 export async function getPostById(
   postId: string,
-  locale: string = "en"
 ): Promise<BlogPostDetailDTO | null> {
-  if (!postId) return null;
-
-  if (!GHL_CONFIG.token) {
-    console.warn("[GHL blog-services] GHL_API_TOKEN is not configured.");
-    return null;
-  }
-
   try {
-    const raw = await ghlFetch<GHLPostDetailResponseRaw>(
+    const data = await ghlFetch<GHLPostDetailResponseRaw>(
       `/blogs/posts/${encodeURIComponent(postId)}`,
-      {
-        locationId: GHL_CONFIG.locationId,
-      }
+      { params: { locationId: LOCATION_ID } },
     );
-
-    if (!raw?.blogPost) {
-      return null;
-    }
-
-    return mapPostDetailToDTO(raw.blogPost, locale);
-  } catch (error) {
-    if (error instanceof GHLApiError && error.status === 404) {
-      return null;
-    }
-    console.error(
-      `[GHL blog-services] Error in getPostById (${postId}):`,
-      error
-    );
-    return null;
+    if (!data.blogPost) return null;
+    return mapPostDetailToDTO(data.blogPost);
+  } catch (err) {
+    if (err instanceof GHLApiError && err.status === 404) return null;
+    throw err;
   }
 }

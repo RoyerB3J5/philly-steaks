@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import type { BlogCardDTO } from "../lib/ghl/types";
-
 interface BlogSectionProps {
   content: {
     title: string;
@@ -27,11 +26,13 @@ export default function BlogSection({
   const [currentPage, setCurrentPage] = useState(1);
   const containerRef = useRef<HTMLElement | null>(null);
 
-  const totalPages = Math.max(1, Math.ceil(items.length / itemsPerPage));
+  const pageSize = Math.max(1, itemsPerPage);
+  const totalPages = Math.max(1, Math.ceil(items.length / pageSize));
 
   // Client-side pagination slice
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentItems = items.slice(startIndex, startIndex + itemsPerPage);
+  const activePage = Math.min(currentPage, totalPages);
+  const startIndex = (activePage - 1) * pageSize;
+  const currentItems = items.slice(startIndex, startIndex + pageSize);
 
   // Same line-split pattern as the Signature h2 so the mask reveal matches
   const lines = content.title.split(/<br\s*\/?>/i);
@@ -70,7 +71,7 @@ export default function BlogSection({
     return () => {
       observer.disconnect();
     };
-  }, [currentPage, currentItems.length]);
+  }, [activePage, currentItems.length]);
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages || page === currentPage) return;
@@ -183,10 +184,10 @@ export default function BlogSection({
               >
                 <button
                   type="button"
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(activePage - 1)}
+                  disabled={activePage === 1}
                   className={`px-4 py-2.5 rounded-full border-[1.5px] border-[#E6E6E6] text-sm font-semibold transition-all duration-200 ${
-                    currentPage === 1
+                    activePage === 1
                       ? "opacity-40 cursor-not-allowed text-[#9E9E9E]"
                       : "hover:bg-accent hover:border-accent text-black cursor-pointer"
                   }`}
@@ -197,7 +198,7 @@ export default function BlogSection({
                 <div className="flex items-center gap-1.5 md:gap-2">
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map(
                     (pageNum) => {
-                      const isActive = pageNum === currentPage;
+                      const isActive = pageNum === activePage;
                       return (
                         <button
                           key={pageNum}
@@ -219,10 +220,10 @@ export default function BlogSection({
 
                 <button
                   type="button"
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(activePage + 1)}
+                  disabled={activePage === totalPages}
                   className={`px-4 py-2.5 rounded-full border-[1.5px] border-[#E6E6E6] text-sm font-semibold transition-all duration-200 ${
-                    currentPage === totalPages
+                    activePage === totalPages
                       ? "opacity-40 cursor-not-allowed text-[#9E9E9E]"
                       : "hover:bg-accent hover:border-accent text-black cursor-pointer"
                   }`}

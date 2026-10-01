@@ -1,3 +1,4 @@
+// src/lib/ghl/mapper.ts
 import type {
   GHLPostListItemRaw,
   GHLPostDetailRaw,
@@ -5,51 +6,44 @@ import type {
   BlogPostDetailDTO,
 } from "./types";
 
-export const DEFAULT_IMAGE = "/images/blog/food1.webp";
-export const DEFAULT_AUTHOR = "Orlando's Philly Steak";
+const FALLBACK_IMAGE = "/images/blog-placeholder.jpg";
+const DEFAULT_AUTHOR = "PERLA ROSATI";
 
-export function formatDate(iso?: string, locale: string = "en"): string {
+function formatDate(iso: string | null): string {
   if (!iso) return "";
-  try {
-    const date = new Date(iso);
-    if (isNaN(date.getTime())) return "";
-
-    const intlLocale = locale === "es" ? "es-ES" : "en-US";
-    return new Intl.DateTimeFormat(intlLocale, {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    }).format(date);
-  } catch {
-    return "";
-  }
+  return new Date(iso).toLocaleDateString("en-US", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
 }
 
-export function mapPostListItemToCard(
-  raw: GHLPostListItemRaw,
-  locale: string = "en"
-): BlogCardDTO {
+function formatDateTime(iso: string | null): string {
+  return iso ?? "";
+}
+
+/** Item del listado de GHL -> tarjeta que consume el frontend. */
+export function mapPostListItemToCard(raw: GHLPostListItemRaw): BlogCardDTO {
   return {
     id: raw._id,
-    title: raw.title || "",
-    description: raw.description || "",
-    image: raw.imageUrl || DEFAULT_IMAGE,
-    date: formatDate(raw.publishedAt || raw.updatedAt, locale),
+    title: raw.title,
+    description: raw.description,
+    image: raw.imageUrl ?? FALLBACK_IMAGE,
+    date: formatDate(raw.publishedAt ?? raw.updatedAt),
   };
 }
 
-export function mapPostDetailToDTO(
-  raw: GHLPostDetailRaw,
-  locale: string = "en"
-): BlogPostDetailDTO {
+/** Detalle de un post de GHL -> DTO de página individual. */
+export function mapPostDetailToDTO(raw: GHLPostDetailRaw): BlogPostDetailDTO {
   return {
     id: raw._id,
-    title: raw.title || "",
-    description: raw.description || "",
-    image: raw.imageUrl || DEFAULT_IMAGE,
-    date: formatDate(raw.publishedAt || raw.updatedAt, locale),
-    author: raw.author || DEFAULT_AUTHOR,
-    content: raw.rawHTML || "",
+    title: raw.title,
+    description: raw.description,
+    image: raw.imageUrl ?? FALLBACK_IMAGE,
+    date: formatDate(raw.publishedAt ?? raw.updatedAt),
+    dateTime: formatDateTime(raw.publishedAt ?? raw.updatedAt),
+    author: DEFAULT_AUTHOR,
+    content: raw.rawHTML,
     readTimeInMinutes: raw.readTimeInMinutes,
   };
 }

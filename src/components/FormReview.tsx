@@ -36,7 +36,7 @@ export default function NuvisionForm() {
       style={{
         position: "relative",
         width: "350px",
-        height: "680px", // Altura específica basada en data-height
+        height: "650px", // Altura específica basada en data-height
         padding: 0,
         overflow: "hidden",
         // Oculta cualquier contenido que se desborde

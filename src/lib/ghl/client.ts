@@ -1,107 +1,59 @@
+// src/lib/ghl/client.ts
+//
+// Este archivo corre SOLO en el servidor: en Vercel, dentro de la función
+// serverless que Astro genera para cada página/endpoint con SSR. Nunca se
+// incluye en el bundle del navegador, así que el token nunca se expone.
+//
+// Se llama una vez por cada request real de un usuario (no en build time),
+// que es justo lo que pediste: datos siempre frescos, sin rebuild.
+
+const BASE_URL = import.meta.env.GHL_API_BASE_URL;
+const API_VERSION = import.meta.env.GHL_API_VERSION;
+const TOKEN = import.meta.env.GHL_API_TOKEN;
+
 export class GHLApiError extends Error {
   status: number;
-  responseBody: string;
-
-  constructor(message: string, status: number, responseBody: string) {
+  constructor(status: number, message: string) {
     super(message);
-    this.name = "GHLApiError";
     this.status = status;
-    this.responseBody = responseBody;
+    this.name = "GHLApiError";
   }
 }
 
-export const GHL_CONFIG = {
-  get baseUrl(): string {
-    return (
-      import.meta.env.GHL_API_BASE_URL ||
-      process.env.GHL_API_BASE_URL ||
-      "https://services.leadconnectorhq.com"
-    ).replace(/\/$/, "");
-  },
-  get apiVersion(): string {
-    return (
-      import.meta.env.GHL_API_VERSION ||
-      process.env.GHL_API_VERSION ||
-      "2021-07-28"
-    );
-  },
-  get token(): string {
-    return (
-      import.meta.env.GHL_API_TOKEN ||
-      process.env.GHL_API_TOKEN ||
-      ""
-    );
-  },
-  get locationId(): string {
-    return (
-      import.meta.env.GHL_LOCATION_ID ||
-      process.env.GHL_LOCATION_ID ||
-      ""
-    );
-  },
-  get blogId(): string {
-    return (
-      import.meta.env.GHL_BLOG_ID ||
-      process.env.GHL_BLOG_ID ||
-      ""
-    );
-  },
-};
+interface FetchOptions {
+  params?: Record<string, string | number | undefined>;
+}
 
-export function buildUrl(
-  path: string,
-  params?: Record<string, string | number | boolean | undefined | null>
-): string {
-  const cleanPath = path.startsWith("/") ? path : `/${path}`;
-  const url = new URL(`${GHL_CONFIG.baseUrl}${cleanPath}`);
-
+function buildUrl(path: string, params?: FetchOptions["params"]): string {
+  const url = new URL(path, BASE_URL);
   if (params) {
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== "") {
-        url.searchParams.set(key, String(value));
-      }
-    });
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== undefined) url.searchParams.set(key, String(value));
+    }
   }
-
   return url.toString();
 }
 
+/** Fetcher tipado hacia la API de GoHighLevel. Único lugar con el token. */
 export async function ghlFetch<T>(
   path: string,
-  params?: Record<string, string | number | boolean | undefined | null>,
-  init?: RequestInit
+  options: FetchOptions = {},
 ): Promise<T> {
-  const token = GHL_CONFIG.token;
-  if (!token) {
-    throw new GHLApiError(
-      "GHL_API_TOKEN is not configured in environment variables",
-      401,
-      '{"error": "Missing GHL_API_TOKEN"}'
-    );
-  }
+  const url = buildUrl(path, options.params);
 
-  const url = buildUrl(path, params);
-
-  const headers: HeadersInit = {
-    Authorization: `Bearer ${token}`,
-    Version: GHL_CONFIG.apiVersion,
-    Accept: "application/json",
-    ...(init?.headers || {}),
-  };
-
-  const response = await fetch(url, {
-    ...init,
-    headers,
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${TOKEN}`,
+      Version: API_VERSION,
+      Accept: "application/json",
+    },
   });
 
-  if (!response.ok) {
-    const errorBody = await response.text();
-    throw new GHLApiError(
-      `GHL API Error: ${response.status} ${response.statusText}`,
-      response.status,
-      errorBody
-    );
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new GHLApiError(res.status, errorText);
   }
 
-  return (await response.json()) as T;
+  return (await res.json()) as T;
 }
