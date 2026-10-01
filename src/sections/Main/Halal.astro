@@ -14,7 +14,7 @@ const lines = content.title.split(/<br\s*\/?>/i);
 
 <section
   data-halal
-  class="bg-white flex justify-center items-center h-[90vh] w-full relative md:h-[65vh] xl:h-screen"
+  class="bg-white flex justify-center items-center min-h-[90vh] md:min-h-auto w-full relative md:h-[65vh] xl:h-screen py-20 md:py-0"
 >
   <img
     src="/images/main/halal-back.png"
@@ -26,11 +26,11 @@ const lines = content.title.split(/<br\s*\/?>/i);
     loading="lazy"
   />
   <div
-    class="container-full flex flex-col md:flex-row justify-center items-center gap-28 md:gap-6 z-10 relative h-full"
+    class="container-full flex flex-col md:flex-row justify-center items-center gap-28 md:gap-6 z-10 relative h-full "
   >
     <h2
       data-halal-title
-      class="font-rust text-[56px] md:text-[96px] lg:text-[136px] text-paragraph font-normal leading-[80%] text-center md:text-start absolute -translate-x-1/2 md:translate-x-0 left-1/2 md:left-0 top-[8%] md:top-[12%] z-10 isolate"
+      class="font-rust text-[56px] md:text-[96px] lg:text-[136px] text-paragraph font-normal leading-[80%] text-center md:text-start absolute -translate-x-1/2 md:translate-x-0 left-1/2 md:left-0 -top-[50px] md:top-[12%] z-10 isolate"
     >
       {
         lines.map((line, index) => (
